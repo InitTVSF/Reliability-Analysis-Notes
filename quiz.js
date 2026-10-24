@@ -179,4 +179,10 @@
     });
     var openBtn = document.getElementById('open-test-btn');
     if (openBtn) openBtn.addEventListener('click', open);
+    var tabBtn = document.getElementById('tab-test');
+    if (tabBtn) tabBtn.addEventListener('click', open);
+    if (location.hash === '#test') {
+        history.replaceState(null, '', location.pathname + location.search);
+        open();
+    }
 })();

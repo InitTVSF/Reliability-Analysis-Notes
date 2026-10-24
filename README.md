@@ -27,7 +27,10 @@ A comprehensive, mathematically rigorous study guide, reference handbook, and in
 - Both are linked from the header of `index.html` and share its light/dark theme.
 
 ### 3. Mobile Friendly
-- All pages are responsive down to 360 px phone widths. The header collapses to two rows, and long formulas scroll inside their own box (`mathfit.js`) instead of widening the page.
+- All pages work down to 320 px phone widths. Phone rules live in one shared stylesheet, `mobile.css`.
+- On phones, a bottom tab bar (Guide · Theory · ELI5 · Formulas · Test) replaces the icon-only header buttons. `index.html#formulas` and `index.html#test` open the formula sheet and the MCQ test directly.
+- The main guide's header is one row (menu, search, theme). On Theory and ELI5 the module links become a sticky strip that scrolls sideways and highlights the module you're reading (`mobile.js`).
+- Long formulas scroll inside their own box (`mathfit.js`) instead of widening the page.
 
 ### 4. Comprehensive Master Study Guide (`study_guide.md`)
 - **2,400+ Lines / 153,000+ Characters** of exhaustive pedagogical notes.
@@ -90,6 +93,8 @@ This automatically updates `study_guide.md` and generates the self-contained `in
 ├── theory.html                # Theory essentials & exam traps (verified against transcripts)
 ├── eli5.html                  # Simple, analogy-first explanation of every module
 ├── mathfit.js                 # Keeps long MathJax formulas inside narrow screens
+├── mobile.css                 # Phone layout shared by all three pages
+├── mobile.js                  # Highlights the current module in the jump-link strip
 ├── study_guide.md             # Master textbook & study guide (all 12 modules)
 ├── build_full_suite.py        # Compiler & math-protection build script
 ├── validate_output.py         # HTML5 validator & LaTeX token integrity checker

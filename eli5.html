@@ -5,7 +5,7 @@
     <script>
     (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Explain Like I'm Five — Statistical Learning for Reliability Analysis</title>
     <meta name="description" content="A simple, analogy-first walkthrough of all 12 modules of Statistical Learning for Reliability Analysis (NPTEL, IIT Kharagpur), told through one toy-car factory.">
 
@@ -198,6 +198,7 @@
             section.mod h2 { font-size: 1.3rem; }
         }
     </style>
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <header class="sticky-header">
@@ -206,8 +207,8 @@
             <span class="brand-badge">NPTEL IIT KGP</span>
         </a>
         <div class="header-actions">
-            <a href="theory.html" class="nav-btn" title="Necessary theory for every module"><span>📖 <span class="lbl">Theory</span></span></a>
-            <a href="index.html" class="nav-btn" title="Back to the full study guide"><span>📘 <span class="lbl">Full Guide</span></span></a>
+            <a href="theory.html" class="nav-btn tab-dup" title="Necessary theory for every module"><span>📖 <span class="lbl">Theory</span></span></a>
+            <a href="index.html" class="nav-btn tab-dup" title="Back to the full study guide"><span>📘 <span class="lbl">Full Guide</span></span></a>
             <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
         </div>
     </header>
@@ -837,6 +838,15 @@
         });
     })();
     </script>
+    <nav class="tabbar" aria-label="Pages">
+        <a href="index.html"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html" aria-current="page"><span class="ic">🧸</span>ELI5</a>
+        <a href="index.html#formulas"><span class="ic">⚡</span>Formulas</a>
+        <a href="index.html#test"><span class="ic">📝</span>Test</a>
+    </nav>
+
     <script src="mathfit.js"></script>
+    <script src="mobile.js"></script>
 </body>
 </html>

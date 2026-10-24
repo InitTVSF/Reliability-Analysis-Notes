@@ -576,7 +576,7 @@ def build_interactive_html():
     <script>
     (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Statistical Learning for Reliability Analysis — Course Study Guide &amp; Interactive Master Handbook</title>
     
     <!-- Meta SEO -->
@@ -1601,6 +1601,7 @@ def build_interactive_html():
             .brand-badge { display: none; }
         }
     </style>
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -1624,17 +1625,17 @@ def build_interactive_html():
                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                 <input type="text" id="live-search" placeholder="Search formulas, theorems, problem types...">
             </div>
-            <a href="theory.html" id="open-theory-btn" class="nav-btn" style="text-decoration:none;" title="Necessary theory, definitions and exam traps for every module">
+            <a href="theory.html" id="open-theory-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Necessary theory, definitions and exam traps for every module">
                 <span>📖 <span class="lbl">Theory</span></span>
             </a>
-            <a href="eli5.html" id="open-eli5-btn" class="nav-btn" style="text-decoration:none;" title="Simple, explain-like-I'm-five walkthrough of every module">
+            <a href="eli5.html" id="open-eli5-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Simple, explain-like-I'm-five walkthrough of every module">
                 <span>🧸 <span class="lbl">ELI5</span></span>
             </a>
-            <button id="open-test-btn" class="nav-btn" title="Take an MCQ test on all or selected modules">
+            <button id="open-test-btn" class="nav-btn tab-dup" title="Take an MCQ test on all or selected modules">
                 <span>📝 <span class="lbl">Test</span></span>
             </button>
             <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
-            <button id="open-cheat-sheet-btn" class="nav-btn" title="Open Master Formula Reference & Problem Types">
+            <button id="open-cheat-sheet-btn" class="nav-btn tab-dup" title="Open Master Formula Reference & Problem Types">
                 <span>⚡ <span class="lbl">Cheat Sheet &amp; Formulas</span></span>
             </button>
         </div>
@@ -1761,6 +1762,15 @@ def build_interactive_html():
         </div>
     </aside>
 
+    <!-- Bottom tab bar (phones only, see mobile.css) -->
+    <nav class="tabbar" aria-label="Pages">
+        <a href="#" aria-current="page"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html"><span class="ic">🧸</span>ELI5</a>
+        <button type="button" id="tab-formulas"><span class="ic">⚡</span>Formulas</button>
+        <button type="button" id="tab-test"><span class="ic">📝</span>Test</button>
+    </nav>
+
     <!-- Back to Top Floating Button -->
     <button id="back-to-top" title="Back to top">↑</button>
 
@@ -1857,6 +1867,11 @@ def build_interactive_html():
         openCheatBtn.addEventListener('click', openCheatSheet);
         closeCheatBtn.addEventListener('click', closeCheatSheet);
         backdrop.addEventListener('click', closeCheatSheet);
+        document.getElementById('tab-formulas').addEventListener('click', openCheatSheet);
+        if (location.hash === '#formulas') {
+            history.replaceState(null, '', location.pathname + location.search);
+            openCheatSheet();
+        }
 
         // Cheat Sheet Category Filtering & Search
         const tabBtns = document.querySelectorAll('.cheat-tab-btn');
