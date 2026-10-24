@@ -17,8 +17,8 @@
 3. [Module 3: Discrete Probability Distributions & Reliability Applications (Lectures 07–11)](#module-3-discrete-probability-distributions--reliability-applications-lectures-0711)
 4. [Module 4: Continuous Probability Distributions & Hazard Rate Modeling (Lectures 12–15)](#module-4-continuous-probability-distributions--hazard-rate-modeling-lectures-1215)
 5. [Module 5: Sampling Distributions & The Central Limit Theorem (Lectures 16–21)](#module-5-sampling-distributions--the-central-limit-theorem-lectures-1621)
-6. [Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)](#module-6-statistical-inference--point-estimation--confidence-intervals-lectures-2225-28)
-7. [Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)](#module-7-statistical-inference--hypothesis-testing--goodness-of-fit-lectures-2627-2931)
+6. [Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)](#module-6-statistical-inference--point-estimation--confidence-intervals-lectures-2628)
+7. [Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)](#module-7-statistical-inference--hypothesis-testing--goodness-of-fit-lectures-2225-2931)
 8. [Module 8: Analysis of Variance (ANOVA) (Lectures 32–37)](#module-8-analysis-of-variance-anova-lectures-3237)
 9. [Module 9: Correlation & Linear Regression Analysis (Lectures 38–43)](#module-9-correlation--linear-regression-analysis-lectures-3843)
 10. [Module 10: Auto-Regression & Time-Series Modeling for Reliability (Lecture 44)](#module-10-auto-regression--time-series-modeling-for-reliability-lecture-44)
@@ -334,7 +334,7 @@ $$R_s = \prod_{i=1}^n R_i = R_1 \times R_2 \times \dots \times R_n$$
 For $n$ identical components with reliability $R$:
 $$R_s = R^n$$
 
-*Key Implication:* System reliability is strictly lower than the reliability of its least reliable component ($R_s < \min_i R_i$).
+*Key Implication:* System reliability is never higher than the reliability of its least reliable component ($R_s \le \min_i R_i$). It is strictly lower whenever any other component has $R_i < 1$.
 
 ```
 [In] ---> [ Component 1 ] ---> [ Component 2 ] ---> [ Component n ] ---> [Out]
@@ -423,7 +423,7 @@ A microprocessor is selected at random from the assembly line and found to be **
 - **Trigger Keywords:** *"Series configuration"*, *"weakest link"*, *"no redundancy"*, *"all components must function"*.
 - **Core Formula:**
   $$R_{\text{series}} = \prod_{i=1}^n R_i = R_1 \times R_2 \times \dots \times R_n$$
-- **Key Insight:** $R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$. The system is always less reliable than its least reliable component.
+- **Key Insight:** $R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$. The system is never more reliable than its least reliable component.
 
 ---
 
@@ -523,7 +523,7 @@ Models the count of rare, independent events occurring within a fixed interval o
 #### Poisson Approximation to the Binomial Distribution
 When the number of trials $n$ is very large ($n \to \infty$) and the event probability $p$ is very small ($p \to 0$) such that $np = \lambda$ remains constant:
 $$\lim_{n \to \infty} \binom{n}{k} p^k (1-p)^{n-k} = \frac{e^{-\lambda} \lambda^k}{k!}$$
-*Rule of Thumb:* Valid when $n \ge 20$ and $p \le 0.05$, or $n \ge 100$ and $np \le 10$.
+*Rule of Thumb (as taught in Lec 11):* use it when $n > 10$ **and** $p < 0.1$; both conditions must hold. (Stricter textbook rules such as $n \ge 20,\ p \le 0.05$ also appear.)
 
 ---
 
@@ -630,7 +630,7 @@ Models sampling **without replacement** from a finite population of size $N$ con
 
 ### Problem Type 3.2: Rare Event Failures & Flaw Density (Poisson Distribution)
 - **Engineering / Exam Scenario:** Modeling the number of particle defects per square meter of silicon wafer, solder bridge flaws per printed circuit board, or cosmic-ray soft errors per hour in memory chips, where events occur randomly and independently in continuous space/time at an average rate $\lambda$.
-- **Trigger Keywords:** *"Rare defects"*, *"Poisson process"*, *"average rate per unit area/time"*, *"Poisson approximation to Binomial ($n \ge 100, p \le 0.05, \lambda = np$)"*.
+- **Trigger Keywords:** *"Rare defects"*, *"Poisson process"*, *"average rate per unit area/time"*, *"Poisson approximation to Binomial ($n > 10$ and $p < 0.1$, $\lambda = np$)"*.
 - **Core Formula:**
   $$P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, \dots$$
 - **Zero-Failure Probability:** $P(X = 0) = e^{-\lambda}$.
@@ -717,6 +717,9 @@ $$\text{MTTF} = \int_0^\infty R(t) \, dt$$
 ---
 
 ### 4.2.2 Exponential Distribution ($T \sim \text{Exp}(\lambda)$)
+
+> [!NOTE]
+> **Lecture notation:** the course also writes $f(t) = \frac{1}{\beta}e^{-t/\beta}$ with $\beta = MTTF = 1/\lambda$ (mean = SD = $\beta$). If a question gives a mean life, that is $\beta$. If it gives a failure rate, that is $\lambda$.
 The cornerstone distribution for components operating in their useful life (Phase II of the Bathtub Curve).
 - **PDF:** $f(t) = \lambda e^{-\lambda t}, \quad t \ge 0, \; \lambda > 0$
 - **CDF:** $F(t) = 1 - e^{-\lambda t}$
@@ -748,7 +751,7 @@ $$P(T > s + t \mid T > s) = \frac{P(T > s + t)}{P(T > s)} = \frac{e^{-\lambda(s+
 
 ### 4.2.4 Lognormal Distribution
 If $Y = \ln X \sim N(\mu, \sigma^2)$, then $X = e^Y$ follows a Lognormal distribution ($X > 0$).
-- Extensively used in reliability for modeling **fatigue life**, crack propagation, and repair times ($MTTR$).
+- **In this course (Lec 13), lognormal is used to model repair times ($MTTR$), not failure times;** for failure times the course uses normal or exponential. In wider reliability practice it is also used for fatigue life and crack propagation.
 - **PDF:** $f(x) = \frac{1}{x \sigma \sqrt{2\pi}} \exp\left( -\frac{(\ln x - \mu)^2}{2\sigma^2} \right), \quad x > 0$
 - **Mean:** $E[X] = e^{\mu + \sigma^2/2}$
 - **Variance:** $\text{Var}(X) = e^{2\mu + \sigma^2}(e^{\sigma^2} - 1)$
@@ -756,6 +759,9 @@ If $Y = \ln X \sim N(\mu, \sigma^2)$, then $X = e^Y$ follows a Lognormal distrib
 ---
 
 ### 4.2.5 Weibull Distribution ($T \sim \text{Weibull}(\beta, \theta, \gamma)$)
+
+> [!WARNING]
+> **Not examined:** Lec 13 and Lec 15 state that the Weibull distribution is not included in the course and no exam question will come from it. Kept here as background.
 The most versatile life-distribution in reliability engineering, capable of modeling all three phases of the Bathtub Curve.
 - **Two-Parameter Weibull:** Shape parameter $\beta > 0$, Scale parameter (Characteristic Life) $\theta > 0$ ($\gamma = 0$):
   - **PDF:** $f(t) = \frac{\beta}{\theta} \left( \frac{t}{\theta} \right)^{\beta - 1} \exp\left[ -\left( \frac{t}{\theta} \right)^\beta \right], \quad t \ge 0$
@@ -875,6 +881,7 @@ Find the mean $\mu$ and standard deviation $\sigma$ of the cable tensile strengt
 ---
 
 ### Problem Type 4.4: Aging & Wear-Out Modeling via Weibull Distribution
+- **⚠️ Not examined:** Weibull is outside the exam syllabus (Lec 13, Lec 15).
 - **Engineering / Exam Scenario:** Given Weibull parameters $\beta$ (shape), $\theta$ (scale/characteristic life), and $\gamma$ (location/guarantee time), compute component reliability at age $t$, evaluate the hazard rate trend, or linearize empirical failure data on Weibull probability paper to estimate $\beta$ and $\theta$.
 - **Trigger Keywords:** *"Weibull distribution"*, *"shape parameter $\beta$"*, *"characteristic life $\theta$"*, *"infant vs wear-out aging"*.
 - **Core Formulas:**
@@ -1069,9 +1076,12 @@ Let independent binomial samples of sizes $n_1$ and $n_2$ yield sample proportio
 
 ---
 
-# MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)
+# MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)
 
 ## 6.1 Principles of Point Estimation
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** estimator properties (unbiasedness, consistency, MVUE, CRLB, sufficiency) and the methods of moments / maximum likelihood (6.1–6.2) are **not taught** in the lectures. MLE appears only later, for logistic regression (Lec 45–46). Confidence intervals (6.3) are taught in Lec 26–28. Hypothesis testing is in Lec 22–25 and 29–31 (Module 7).
 
 ### 6.1.1 Estimators vs. Estimates
 - **Point Estimator ($\hat{\Theta}$):** A sample statistic / mathematical formula used to estimate an unknown population parameter $\theta$ (e.g., $\hat{\Theta} = \bar{X} = \frac{1}{n}\sum X_i$).
@@ -1270,7 +1280,7 @@ Taking square roots gives the Confidence Interval for Standard Deviation $\sigma
 
 ---
 
-# MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)
+# MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)
 
 ## 7.1 Fundamentals of Hypothesis Testing
 
@@ -1363,6 +1373,9 @@ $$F_{\text{calc}} = \frac{s_1^2}{s_2^2} \sim F(n_1 - 1, n_2 - 1)$$
 ---
 
 ## 7.3 Chi-Square Goodness-of-Fit & Independence Tests
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** the goodness-of-fit test is **not taught** in the lectures. The test of independence is taught in **Lec 39**, as the chi-square test of association for nominal data, alongside correlation (Module 9).
 
 ### 7.3.1 Pearson's Chi-Square Goodness-of-Fit Test
 Tests whether observed sample counts $O_i$ conform to a theoretical probability distribution $E_i = n \cdot p_i$:
@@ -1507,6 +1520,9 @@ $$H_1: \text{At least one } \tau_i \neq 0 \quad (\text{at least two group means 
 ---
 
 ### 8.2.2 Partitioning the Total Sum of Squares ($SST$)
+
+> [!NOTE]
+> **Lecture notation:** the course writes $SS_T = SS_{Treatments} + SS_E$, $F_0 = MS_{Treatments}/MS_E \sim F_{a-1,\,N-a}$, with $a$ treatments, $n$ replicates and $N = an$. "Between" = treatments and "within" = error.
 Total variation in the dataset is partitioned into between-treatment variation and within-treatment error:
 $$SST = SSB + SSW \quad (\text{or } SST = SSTr + SSE)$$
 
@@ -1543,6 +1559,9 @@ Let $N = \sum_{i=1}^k n_i$, $\bar{y}_{i\cdot} = \frac{1}{n_i}\sum_{j=1}^{n_i} y_
 
 ## 8.3 Post-Hoc Multiple Comparisons
 
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 33 only **names** the Bonferroni, Fisher LSD and Tukey HSD approaches and says finding which mean differs is beyond the scope of the lectures.
+
 When the omnibus ANOVA $F$-test rejects $H_0$, post-hoc tests identify *which specific pairs* of means differ significantly.
 
 ### 8.3.1 Tukey's Honestly Significant Difference (HSD) Test
@@ -1558,6 +1577,9 @@ $$\text{LSD} = t_{\alpha/2, N-k} \sqrt{MSE \left( \frac{1}{n_i} + \frac{1}{n_j} 
 ---
 
 ## 8.4 Two-Way ANOVA (Factorial Design with Replications)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 36 states that two-way and multi-way ANOVA are not discussed. Only one-way ANOVA is taught.
 
 ### 8.4.1 Model with Interaction
 Evaluates the simultaneous effects of Factor A ($a$ levels), Factor B ($b$ levels), and their interaction ($AB$) with $n$ replications per cell ($N = abn$):
@@ -1725,6 +1747,9 @@ $$s_e = \sqrt{MSE} = \sqrt{\frac{SSE}{n - 2}}$$
 ---
 
 ### 9.2.4 ANOVA Approach to Regression & Slope Hypothesis Testing
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Gauss–Markov/BLUE, the standard error of estimate, slope tests, regression ANOVA, CI vs. PI (9.2.4–9.2.5) and adjusted $R^2$/multicollinearity (9.3.2) are **not taught** in Lec 38–43. The lectures instead cover the chi-square test of association for nominal data (Lec 39) and polynomial regression (Lec 42); see the Theory page. The lecture writes the model as $y = \alpha + \beta x + \varepsilon$ and defines $R^2 = 1 - SSE/SST$.
 To test $H_0: \beta_1 = 0$ (no linear relationship) vs. $H_1: \beta_1 \neq 0$:
 $$F_{\text{calc}} = \frac{MSR}{MSE} = \frac{SSR / 1}{SSE / (n - 2)} \sim F(1, n - 2)$$
 Equivalently, using the $t$-test on slope:
@@ -1872,6 +1897,9 @@ where:
 ---
 
 ### 10.2.2 The First-Order Autoregressive Model: $\text{AR}(1)$
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 44 introduces AR($p$) as $Y_t = \beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p} + \varepsilon_t$ and requires the data to be **stationary** and **uniform** (evenly spaced, no gaps). The AR(1) moment formulas below, Yule–Walker details and RUL forecasting (10.3) are **not taught**.
 $$X_t = c + \phi_1 X_{t-1} + \epsilon_t$$
 
 #### 1. Stationarity Condition
@@ -1916,6 +1944,9 @@ $$\hat{X}_{T+h \mid T} = E[X_{T+h} \mid X_T, X_{T-1}, \dots] = \mu + \phi_1^h (X
 As forecast horizon $h \to \infty$, the forecast smoothly reverts to the long-term mean $\mu$.
 
 ### 10.3.2 Determining Remaining Useful Life (RUL)
+
+> [!CAUTION]
+> A **stationary** AR forecast reverts to its mean, so it cannot predict a threshold crossing. RUL needs a trending (non-stationary) degradation model, for example an AR model on differenced data or with drift.
 Let $D_{\text{crit}}$ denote the critical degradation threshold at which failure occurs (e.g., maximum permissible vibration amplitude of $10\text{ mm/s}$).
 The **Remaining Useful Life (RUL)** is the time index $h^*$ when the predicted degradation crosses the threshold:
 $$\text{RUL} = \min \left\{ h > 0 \mid \hat{X}_{T+h \mid T} \ge D_{\text{crit}} \right\}$$
@@ -2037,6 +2068,9 @@ Since the score equations are non-linear in $\boldsymbol{\beta}$, they have no c
 ## 11.4 Goodness-of-Fit & Model Significance
 
 ### 11.4.1 Deviance & Likelihood Ratio Test
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** deviance, the likelihood-ratio test and pseudo-$R^2$ are **not taught**. Of 11.4, only the Wald test (Lec 46) is covered. The lectures also cover multinomial (pivot class) and ordinal logistic regression, and stress that logistic regression is "strictly not a classifier" until a cut-off is chosen.
 - **Deviance ($D$):** $D = -2 \ln L(\hat{\boldsymbol{\beta}})$ (Analogous to $SSE$ in linear regression).
 - **Likelihood Ratio Test ($G$):** Compares the fitted model with $k$ predictors against the intercept-only (null) model:
   $$G = -2 \left[ \ln L(\text{Null}) - \ln L(\text{Fitted}) \right] = D_{\text{null}} - D_{\text{fitted}} \sim \chi^2(k)$$
@@ -2054,6 +2088,9 @@ $$W = \left( \frac{\hat{\beta}_j}{SE(\hat{\beta}_j)} \right)^2 \sim \chi^2(1) \q
 ---
 
 ## 11.5 Binary Classification Performance Metrics
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** the confusion matrix, precision/recall/F1 and ROC/AUC are **not taught** in Lec 45–48.
 
 ### 11.5.1 The Confusion Matrix
 Given a decision threshold $p_{\text{thresh}} = 0.50$:
@@ -2131,6 +2168,9 @@ Given a training dataset $\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_
 ---
 
 ### 12.1.2 Bayes Optimal Classifier & Naive Bayes Classifier
+
+> [!NOTE]
+> **Lecture convention:** the course handles zero counts with the **m-estimate** $\frac{n_c + m p}{n + m}$ (Lec 53). Laplace smoothing is the special case $m = k$, $p = 1/k$. The lecture calls $P(x_j \mid c)$ the "posterior" probability, and adds a second Naive Bayes assumption: all attributes contribute equally.
 
 #### 1. Maximum A Posteriori (MAP) Decision Rule
 By Bayes\' Theorem, the posterior probability of class $C_k$ given feature vector $\mathbf{x}$ is:
@@ -2239,6 +2279,9 @@ $$\min_{\mathbf{w}, b} \frac{1}{2} \|\mathbf{w}\|^2 = \frac{1}{2} \mathbf{w}^T \
 ---
 
 ### 12.3.3 Lagrange Multipliers & Karush-Kuhn-Tucker (KKT) Conditions
+
+> [!NOTE]
+> **Lecture notation:** the multipliers are written $\lambda_i$ (here $\alpha_i$) and the Lagrangians $L_P$ / $L_D$. $b$ is computed from each support vector and averaged.
 Introducing Lagrange multipliers $\alpha_i \ge 0$ for each inequality constraint, the **Primal Lagrangian** is:
 $$L(\mathbf{w}, b, \boldsymbol{\alpha}) = \frac{1}{2} \mathbf{w}^T \mathbf{w} - \sum_{i=1}^N \alpha_i \left[ y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right]$$
 
@@ -2277,6 +2320,9 @@ $$b = y_k - \mathbf{w}^T \mathbf{x}_k = y_k - \sum_{i \in \text{SV}} \alpha_i y_
 ---
 
 ## 12.4 Soft-Margin SVM (Non-Separable Data)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 57 only mentions the soft margin ("I will not go into the details"). Slack variables, $C$ and the box constraint are not taught.
 
 When data is linearly non-separable or contains noise/outliers, **Slack Variables $\xi_i \ge 0$** are introduced to allow controlled margin violations:
 $$y_i (\mathbf{w}^T \mathbf{x}_i + b) \ge 1 - \xi_i, \quad \xi_i \ge 0, \quad \forall i = 1, \dots, N$$
@@ -2352,6 +2398,9 @@ $$\mathbf{c}^T \mathbf{K} \mathbf{c} = \sum_{i=1}^N \sum_{j=1}^N c_i c_j K(\math
 - **One-vs-One (OvO):** Trains $\binom{K}{2} = \frac{K(K-1)}{2}$ binary classifiers for every pair of classes $(C_i, C_j)$. Final class assigned via majority voting.
 
 ### 12.6.2 Support Vector Regression (SVR)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 60 says SVM regression and ranking were not covered and are left for self-study.
 Uses Vapnik\'s **$\epsilon$-Insensitive Loss Function**:
 $$L_\epsilon(y, f(\mathbf{x})) = \max(0, |y - f(\mathbf{x})| - \epsilon)$$
 Errors smaller than $\epsilon$ inside the \"tube\" around the regression curve are ignored with zero penalty.

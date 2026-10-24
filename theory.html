@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+    (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Theory Essentials — Statistical Learning for Reliability Analysis</title>
+    <meta name="description" content="The necessary theory for all 12 modules of Statistical Learning for Reliability Analysis (NPTEL, IIT Kharagpur): definitions, theorems, assumptions, key distinctions and exam traps.">
+
+    <link rel="stylesheet" href="vendor/fonts.css">
+
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+    </script>
+    <script id="MathJax-script" async src="vendor/mathjax/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Same Bright Peach tokens as index.html / eli5.html */
+        :root {
+            --bg-body: #FFFDF9;
+            --surface-card: #FFFFFF;
+            --surface-alt: #FFF8F2;
+            --accent-peach-light: #FFE0D6;
+            --accent-peach: #FFAB91;
+            --accent-peach-vivid: #FF8A65;
+            --accent-terracotta: #FF7043;
+            --primary-dark: #D84315;
+            --text-heading: #3E2723;
+            --text-body: #37474F;
+            --text-muted: #607D8B;
+            --border-soft: #FFE5D9;
+            --border-medium: #FFCCBC;
+            --callout-bg: #FFF3E0;
+            --trap-bg: #FFEBEE;
+            --trap-border: #C62828;
+            --thm-bg: #E8F5E9;
+            --thm-border: #2E7D32;
+            --shadow-card: 0 4px 16px rgba(183, 28, 28, 0.04), 0 2px 6px rgba(0, 0, 0, 0.03);
+            --font-main: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            --font-heading: 'Outfit', 'Inter', sans-serif;
+            --container-width: 960px;
+            --header-height: 64px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg-body: #14100E;
+            --surface-card: #1E1815;
+            --surface-alt: #261E1A;
+            --accent-peach-light: #4A2E24;
+            --primary-dark: #E65A2B;
+            --text-heading: #FFE0D6;
+            --text-body: #D7CCC8;
+            --text-muted: #A1887F;
+            --border-soft: #3A2B25;
+            --border-medium: #5A3F33;
+            --callout-bg: #2A1F18;
+            --trap-bg: #2E1A1A;
+            --trap-border: #EF5350;
+            --thm-bg: #1A261B;
+            --thm-border: #81C784;
+            --shadow-card: 0 4px 16px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: calc(var(--header-height) + 16px); }
+        body {
+            background-color: var(--bg-body); color: var(--text-body);
+            font-family: var(--font-main); line-height: 1.75;
+            -webkit-font-smoothing: antialiased; padding-top: var(--header-height);
+        }
+
+        header.sticky-header {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--header-height);
+            background: rgba(255, 253, 249, 0.95); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-soft);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; z-index: 999; gap: 0.75rem;
+        }
+        [data-theme="dark"] header.sticky-header { background: rgba(20,16,14,0.95); }
+        .header-brand {
+            display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--text-heading);
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; white-space: nowrap;
+        }
+        .brand-badge {
+            background: linear-gradient(135deg, var(--accent-peach-vivid), var(--primary-dark));
+            color: #fff; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 6px; letter-spacing: 0.04em;
+        }
+        .header-actions { display: flex; gap: 0.5rem; align-items: center; }
+        .nav-btn {
+            background: var(--surface-alt); border: 1px solid var(--border-medium); color: var(--text-heading);
+            padding: 0.45rem 0.9rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
+            text-decoration: none; transition: all 0.2s ease; font-family: inherit;
+        }
+        .nav-btn:hover, .nav-btn.on { background: var(--accent-peach); color: #fff; border-color: var(--accent-peach-vivid); }
+        #theme-toggle-btn { min-width: 2.4rem; justify-content: center; }
+
+        main { max-width: var(--container-width); margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+        .hero {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0D6 60%, #FFCCBC 100%);
+            border: 1px solid var(--border-medium); border-radius: var(--radius-lg);
+            padding: 2.2rem 2rem; margin-bottom: 1.2rem;
+        }
+        [data-theme="dark"] .hero { background: linear-gradient(135deg, #2A1A14 0%, #3A2118 50%, #4A2A1E 100%); border-color: rgba(255,171,145,0.18); }
+        .hero h1 { font-family: var(--font-heading); color: var(--text-heading); font-size: 2.1rem; line-height: 1.2; margin-bottom: 0.6rem; }
+        .hero p { max-width: 680px; }
+        .legend { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; font-size: 0.85rem; }
+        .legend span { padding: 0.2rem 0.7rem; border-radius: 6px; border-left: 4px solid; background: var(--surface-card); }
+        .legend .l-thm { border-color: var(--thm-border); }
+        .legend .l-trap { border-color: var(--trap-border); }
+        .legend .l-key { border-color: var(--accent-terracotta); }
+
+        .toolbar {
+            position: sticky; top: var(--header-height); z-index: 50;
+            background: var(--bg-body); padding: 0.7rem 0; margin-bottom: 1rem;
+            display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center;
+            border-bottom: 1px solid var(--border-soft);
+        }
+        .toolbar a {
+            font-size: 0.8rem; font-weight: 600; text-decoration: none; color: var(--text-heading);
+            background: var(--surface-alt); border: 1px solid var(--border-medium);
+            padding: 0.25rem 0.7rem; border-radius: 999px;
+        }
+        .toolbar a:hover { background: var(--accent-peach); color: #fff; }
+        .toolbar input {
+            margin-left: auto; min-width: 200px; flex: 0 1 260px;
+            padding: 0.4rem 0.8rem; border-radius: 8px; border: 1px solid var(--border-medium);
+            background: var(--surface-card); color: var(--text-body); font: inherit; font-size: 0.85rem;
+        }
+        #no-results { display: none; text-align: center; color: var(--text-muted); padding: 2rem; }
+
+        section.mod {
+            background: var(--surface-card); border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+            padding: 1.8rem 2rem; margin-bottom: 1.6rem;
+        }
+        .mod-head { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+        .mod-num { font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--primary-dark); text-transform: uppercase; }
+        .mod-lec { font-size: 0.8rem; color: var(--text-muted); }
+        section.mod h2 { font-family: var(--font-heading); color: var(--text-heading); font-size: 1.55rem; line-height: 1.3; margin-bottom: 1rem; }
+        section.mod h3 {
+            font-family: var(--font-heading); color: var(--text-heading); font-size: 1.12rem;
+            margin: 1.4rem 0 0.5rem; padding-bottom: 0.25rem; border-bottom: 1px dashed var(--border-medium);
+        }
+        section.mod ul { padding-left: 1.3rem; }
+        section.mod li { margin-bottom: 0.35rem; }
+        section.mod li ul { margin-top: 0.3rem; }
+        b.t { color: var(--text-heading); }
+        .opt { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em; padding: 0.05rem 0.45rem; border-radius: 5px; background: var(--surface-alt); border: 1px solid var(--border-medium); color: var(--text-muted); vertical-align: middle; line-height: 1.5; }
+
+        .box { border-radius: 10px; padding: 0.85rem 1.1rem; margin: 0.9rem 0; border-left: 4px solid; }
+        .box > .box-title { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.35rem; }
+        .box.thm { background: var(--thm-bg); border-color: var(--thm-border); }
+        .box.thm > .box-title { color: var(--thm-border); }
+        .box.trap { background: var(--trap-bg); border-color: var(--trap-border); }
+        .box.trap > .box-title { color: var(--trap-border); }
+        .box.key { background: var(--callout-bg); border-color: var(--accent-terracotta); }
+        .box.key > .box-title { color: var(--primary-dark); }
+
+        .table-wrap { overflow-x: auto; margin: 0.7rem 0; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.88rem; }
+        th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+        th { color: var(--text-heading); background: var(--surface-alt); font-weight: 600; }
+
+        body.traps-only section.mod > :not(.mod-head):not(h2):not(.box.trap) { display: none; }
+
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem; }
+        footer a { color: var(--primary-dark); }
+
+        @media (max-width: 700px) {
+            header.sticky-header { padding: 0 1rem; }
+            .brand-badge, .nav-btn .lbl { display: none; }
+            .hero { padding: 1.6rem 1.2rem; }
+            .hero h1 { font-size: 1.6rem; }
+            section.mod { padding: 1.4rem 1rem; }
+            section.mod h2 { font-size: 1.3rem; }
+            .toolbar { position: static; }
+            .toolbar input { margin-left: 0; flex: 1 1 100%; min-width: 0; }
+        }
+        @media print {
+            header.sticky-header, .toolbar { display: none; }
+            body { padding-top: 0; }
+            section.mod { box-shadow: none; break-inside: auto; }
+        }
+    </style>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <header class="sticky-header">
+        <a href="index.html" class="header-brand">
+            <span>📖 Theory</span>
+            <span class="brand-badge">NPTEL IIT KGP</span>
+        </a>
+        <div class="header-actions">
+            <button id="traps-btn" class="nav-btn" title="Show only the exam-trap boxes"><span>⚠️ <span class="lbl">Traps only</span></span></button>
+            <a href="eli5.html" class="nav-btn tab-dup" title="Simple explanations"><span>🧸 <span class="lbl">ELI5</span></span></a>
+            <a href="index.html" class="nav-btn tab-dup" title="Back to the full study guide"><span>📘 <span class="lbl">Full Guide</span></span></a>
+            <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Theory Essentials</h1>
+            <p>The theory you need for every module: definitions, theorems, assumptions, key distinctions, and the conceptual traps that MCQs like to test. Worked numericals are in the <a href="index.html">full guide</a>.</p>
+            <div class="legend">
+                <span class="l-thm">Theorem / key result</span>
+                <span class="l-key">Must-know distinction</span>
+                <span class="l-trap">Exam trap</span>
+            </div>
+            <p style="margin-top:0.9rem;font-size:0.9rem;">Everything here has been checked against the 60 lecture transcripts. Tags mark scope: <span class="opt">not examined</span> means the lecturer said no questions will come from it. <span class="opt">beyond lectures</span> means standard theory that the lectures don't teach. It's useful background but a lower exam priority. <span class="opt">named only, not taught</span> means the lecturer mentions it but skips the details. Untagged content is taught in the lectures.</p>
+        </div>
+
+        <div class="toolbar">
+            <a href="#m1">M1</a><a href="#m2">M2</a><a href="#m3">M3</a><a href="#m4">M4</a>
+            <a href="#m5">M5</a><a href="#m6">M6</a><a href="#m7">M7</a><a href="#m8">M8</a>
+            <a href="#m9">M9</a><a href="#m10">M10</a><a href="#m11">M11</a><a href="#m12">M12</a>
+            <input type="search" id="filter" placeholder="Filter modules (e.g. memoryless, KKT)…" aria-label="Filter modules">
+        </div>
+        <p id="no-results">No module mentions that term.</p>
+
+        <!-- ============ MODULE 1 ============ -->
+        <section class="mod" id="m1">
+            <div class="mod-head"><span class="mod-num">Module 1</span><span class="mod-lec">Lectures 01–02</span></div>
+            <h2>Foundations of Reliability &amp; Descriptive Statistics</h2>
+
+            <h3>Reliability and related terms</h3>
+            <ul>
+                <li><b class="t">Reliability (IEC):</b> the <em>capability</em> of a product, system or service to perform its expected job under specified conditions of use over an intended period of time.</li>
+                <li><b class="t">Probabilistic definition (used to quantify it):</b> the probability that a product performs its intended function without failure, under the stated conditions of use, over the stated period of time. In terms of the lifetime $T$: $R(t) = P(T \gt t)$.</li>
+                <li><b class="t">Failure:</b> an event or inoperable state in which an item does not perform as specified. A <b>critical failure</b> is one that can cause injury, major damage, or loss of the system's main function.</li>
+                <li><b class="t">Three pillars:</b> (1) the <b>expected job</b>, done within performance limits (this defines what counts as failure), (2) the <b>conditions of use</b>, (3) the <b>mission time</b>. Change any one of them and the reliability value changes.</li>
+                <li><b class="t">Quality vs. reliability:</b> quality is conformance to specification <em>at time zero</em>. Reliability is quality <em>over time</em>.</li>
+                <li><b class="t">Failure mode</b> is <em>how</em> an item fails (e.g. short circuit). <b class="t">Failure mechanism</b> is the physical <em>why</em> (e.g. fatigue, corrosion).</li>
+                <li><b class="t">Maintainability</b> (also called <b>serviceability</b>): the time or resources needed to fix a failure. Quantitatively, it's the probability that a failed item is restored within a given time, summarised by <b>MTTR</b>.</li>
+                <li><b class="t">Availability:</b> the probability that the item is operational and ready to use when needed. As taught in the course: $A = \dfrac{\text{actual working time}}{\text{scheduled working time}} \times 100\%$. The equivalent steady-state formula is $A = \dfrac{MTTF}{MTTF + MTTR}$ (MTBF is used for repairable items).</li>
+                <li><b class="t">Dependability</b> is the umbrella term covering reliability, availability, maintainability and safety.</li>
+            </ul>
+
+            <h3>The bathtub curve</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Phase</th><th>Hazard $h(t)$</th><th>Typical causes</th><th>Countermeasure</th><th>Model</th></tr></thead>
+                <tbody>
+                    <tr><td>Early life / infant mortality ("quality failures")</td><td>Decreasing (DFR)</td><td>Manufacturing and assembly defects, weak units</td><td>Burn-in, screening, quality control</td><td>Weibull $\beta \lt 1$ <span class="opt">not examined</span></td></tr>
+                    <tr><td>Useful life ("chance" failures)</td><td>Constant (CFR)</td><td>Random overstress (stress exceeds strength), chance events</td><td>Design margins, redundancy</td><td>Exponential / Weibull $\beta = 1$</td></tr>
+                    <tr><td>Wear-out</td><td>Increasing (IFR)</td><td>Fatigue, corrosion, wear, ageing</td><td>Preventive maintenance, planned replacement</td><td>Weibull $\beta \gt 1$, normal</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Descriptive statistics</h3>
+            <ul>
+                <li><b class="t">Population</b> (all items, described by <em>parameters</em> such as $\mu, \sigma$) vs. <b class="t">sample</b> (the items observed, described by <em>statistics</em> such as $\bar{x}, s$).</li>
+                <li><b class="t">Descriptive statistics</b> summarise data. <b class="t">Inferential statistics</b> draw conclusions about the population from a sample.</li>
+                <li><b class="t">Variable types:</b> qualitative (nominal, ordinal) and quantitative (discrete, continuous). The levels of measurement are nominal → ordinal → interval → ratio.</li>
+                <li><b class="t">Central tendency:</b> the mean uses every value but is pulled by outliers. The median is robust to outliers. The mode is the most frequent value and is the only one that works for nominal data.</li>
+                <li><b class="t">Dispersion:</b> range, variance $s^2 = \frac{1}{n-1}\sum (x_i - \bar{x})^2$, standard deviation, IQR $= Q_3 - Q_1$, and coefficient of variation $CV = s/\bar{x}$ (unit-free, so you can compare spreads across scales).</li>
+                <li><b class="t">Shape:</b> in right (positive) skew, mean &gt; median &gt; mode. In left skew the order reverses.</li>
+                <li><b class="t">Boxplot:</b> built from the five-number summary. In the lecture the whiskers simply run to the minimum and maximum. The standard (Tukey) convention, used by most software, also flags outliers beyond $Q_1 - 1.5\,IQR$ or $Q_3 + 1.5\,IQR$.</li>
+            </ul>
+
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>Reliability is a <b>probability</b> tied to a time period. "Reliable" with no time and no conditions attached is meaningless.</li>
+                <li>Failures right after delivery are <b>early-life (DFR)</b> failures, not "random" ones, even if they look random.</li>
+                <li>With outliers or skewed lifetime data, report the <b>median and IQR</b>, not the mean and SD.</li>
+                <li>The mean time to failure is not the "typical" life of a unit. Under the exponential model only about 37% of units survive past the MTTF.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 2 ============ -->
+        <section class="mod" id="m2">
+            <div class="mod-head"><span class="mod-num">Module 2</span><span class="mod-lec">Lectures 03–06</span></div>
+            <h2>Probability Theory &amp; System Reliability</h2>
+
+            <h3>Sets and sample spaces</h3>
+            <ul>
+                <li><b class="t">Random experiment:</b> an experiment whose outcome is uncertain but whose possible outcomes are known in advance. The <b class="t">sample space</b> $S$ is the set of all outcomes. An <b class="t">event</b> is a subset of $S$.</li>
+                <li><b class="t">Mutually exclusive</b> events: $A \cap B = \emptyset$. <b class="t">Exhaustive</b> events: their union is $S$. A <b class="t">partition</b> is both.</li>
+                <li><b class="t">De Morgan's laws:</b> $(A \cup B)^c = A^c \cap B^c$ and $(A \cap B)^c = A^c \cup B^c$.</li>
+                <li><b class="t">Approaches to probability:</b> classical (equally likely outcomes), relative frequency (long-run proportion), subjective, and axiomatic (Kolmogorov).</li>
+            </ul>
+
+            <h3>Counting rules</h3>
+            <ul>
+                <li><b class="t">Multiplication principle:</b> if one step can be done in $n_1$ ways and the next in $n_2$ ways, both together can be done in $n_1 \times n_2$ ways.</li>
+                <li><b class="t">Permutations</b> (order matters): ${}^nP_r = \dfrac{n!}{(n-r)!}$. Arrangements of $n$ objects with $n_1, \dots, n_k$ alike: $\dfrac{n!}{n_1!\,n_2!\cdots n_k!}$.</li>
+                <li><b class="t">Combinations</b> (order doesn't matter): ${}^nC_r = \binom{n}{r} = \dfrac{n!}{r!\,(n-r)!}$.</li>
+                <li>Classical probability = favourable outcomes / total outcomes, both counted with these rules.</li>
+            </ul>
+
+            <h3>Axioms and rules</h3>
+            <div class="box thm"><div class="box-title">Kolmogorov's axioms</div>
+                (1) $P(A) \ge 0$ &nbsp; (2) $P(S) = 1$ &nbsp; (3) for mutually exclusive $A_1, A_2, \dots$: $P(\bigcup A_i) = \sum P(A_i)$.<br>
+                Consequences: $P(\emptyset) = 0$, $P(A^c) = 1 - P(A)$, $A \subseteq B \Rightarrow P(A) \le P(B)$, and $P(A) \le 1$.
+            </div>
+            <ul>
+                <li><b class="t">Addition rule:</b> $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.</li>
+                <li><b class="t">Conditional probability:</b> $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$ with $P(B) \gt 0$. It shrinks the sample space to $B$.</li>
+                <li><b class="t">Multiplication rule:</b> $P(A \cap B) = P(B)\,P(A \mid B) = P(A)\,P(B \mid A)$.</li>
+                <li><b class="t">Independence:</b> $P(A \cap B) = P(A)P(B)$, which is equivalent to $P(A \mid B) = P(A)$. If $A, B$ are independent, so are $A^c$ and $B$, $A$ and $B^c$, and $A^c$ and $B^c$.</li>
+                <li><b class="t">Mutual vs. pairwise independence:</b> for 3+ events, mutual independence needs <em>every</em> sub-collection to factor. Pairwise independence alone is not enough.</li>
+            </ul>
+
+            <h3>Total probability and Bayes</h3>
+            <div class="box thm"><div class="box-title">Law of total probability &amp; Bayes' theorem</div>
+                If $B_1, \dots, B_k$ partition $S$: $\;P(A) = \sum_i P(A \mid B_i)\,P(B_i)$.<br>
+                $P(B_j \mid A) = \dfrac{P(A \mid B_j)\,P(B_j)}{\sum_i P(A \mid B_i)\,P(B_i)}$, so posterior ∝ likelihood × prior.
+            </div>
+            <ul>
+                <li><b class="t">Prior</b> $P(B_j)$ is your belief before the evidence. <b class="t">Likelihood</b> $P(A \mid B_j)$ is how probable the evidence is under each cause. <b class="t">Posterior</b> $P(B_j \mid A)$ is the updated belief. Bayes reasons from <em>effect back to cause</em>, which is why the course calls it <b>reverse probability</b>.</li>
+            </ul>
+
+            <h3>System reliability (reliability block diagrams)</h3>
+            <ul>
+                <li><b class="t">Standard assumption:</b> components fail <b>independently</b>. Every product formula below depends on it.</li>
+                <li><b class="t">Series:</b> the system works only if all $n$ components work. $R_s = \prod R_i$, so $R_s \le \min_i R_i$. Adding components can only lower it.</li>
+                <li><b class="t">Parallel (active redundancy):</b> the system works if at least one component works. $R_p = 1 - \prod (1 - R_i)$, so $R_p \ge \max_i R_i$. Each extra unit adds less than the one before (diminishing returns).</li>
+                <li><b class="t">k-out-of-n</b> (identical components): $R = \sum_{i=k}^{n} \binom{n}{i} R^i (1-R)^{n-i}$. Series is $n$-out-of-$n$ and parallel is 1-out-of-$n$.</li>
+                <li><b class="t">Series-parallel:</b> reduce the diagram block by block, replacing each pure series or parallel block with its equivalent reliability.</li>
+            </ul>
+
+            <div class="box key"><div class="box-title">Must-know distinction</div>
+                <b>Mutually exclusive</b> means the events cannot happen together ($P(A \cap B) = 0$). <b>Independent</b> means one happening tells you nothing about the other ($P(A \cap B) = P(A)P(B)$). If $P(A), P(B) \gt 0$, mutually exclusive events are always <b>dependent</b>.
+            </div>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>$P(A \mid B) \ne P(B \mid A)$. Swapping them is the classic Bayes mistake.</li>
+                <li>Redundancy only helps if failures are independent. A <b>common-cause failure</b> (e.g. one shared power supply) breaks the parallel formula.</li>
+                <li>A series system is <b>no more</b> reliable than its least reliable component, and strictly less whenever any other component has $R \lt 1$.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 3 ============ -->
+        <section class="mod" id="m3">
+            <div class="mod-head"><span class="mod-num">Module 3</span><span class="mod-lec">Lectures 07–11</span></div>
+            <h2>Discrete Random Variables &amp; Distributions</h2>
+
+            <h3>Random variables</h3>
+            <ul>
+                <li><b class="t">Random variable:</b> a function that assigns a real number to each outcome in $S$. It's <b>discrete</b> if it takes countably many values.</li>
+                <li><b class="t">PMF:</b> $p(x) = P(X = x)$, with $p(x) \ge 0$ and $\sum p(x) = 1$.</li>
+                <li><b class="t">CDF:</b> $F(x) = P(X \le x)$. It's non-decreasing and right-continuous, with $F(-\infty) = 0$ and $F(\infty) = 1$. For a discrete variable it's a step function.</li>
+                <li><b class="t">Expectation:</b> $E[X] = \sum x\,p(x)$, the long-run average. It's linear: $E[aX + b] = aE[X] + b$, and $E[X + Y] = E[X] + E[Y]$ always holds.</li>
+                <li><b class="t">Chebyshev's theorem:</b> for <b>any</b> distribution and any $k \gt 1$, $P(\mu - k\sigma \lt X \lt \mu + k\sigma) \ge 1 - \dfrac{1}{k^2}$. It's a conservative lower bound (e.g. at least 75% of values lie within $2\sigma$).</li>
+                <li><b class="t">Variance:</b> $Var(X) = E[(X-\mu)^2] = E[X^2] - (E[X])^2$, with $Var(aX + b) = a^2 Var(X)$. Adding a constant doesn't change spread. For <em>independent</em> $X, Y$: $Var(X \pm Y) = Var(X) + Var(Y)$.</li>
+            </ul>
+
+            <h3>Standard discrete distributions</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Distribution</th><th>When it applies (conditions)</th><th>PMF ($q = 1-p$)</th><th>Mean</th><th>Variance</th></tr></thead>
+                <tbody>
+                    <tr><td>Discrete uniform</td><td>$k$ equally likely values $1, \dots, k$</td><td>$\frac{1}{k}$</td><td>$\frac{k+1}{2}$</td><td>$\frac{k^2-1}{12}$</td></tr>
+                    <tr><td>Bernoulli$(p)$</td><td>One trial with two outcomes</td><td>$p^x q^{1-x}$, $x \in \{0,1\}$</td><td>$p$</td><td>$pq$</td></tr>
+                    <tr><td>Binomial$(n,p)$</td><td>Fixed $n$, independent trials, two outcomes, constant $p$ (sampling <em>with</em> replacement)</td><td>$\binom{n}{x}p^x q^{n-x}$</td><td>$np$</td><td>$npq$</td></tr>
+                    <tr><td>Multinomial</td><td>Like the binomial but with $k$ outcomes per trial</td><td>$\frac{n!}{x_1!\cdots x_k!}p_1^{x_1}\cdots p_k^{x_k}$</td><td>$np_i$</td><td>$np_i(1-p_i)$</td></tr>
+                    <tr><td>Poisson</td><td>Count of rare events in an interval of length $t$ at rate $\lambda$. Events independent, constant rate, no two at the same instant</td><td>$\frac{e^{-\lambda t}(\lambda t)^x}{x!}$</td><td>$\lambda t$</td><td>$\lambda t$</td></tr>
+                    <tr><td>Geometric$(p)$</td><td>Number of trials until the <b>first</b> success</td><td>$p\,q^{x-1}$, $x = 1, 2, \dots$</td><td>$1/p$</td><td>$q/p^2$</td></tr>
+                    <tr><td>Negative binomial$(k,p)$</td><td>Number of trials until the $k$-th success</td><td>$\binom{x-1}{k-1}p^k q^{x-k}$</td><td>$k/p$</td><td>$kq/p^2$</td></tr>
+                    <tr><td>Hypergeometric$(N,K,n)$</td><td>Draw $n$ <b>without replacement</b> from $N$ items, $K$ of which are "successes"</td><td>$\frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}$</td><td>$n\frac{K}{N}$</td><td>$n\frac{K}{N}\left(1-\frac{K}{N}\right)\frac{N-n}{N-1}$</td></tr>
+                </tbody>
+            </table></div>
+
+            <div class="box thm"><div class="box-title">Key results</div><ul>
+                <li><b>Poisson approximation to the binomial:</b> as $n \to \infty$ and $p \to 0$ with $np = \lambda$ fixed, $B(n,p) \to \text{Poisson}(\lambda)$. <b>Course rule of thumb:</b> use it when $n \gt 10$ <b>and</b> $p \lt 0.1$ (both must hold).</li>
+                <li><b>Binomial approximation to the hypergeometric:</b> works when $N$ is very large compared with $n$ (a common rule of thumb is $n/N \le 0.05$), because removing items then barely changes $p$.</li>
+                <li><b>Memoryless property:</b> $P(X \gt m + n \mid X \gt m) = P(X \gt n)$. The geometric is the <b>only</b> discrete distribution with this property.</li>
+                <li>The factor $\frac{N-n}{N-1}$ is the finite-population correction. It makes the hypergeometric variance <b>smaller</b> than the binomial one.</li>
+            </ul></div>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>Poisson is the one whose <b>mean equals its variance</b>. If the data's variance is much larger than its mean (overdispersion), Poisson is a poor fit.</li>
+                <li>Check whether the geometric is defined as "trials until first success" (mean $1/p$) or "failures before first success" (mean $(1-p)/p$).</li>
+                <li>Sampling without replacement from a small lot means hypergeometric, not binomial.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 4 ============ -->
+        <section class="mod" id="m4">
+            <div class="mod-head"><span class="mod-num">Module 4</span><span class="mod-lec">Lectures 12–15</span></div>
+            <h2>Continuous Distributions &amp; Hazard Modelling</h2>
+
+            <h3>Continuous random variables</h3>
+            <ul>
+                <li><b class="t">PDF</b> $f(x)$: $f(x) \ge 0$, $\int f = 1$, and $P(a \lt X \lt b) = \int_a^b f(x)\,dx$. $f(x)$ itself is a <em>density</em>, not a probability, and can exceed 1.</li>
+                <li>For a continuous variable, $P(X = x) = 0$, so $\lt$ and $\le$ give the same probability.</li>
+                <li>$F'(x) = f(x)$.</li>
+            </ul>
+
+            <h3>The reliability functions and how they connect</h3>
+            <div class="box thm"><div class="box-title">Core relationships (lifetime $T \ge 0$)</div>
+                $R(t) = 1 - F(t) = P(T \gt t)$, &nbsp; $f(t) = -R'(t)$, &nbsp; $h(t) = \dfrac{f(t)}{R(t)} = -\dfrac{d}{dt}\ln R(t)$<br>
+                $R(t) = \exp\!\left(-\int_0^t h(u)\,du\right) = e^{-H(t)}$, &nbsp; $MTTF = E[T] = \int_0^\infty R(t)\,dt$
+            </div>
+            <ul>
+                <li><b class="t">$R(t)$</b> starts at $R(0) = 1$, never increases, and goes to 0 as $t \to \infty$.</li>
+                <li><b class="t">Hazard $h(t)$:</b> the instantaneous failure rate <em>given survival to t</em>. $h(t)\,\Delta t \approx P(t \lt T \le t + \Delta t \mid T \gt t)$. Its shape (DFR / CFR / IFR) is what the bathtub curve plots.</li>
+                <li>Knowing any one of $f, F, R, h$ determines all the others.</li>
+                <li><b class="t">Median life</b> $t_{0.5}$ solves $R(t) = 0.5$. For right-skewed lifetimes it differs from the MTTF.</li>
+            </ul>
+
+            <h3>Continuous distributions</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Distribution</th><th>Key formulas</th><th>Hazard shape</th><th>Use in reliability</th></tr></thead>
+                <tbody>
+                    <tr><td>Uniform$(a,b)$</td><td>mean $\frac{a+b}{2}$, variance $\frac{(b-a)^2}{12}$</td><td>Increasing</td><td>Equally likely values, tolerances</td></tr>
+                    <tr><td>Exponential</td><td>$f(t) = \frac{1}{\beta}e^{-t/\beta} = \lambda e^{-\lambda t}$, with $\beta = MTTF = 1/\lambda$. $R = e^{-\lambda t}$. Mean = SD = $\beta$</td><td><b>Constant</b> $= \lambda$</td><td>Useful-life (random) failures, electronics</td></tr>
+                    <tr><td>Normal$(\mu,\sigma^2)$</td><td>$Z = (X-\mu)/\sigma$, symmetric, 68–95–99.7 rule</td><td>Increasing</td><td>Wear-out, dimensions and tolerances</td></tr>
+                    <tr><td>Gamma$(\alpha, \beta)$</td><td>$f(x) = \frac{x^{\alpha-1}e^{-x/\beta}}{\beta^\alpha\,\Gamma(\alpha)}$, mean $\alpha\beta$, variance $\alpha\beta^2$. $\Gamma(n) = (n-1)!$, $\Gamma(\tfrac12) = \sqrt{\pi}$</td><td>Depends on $\alpha$</td><td>Time until the $\alpha$-th failure. Exponential is the special case $\alpha = 1$</td></tr>
+                    <tr><td>Lognormal</td><td>$\ln T \sim N(\mu, \sigma^2)$, right-skewed. $P(T \le t) = \Phi\!\left(\frac{\ln t - \mu}{\sigma}\right)$. Mean $e^{\mu + \sigma^2/2}$, variance $e^{2\mu+\sigma^2}(e^{\sigma^2}-1)$</td><td>Rises then falls</td><td><b>Repair times</b> (the course's main use; for failure times the course uses normal or exponential). Fatigue and degradation in general practice</td></tr>
+                    <tr><td>Weibull$(\beta, \theta, \gamma)$ <span class="opt">not examined</span></td><td>$R = \exp\left[-\left(\frac{t-\gamma}{\theta}\right)^\beta\right]$, $h = \frac{\beta}{\theta}\left(\frac{t-\gamma}{\theta}\right)^{\beta-1}$</td><td>Depends on $\beta$</td><td>Covers the whole bathtub</td></tr>
+                </tbody>
+            </table></div>
+            <ul>
+                <li><b class="t">Exponential memoryless property:</b> $P(T \gt s + t \mid T \gt s) = P(T \gt t)$. A used unit is "as good as new". It's the <b>only</b> continuous memoryless distribution, and constant hazard is the same statement.</li>
+                <li><b class="t">Exponential: β or λ?</b> If the question gives a <b>mean life / MTTF</b>, that's $\beta$. If it gives a <b>failure rate</b> (e.g. 0.0025 per hour), that's $\lambda = 1/\beta$.</li>
+                <li><b class="t">Poisson ↔ exponential ↔ gamma:</b> for events occurring at rate $\lambda$, the <em>number</em> of events in time $t$ is Poisson, the time to the <em>first</em> event (or between events) is exponential, and the time to the <em>$k$-th</em> event is gamma.</li>
+                <li><b class="t">Normal approximation to the binomial:</b> when the binomial is roughly bell-shaped, use $\mu = np$, $\sigma^2 = npq$ with a <b>continuity correction</b> of ±0.5. For example, $P(X \le 30)$ becomes $P(Y \le 30.5)$ and $P(X \lt 30)$ becomes $P(Y \le 29.5)$.</li>
+                <li><b class="t">Weibull parameters</b> <span class="opt">not examined: Lec 13 and 15 say no exam questions come from Weibull</span>: $\beta$ is the shape ($\lt 1$ DFR, $= 1$ exponential, $\gt 1$ IFR, $= 2$ Rayleigh, $\approx 3.5$ near-normal). $\theta$ is the scale or <em>characteristic life</em>: $R(\theta) = e^{-1}$, so 63.2% have failed by $\theta$ (with $\gamma = 0$). $\gamma$ is the location, i.e. a failure-free period.</li>
+                <li><b class="t">Linear combinations of independent normals are normal:</b> for $C = X_2 - X_1$, $\mu_C = \mu_2 - \mu_1$ and $\sigma_C^2 = \sigma_1^2 + \sigma_2^2$. This is the basis of the clearance problem: a ball in a tube (bearing), with $C$ = tube inner diameter − ball diameter, and interference when $C \lt 0$.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>$h(t)$ is a <b>rate</b>, not a probability, so it can be larger than 1.</li>
+                <li>For a <b>difference</b> of independent variables the variances still <b>add</b>. Never subtract them.</li>
+                <li>Under the exponential, $R(MTTF) = e^{-1} \approx 0.368$. Only about 37% of units survive past the mean life.</li>
+                <li>Exponential means a constant hazard rate, not a constant number of failures per period. The number still failing falls as fewer units are left alive.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 5 ============ -->
+        <section class="mod" id="m5">
+            <div class="mod-head"><span class="mod-num">Module 5</span><span class="mod-lec">Lectures 16–21</span></div>
+            <h2>Sampling Distributions &amp; the Central Limit Theorem</h2>
+
+            <h3>Sampling concepts</h3>
+            <ul>
+                <li><b class="t">Random sample:</b> $X_1, \dots, X_n$ independent and identically distributed (iid).</li>
+                <li><b class="t">Sampling distribution:</b> the probability distribution of a statistic (e.g. $\bar{X}$) over all possible samples of size $n$. Its standard deviation is the <b class="t">standard error</b>.</li>
+                <li>$E[\bar{X}] = \mu$ and $Var(\bar{X}) = \sigma^2 / n$, so $SE(\bar{X}) = \sigma / \sqrt{n}$. Precision improves as $\sqrt{n}$: to halve the SE, you need 4× the sample.</li>
+                <li><b class="t">Finite population correction</b> <span class="opt">beyond lectures</span>: when sampling without replacement and $n/N \gt 0.05$, multiply the SE by $\sqrt{\frac{N-n}{N-1}}$. The lectures assume an infinite population, or sampling with replacement.</li>
+                <li>If the population is normal, $\bar{X}$ is <b>exactly</b> normal for any $n$.</li>
+            </ul>
+            <div class="box thm"><div class="box-title">Central Limit Theorem</div>
+                If $X_1, \dots, X_n$ are iid with mean $\mu$ and <b>finite</b> variance $\sigma^2$, then as $n \to \infty$
+                $$\frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} N(0, 1),$$
+                <b>whatever the shape of the population</b>. The usual rule of thumb is $n \ge 30$ (more for very skewed populations). It also applies to sums: $\sum X_i \approx N(n\mu, n\sigma^2)$.
+            </div>
+
+            <h3>The three derived distributions</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th></th><th>$\chi^2_\nu$</th><th>$t_\nu$</th><th>$F_{\nu_1,\nu_2}$</th></tr></thead>
+                <tbody>
+                    <tr><td>Built from</td><td>$\sum_{i=1}^{\nu} Z_i^2$</td><td>$\dfrac{Z}{\sqrt{V/\nu}}$, $V \sim \chi^2_\nu$</td><td>$\dfrac{V_1/\nu_1}{V_2/\nu_2}$</td></tr>
+                    <tr><td>Range and shape</td><td>$[0,\infty)$, right-skewed</td><td>$(-\infty,\infty)$, symmetric about 0, heavier tails than $Z$</td><td>$[0,\infty)$, right-skewed</td></tr>
+                    <tr><td>Mean / variance</td><td>$\nu$ / $2\nu$</td><td>$0$ / $\frac{\nu}{\nu-2}$ ($\nu \gt 2$)</td><td>mean $\frac{\nu_2}{\nu_2-2}$</td></tr>
+                    <tr><td>Key sampling result</td><td>$\dfrac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$</td><td>$\dfrac{\bar{X}-\mu}{S/\sqrt{n}} \sim t_{n-1}$</td><td>$\dfrac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} \sim F_{n_1-1,\,n_2-1}$</td></tr>
+                    <tr><td>Limit as df grows</td><td>Becomes approximately normal</td><td>$t_\nu \to N(0,1)$</td><td></td></tr>
+                </tbody>
+            </table></div>
+            <ul>
+                <li>All three exact results assume a <b>normal population</b>. For normal samples, $\bar{X}$ and $S^2$ are independent.</li>
+                <li><b class="t">F reciprocal property:</b> $F_{1-\alpha}(\nu_1, \nu_2) = 1 / F_\alpha(\nu_2, \nu_1)$. Also $t_\nu^2 \sim F_{1,\nu}$.</li>
+                <li><b class="t">Degrees of freedom:</b> the number of independent pieces of information. $S^2$ has $n - 1$ because the deviations $x_i - \bar{x}$ must sum to zero, which costs one.</li>
+                <li><b class="t">Two samples:</b> $\bar{X}_1 - \bar{X}_2$ has mean $\mu_1 - \mu_2$ and variance $\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}$. A sample proportion $\hat{p}$ has mean $p$ and variance $\frac{p(1-p)}{n}$, and is roughly normal when $np \ge 5$ and $n(1-p) \ge 5$.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>The CLT is about the distribution of the <b>sample mean</b>. It does <b>not</b> make the raw data normal.</li>
+                <li>The CLT needs finite variance and independence. Large $n$ alone isn't enough.</li>
+                <li>Use $Z$ when $\sigma$ is known. Use $t$ when $\sigma$ is estimated by $s$ and the population is normal, especially for small $n$.</li>
+                <li>Unlike $Z$ and $t$, the $\chi^2$ and $F$ distributions are <b>not symmetric</b>, so you need two different table values for a two-sided interval.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 6 ============ -->
+        <section class="mod" id="m6">
+            <div class="mod-head"><span class="mod-num">Module 6</span><span class="mod-lec">Confidence intervals: Lectures 26–28</span></div>
+            <h2>Point Estimation &amp; Confidence Intervals</h2>
+
+            <h3>Estimators</h3>
+            <ul>
+                <li>An <b class="t">estimator</b> $\hat{\theta}$ is a rule, so it's a random variable. An <b class="t">estimate</b> is the number it gives for one particular sample.</li>
+                <li><b class="t">Point estimation</b> gives a single value. <b class="t">Interval estimation</b> gives a range together with a confidence level.</li>
+            </ul>
+
+            <h3>Properties of a good estimator <span class="opt">beyond lectures</span></h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Property</th><th>Definition</th><th>Example / note</th></tr></thead>
+                <tbody>
+                    <tr><td><b>Unbiased</b></td><td>$E[\hat\theta] = \theta$. Bias $= E[\hat\theta] - \theta$</td><td>$\bar{X}$ for $\mu$, and $S^2$ (divisor $n-1$) for $\sigma^2$. But $S$ is <em>biased</em> for $\sigma$.</td></tr>
+                    <tr><td><b>Consistent</b></td><td>$\hat\theta \to \theta$ in probability as $n \to \infty$</td><td>Sufficient condition: bias → 0 and variance → 0.</td></tr>
+                    <tr><td><b>Efficient</b></td><td>The smallest variance among unbiased estimators</td><td>Relative efficiency $= Var(\hat\theta_2)/Var(\hat\theta_1)$.</td></tr>
+                    <tr><td><b>Sufficient</b></td><td>Captures all the information the sample holds about $\theta$</td><td>Checked with the factorisation theorem.</td></tr>
+                </tbody>
+            </table></div>
+            <div class="box thm"><div class="box-title">MSE, CRLB, MVUE <span class="opt">beyond lectures</span></div>
+                $MSE(\hat\theta) = Var(\hat\theta) + \text{Bias}^2$. A slightly biased estimator can have a lower MSE than an unbiased one.<br>
+                <b>Cramér–Rao lower bound:</b> any unbiased estimator has $Var(\hat\theta) \ge \dfrac{1}{n\,I(\theta)}$, where $I(\theta)$ is the Fisher information. An unbiased estimator that reaches the bound is efficient and is the <b>MVUE</b>.
+            </div>
+
+            <h3>Methods of estimation <span class="opt">beyond lectures</span></h3>
+            <ul>
+                <li><b class="t">Method of moments:</b> set the sample moments equal to the population moments and solve. Simple, but not always efficient.</li>
+                <li><b class="t">Maximum likelihood (MLE):</b> $L(\theta) = \prod f(x_i; \theta)$. Choose the $\theta$ that maximises $\ln L$, usually by solving $\frac{d \ln L}{d\theta} = 0$. For the exponential: $\hat\lambda = n / \sum t_i = 1/\bar{t}$.</li>
+                <li><b class="t">Properties of MLEs:</b> consistent, asymptotically normal, asymptotically efficient (they reach the CRLB as $n \to \infty$), and <b>invariant</b>: the MLE of $g(\theta)$ is $g(\hat\theta)$. They can be biased in small samples, e.g. the MLE of $\sigma^2$ divides by $n$.</li>
+            </ul>
+
+            <h3>Confidence intervals</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Parameter</th><th>Condition</th><th>Interval</th></tr></thead>
+                <tbody>
+                    <tr><td>$\mu$</td><td>$\sigma$ known, or $n \gt 30$</td><td>$\bar{x} \pm z_{\alpha/2}\,\sigma/\sqrt{n}$ (use $s$ for $\sigma$ when $n$ is large and $\sigma$ is unknown)</td></tr>
+                    <tr><td>$\mu$</td><td>$\sigma$ unknown, normal population</td><td>$\bar{x} \pm t_{\alpha/2,\,n-1}\,s/\sqrt{n}$</td></tr>
+                    <tr><td>$\mu_1 - \mu_2$</td><td>Independent samples, equal unknown variances</td><td>Pooled $s_p^2 = \frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1+n_2-2}$, with $t$ on $n_1+n_2-2$ df</td></tr>
+                    <tr><td>$\mu_D$</td><td>Paired (before/after) data</td><td>One-sample $t$ on the differences, $n-1$ df</td></tr>
+                    <tr><td>$p$</td><td>Large $n$</td><td>$\hat{p} \pm z_{\alpha/2}\sqrt{\hat{p}(1-\hat{p})/n}$</td></tr>
+                    <tr><td>$\sigma^2$</td><td>Normal population</td><td>$\left[\dfrac{(n-1)s^2}{\chi^2_{\alpha/2}},\ \dfrac{(n-1)s^2}{\chi^2_{1-\alpha/2}}\right]$ (not symmetric)</td></tr>
+                </tbody>
+            </table></div>
+            <ul>
+                <li><b class="t">Table convention:</b> $\chi^2_a$, $t_a$, $z_a$ denote the value with <b>upper-tail</b> area $a$. So $\chi^2_{\alpha/2}$ is the larger $\chi^2$ value, and it gives the <em>lower</em> limit of the variance CI.</li>
+                <li><b class="t">Width</b> grows with the confidence level and with $\sigma$, and shrinks as $1/\sqrt{n}$.</li>
+                <li><b class="t">Sample size:</b> $n = (z_{\alpha/2}\,\sigma / E)^2$, always <b>rounded up</b>. For a proportion, $n = z^2 p(1-p)/E^2$. If $p$ is unknown, use $p = 0.5$, which gives the largest (safest) $n$.</li>
+            </ul>
+            <div class="box key"><div class="box-title">What "95% confidence" means</div>
+                If you repeated the sampling many times, about 95% of the intervals built this way would contain the true $\mu$. The 95% describes the <b>method</b>. Once an interval is computed, $\mu$ is either in it or not. $\mu$ is a fixed number, not a random one.
+            </div>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>"There is a 95% probability that μ lies in (40, 44)" is the wrong interpretation in frequentist statistics.</li>
+                <li>Unbiased doesn't mean consistent, and consistent doesn't mean unbiased. They are separate properties.</li>
+                <li>The variance CI relies on normality and is sensitive when that assumption fails.</li>
+                <li>Pairing on the same units removes unit-to-unit variation. Analysing paired data as two independent samples throws that advantage away.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 7 ============ -->
+        <section class="mod" id="m7">
+            <div class="mod-head"><span class="mod-num">Module 7</span><span class="mod-lec">Lectures 22–25 (testing, power) and 29–31 (two populations)</span></div>
+            <h2>Hypothesis Testing &amp; Goodness-of-Fit</h2>
+
+            <h3>Framework</h3>
+            <ul>
+                <li><b class="t">$H_0$</b> (null) is the status-quo claim and always contains the equality. <b class="t">$H_1$</b> (alternative) is the claim you're looking for evidence of. It can be one-tailed ($\lt$ or $\gt$) or two-tailed ($\ne$).</li>
+                <li><b class="t">Test statistic:</b> measures how far the data are from $H_0$, in standard-error units.</li>
+                <li><b class="t">Significance level α:</b> the false-rejection rate you'll tolerate. It sets the critical (rejection) region.</li>
+                <li><b class="t">p-value:</b> the probability, <em>assuming $H_0$ is true</em>, of getting a test statistic at least as extreme as the one observed. Reject $H_0$ if $p \le \alpha$.</li>
+            </ul>
+            <div class="table-wrap"><table>
+                <thead><tr><th></th><th>$H_0$ true</th><th>$H_0$ false</th></tr></thead>
+                <tbody>
+                    <tr><td><b>Reject $H_0$</b></td><td>Type I error (probability α)</td><td>Correct (power $= 1-\beta$)</td></tr>
+                    <tr><td><b>Fail to reject</b></td><td>Correct ($1-\alpha$)</td><td>Type II error (probability β)</td></tr>
+                </tbody>
+            </table></div>
+            <div class="box thm"><div class="box-title">What drives power</div>
+                Power goes <b>up</b> with a larger sample $n$, a larger true effect, a larger α, and a smaller $\sigma$. With $n$ fixed, lowering α raises β. With α fixed, increasing $n$ is the main practical way to lower β.
+            </div>
+            <ul>
+                <li><b class="t">Why Type I error is controlled first:</b> α is set directly by the tester. β depends on the unknown true value of the parameter, so it can only be computed for an assumed alternative.</li>
+                <li><b class="t">OC curve and power curve (Lec 24):</b> the OC curve plots β against the true μ. β is largest when the true μ is close to $\mu_0$ and falls as the difference grows. The power curve ($1-\beta$) approaches α as the true μ approaches $\mu_0$.</li>
+                <li><b class="t">Tests on variance</b> are usually <b>one-tailed</b> ($H_1: \sigma^2 \gt \sigma_0^2$), because variability measures consistency and only too much of it is a problem.</li>
+                <li><b class="t">Non-parametric (distribution-free) tests</b> are the fallback when the normality assumption doesn't hold (introduced in Lec 31).</li>
+                <li><b class="t">Duality with CIs:</b> a two-sided test at level α rejects $H_0: \mu = \mu_0$ exactly when $\mu_0$ lies outside the $(1-\alpha)$ CI.</li>
+            </ul>
+
+            <h3>Which test to use</h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Question</th><th>Test</th><th>Statistic / df</th></tr></thead>
+                <tbody>
+                    <tr><td>One mean, $\sigma$ known or $n \gt 30$</td><td>$Z$</td><td>$\frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}$ ($s$ replaces $\sigma$ for large $n$)</td></tr>
+                    <tr><td>One mean, $\sigma$ unknown, normal</td><td>$t$</td><td>$\frac{\bar{x}-\mu_0}{s/\sqrt{n}}$, $n-1$ df</td></tr>
+                    <tr><td>Two independent means, $\sigma_1, \sigma_2$ known (or both $n \gt 30$)</td><td>$Z$</td><td>$\frac{(\bar{x}_1-\bar{x}_2)-\delta_0}{\sqrt{\sigma_1^2/n_1+\sigma_2^2/n_2}}$</td></tr>
+                    <tr><td>Two independent means, unknown but <b>equal</b> variances</td><td>Pooled $t$</td><td>$n_1 + n_2 - 2$ df</td></tr>
+                    <tr><td>Two independent means, unknown and unequal variances, small $n$</td><td>Other techniques</td><td>Not covered in detail in the lectures</td></tr>
+                    <tr><td>Paired / before-after</td><td>Paired $t$</td><td>On the differences, $n-1$ df</td></tr>
+                    <tr><td>One or two proportions</td><td>$Z$</td><td>Uses $p_0$ (one-sample) or the pooled $\hat{p}$ (two-sample) in the SE</td></tr>
+                    <tr><td>One variance</td><td>$\chi^2$</td><td>$\frac{(n-1)s^2}{\sigma_0^2}$, $n-1$ df</td></tr>
+                    <tr><td>Two variances</td><td>$F$</td><td>$s_1^2/s_2^2$, $(n_1-1, n_2-1)$ df. Put the <b>larger</b> variance on top to use the standard table. Also used to check whether pooling is justified</td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Chi-square tests for counts <span class="opt">beyond lectures</span></h3>
+            <ul>
+                <li><b class="t">Goodness-of-fit:</b> asks whether the data follow a stated distribution. $\chi^2 = \sum \frac{(O-E)^2}{E}$ with df $= k - 1 - m$ ($k$ categories, $m$ parameters estimated from the data).</li>
+                <li><b class="t">Independence (r × c table):</b> asks whether two categorical variables are related. $E_{ij} = \frac{\text{row}_i \times \text{col}_j}{\text{grand total}}$, df $= (r-1)(c-1)$. <em>The course teaches this one in Lec 39 as the chi-square test of association (see <a href="#m9">Module 9</a>).</em></li>
+                <li>Both tests are <b>right-tailed</b>, since large values mean a poor fit. Each expected count should be at least 5; merge categories if not.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>The p-value is <b>not</b> $P(H_0 \text{ is true})$, and it is not the probability the result happened "by chance".</li>
+                <li>"Fail to reject $H_0$" ≠ "accept $H_0$". Absence of evidence isn't evidence of absence.</li>
+                <li>Statistically significant ≠ practically important. With a huge $n$, tiny effects become significant.</li>
+                <li>Subtract 1 df for <b>each parameter estimated</b> in a goodness-of-fit test. <span class="opt">beyond lectures</span></li>
+                <li>A Type I error happens when you reject. A Type II error happens when you fail to reject. Each one can only occur after its own decision.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 8 ============ -->
+        <section class="mod" id="m8">
+            <div class="mod-head"><span class="mod-num">Module 8</span><span class="mod-lec">Lectures 32–37</span></div>
+            <h2>Analysis of Variance (ANOVA)</h2>
+
+            <h3>Why ANOVA</h3>
+            <ul>
+                <li>Comparing $k$ means with pairwise $t$-tests needs $m = \binom{k}{2}$ tests. The <b class="t">family-wise error rate</b> $\alpha_{FW} = 1 - (1-\alpha)^m$ grows quickly. ANOVA tests every mean together at a single α.</li>
+                <li>Despite its name, ANOVA tests <b>means</b>, by comparing two estimates of the variance.</li>
+            </ul>
+
+            <h3>Assumptions</h3>
+            <ul>
+                <li>(1) <b>Independent</b> observations, (2) <b>normal</b> errors within each group, (3) <b>equal variances</b> across groups (homoscedasticity). With <b>equal</b> group sizes (balanced design), the $F$-test is relatively insensitive to small departures from equal variances. With <b>unbalanced</b> data, the Type I error rate gets inflated and power drops.</li>
+            </ul>
+
+            <h3>One-way model</h3>
+            <ul>
+                <li>$y_{ij} = \mu + \tau_i + \varepsilon_{ij}$, with $\sum \tau_i = 0$ and $\varepsilon_{ij} \sim N(0, \sigma^2)$. Course notation: $a$ treatments, $n$ replicates each, $N = an$ (some books write $k$ for $a$).</li>
+                <li>$H_0: \mu_1 = \cdots = \mu_a$. $H_1$: <b>at least one</b> mean differs.</li>
+            </ul>
+            <div class="box thm"><div class="box-title">Partitioning variation</div>
+                $SS_T = SS_{Treatments} + SS_E$ (other books: $SST = SSB + SSW$), with df: $\;N - 1 = (a-1) + (N-a)$<br>
+                $MS_{Treatments} = SS_{Treatments}/(a-1)$, $MS_E = SS_E/(N-a)$, $\;F_0 = MS_{Treatments}/MS_E \sim F_{a-1,\,N-a}$ under $H_0$ (right-tailed).<br>
+                $MS_E$ is always an unbiased estimate of $\sigma^2$. $E(MS_{Treatments}) = \sigma^2$ only when $H_0$ is true; otherwise it's larger. That's why a large $F_0$ is evidence against $H_0$.<br>
+                <b>Computational formulas</b> (they work for unbalanced data too), with $T_i$ = total of treatment $i$ and $T$ = grand total: $SS_T = \sum\sum y_{ij}^2 - \frac{T^2}{N}$, &nbsp; $SS_{Treatments} = \sum \frac{T_i^2}{n_i} - \frac{T^2}{N}$.
+            </div>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th></tr></thead>
+                <tbody>
+                    <tr><td>Between (treatments)</td><td>$SS_{Treatments}$</td><td>$a-1$</td><td>$MS_{Treatments}$</td><td>$MS_{Treatments}/MS_E$</td></tr>
+                    <tr><td>Within (error)</td><td>$SS_E$</td><td>$N-a$</td><td>$MS_E$</td><td></td></tr>
+                    <tr><td>Total</td><td>SST</td><td>$N-1$</td><td></td><td></td></tr>
+                </tbody>
+            </table></div>
+
+            <h3>Post-hoc comparisons <span class="opt">named only, not taught</span></h3>
+            <ul>
+                <li>A significant $F$ only says that <em>some</em> difference exists. <b class="t">Post-hoc</b> tests find <em>which</em> pairs differ.</li>
+                <li>The lecturer names three approaches: <b class="t">Bonferroni</b>, <b class="t">Fisher's LSD</b> and <b class="t">Tukey's HSD</b>. She says finding which mean differs is beyond the scope of the lectures.</li>
+                <li><b class="t">Bonferroni:</b> run each of the $m$ pairwise tests at level $\alpha/m$.</li>
+                <li><b class="t">Tukey's HSD:</b> uses the studentised range $q$ and controls the family-wise error rate over all pairs. With equal $n$: $HSD = q_{\alpha,a,N-a}\sqrt{MS_E/n}$.</li>
+                <li><b class="t">Fisher's LSD:</b> pairwise $t$-tests using $MS_E$. Only valid after a significant $F$. Less conservative, so it has a higher family-wise error rate.</li>
+            </ul>
+
+            <h3>Two-way ANOVA <span class="opt">named only, not taught</span></h3>
+            <ul>
+                <li>Two factors $A$ and $B$, giving main effects plus the <b class="t">interaction</b> $AB$. An interaction means the effect of $A$ depends on the level of $B$ (on a plot, the lines are not parallel).</li>
+                <li>You need <b>replication</b> ($n \gt 1$ per cell) to estimate the interaction. The df are $a-1$, $b-1$, $(a-1)(b-1)$, and $ab(n-1)$ for error.</li>
+                <li>If the interaction is significant, interpret the main effects with care.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>$H_1$ is "at least one mean differs", not "all means differ".</li>
+                <li>ANOVA's $F$-test is always right-tailed.</li>
+                <li>With exactly 2 groups, one-way ANOVA is the same as the pooled $t$-test ($F = t^2$).</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 9 ============ -->
+        <section class="mod" id="m9">
+            <div class="mod-head"><span class="mod-num">Module 9</span><span class="mod-lec">Lectures 38–43</span></div>
+            <h2>Correlation &amp; Linear Regression</h2>
+
+            <h3>Correlation</h3>
+            <ul>
+                <li><b class="t">Pearson's r</b> $= \dfrac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}$ measures the strength and direction of a <b>linear</b> relationship.</li>
+                <li><b class="t">Properties:</b> $-1 \le r \le 1$. It has no units and is symmetric in $x$ and $y$. It's unchanged by shifting or positively rescaling either variable (a negative scale flips the sign). It's sensitive to outliers.</li>
+                <li><b class="t">Testing $H_0: \rho = 0$:</b> $t = \dfrac{r\sqrt{n-2}}{\sqrt{1-r^2}}$ with $n-2$ df.</li>
+                <li><b class="t">Which method for which data (Lec 38):</b> <b>Pearson</b> for numeric (interval/ratio) data. It's parametric and assumes normal populations. <b>Spearman</b> for ordinal (ranked) data. It's non-parametric. <b>Chi-square</b> for nominal (categorical) data.</li>
+                <li><b class="t">Spearman's $\rho_s$:</b> Pearson's correlation applied to ranks (rank 1 = highest value). It measures <b>monotonic</b> association and resists outliers. Without ties, $\rho_s = 1 - \dfrac{6\sum d_i^2}{n(n^2-1)}$.</li>
+            </ul>
+
+            <h3>Chi-square test of association (nominal data, Lec 39)</h3>
+            <ul>
+                <li>$H_0$: the two categorical variables are independent (not associated).</li>
+                <li>Expected count $E_{ij} = \dfrac{\text{row}_i\ \text{total} \times \text{column}_j\ \text{total}}{N}$, and $\chi^2 = \sum \dfrac{(O - E)^2}{E}$ with df $= (m-1)(n-1)$ for an $m \times n$ table.</li>
+                <li>The test is right-tailed: a large $\chi^2$ means association. Cells with large $(O-E)^2/E$ show <em>which</em> categories drive it. Expected counts should be at least about 5.</li>
+            </ul>
+
+            <h3>Simple linear regression</h3>
+            <ul>
+                <li><b class="t">Model:</b> $Y = \beta_0 + \beta_1 x + \varepsilon$. The lecture writes $y = \alpha + \beta x + \varepsilon$ with estimates $a, b$. Errors: $E(\varepsilon) = 0$, constant $\sigma^2$. <b class="t">Assumptions (LINE):</b> <b>L</b>inearity, <b>I</b>ndependent errors, <b>N</b>ormal errors, <b>E</b>qual error variance. $x$ is treated as fixed.</li>
+                <li><b class="t">Least squares (OLS)</b> minimises $\sum e_i^2$ by setting the partial derivatives to zero, giving slope $b = S_{xy}/S_{xx}$ and intercept $a = \bar{y} - b\bar{x}$.</li>
+                <li><b class="t">Properties of the fitted line:</b> it passes through $(\bar{x}, \bar{y})$, the residuals sum to 0, and the residuals are uncorrelated with $x$.</li>
+            </ul>
+            <div class="box thm"><div class="box-title">Gauss–Markov theorem <span class="opt">beyond lectures</span></div>
+                If the errors have mean zero, constant variance and are uncorrelated, OLS is <b>BLUE</b>: the Best (minimum-variance) Linear Unbiased Estimator. Normality is <b>not</b> required for this. It's needed only for the $t$ and $F$ inference.
+            </div>
+            <ul>
+                <li><b class="t">Variation:</b> $SST = SSR + SSE$. The lecture defines $R^2 = 1 - \dfrac{SSE}{SST}$, which equals $SSR/SST$ for least squares with an intercept. It's the fraction of variation in $y$ that the model explains. In simple regression, $R^2 = r^2$. ($R^2 \lt 0$ is only possible for a fit that isn't least squares with an intercept, or when it's evaluated on new data.)</li>
+            </ul>
+            <h3>Inference for regression <span class="opt">beyond lectures</span></h3>
+            <ul>
+                <li><b class="t">Standard error of estimate:</b> $s_e = \sqrt{SSE/(n-2)}$. The $n-2$ is because 2 parameters were estimated.</li>
+                <li><b class="t">Significance of the slope:</b> $t = b_1/SE(b_1)$ with $n-2$ df, or the regression ANOVA $F = MSR/MSE$. In simple regression $F = t^2$.</li>
+                <li><b class="t">CI for the mean response vs. PI for a new observation:</b> the PI adds the error variance of a single unit (the extra "1 +" under the square root), so it's <b>always wider</b>. Both are narrowest at $x = \bar{x}$ and widen as you move away.</li>
+            </ul>
+
+            <h3>Multiple regression</h3>
+            <ul>
+                <li>$y = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k + \varepsilon$. Least squares gives $k+1$ <b>normal equations</b>, solved as a linear system. (In matrix form, $\hat{\boldsymbol\beta} = (X^TX)^{-1}X^T\mathbf{y}$.)</li>
+                <li><b class="t">Polynomial (non-linear) regression (Lec 42):</b> $y = \beta_0 + \beta_1 x + \beta_2 x^2 + \cdots + \beta_r x^r$. Substitute $x_1 = x, x_2 = x^2, \dots$ and solve it as a multiple linear regression. It needs $n \ge r + 1$ data points.</li>
+                <li>$R^2$ <b>never decreases</b> when you add predictors or polynomial terms, even useless ones. The lecture chooses the model with the higher $R^2$, which always favours the bigger model. <b class="t">Adjusted $R^2$</b> $= 1 - (1-R^2)\frac{n-1}{n-p-1}$ penalises extra terms <span class="opt">beyond lectures</span>.</li>
+                <li><b class="t">Multicollinearity</b> <span class="opt">beyond lectures</span>: highly correlated predictors make $X^TX$ nearly singular. That inflates the standard errors and makes coefficients unstable. It's measured with VIF.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>$r = 0$ means no <b>linear</b> relationship. A strong curved relationship can still have $r \approx 0$.</li>
+                <li>Correlation does not imply causation. A lurking variable may drive both.</li>
+                <li>A high $R^2$ doesn't prove the model is right. Check the residual plots.</li>
+                <li>Extrapolating beyond the range of $x$ in the data is unreliable.</li>
+                <li>Regressing $y$ on $x$ gives a different line from regressing $x$ on $y$, even though $r$ is the same.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 10 ============ -->
+        <section class="mod" id="m10">
+            <div class="mod-head"><span class="mod-num">Module 10</span><span class="mod-lec">Lecture 44</span></div>
+            <h2>Auto-Regression &amp; Time Series for Reliability</h2>
+
+            <h3>Time-series basics</h3>
+            <ul>
+                <li>A <b class="t">time series</b> is a set of observations ordered in time. Neighbouring values are usually <b>dependent</b>, which breaks the iid assumption behind ordinary regression.</li>
+                <li><b class="t">Reliability use in the lecture:</b> forecasting quantities such as daily <b>system unavailability</b> or failure counts from their own past values.</li>
+                <li><b class="t">Two required properties (Lec 44, 48):</b> the data must be <b>stationary</b> (the probability distribution doesn't change over time) and <b>uniform</b> (consecutive, evenly spaced observations with no missing periods).</li>
+                <li><b class="t">Weak (covariance) stationarity</b>, the usual working version: (1) constant mean, (2) constant variance, (3) the autocovariance depends only on the lag $k$, not on time $t$.</li>
+                <li><b class="t">Transformations:</b> lag $Y_{t-1}$, first difference $\Delta Y_t = Y_t - Y_{t-1}$, log difference $\ln Y_t - \ln Y_{t-1}$ (≈ proportional change), and percentage change. Differencing is how you remove a trend.</li>
+                <li><b class="t">Autocovariance:</b> $\gamma_k = Cov(X_t, X_{t+k})$. <b class="t">Autocorrelation (ACF)</b>, also called <b>serial correlation</b>: $\rho_k = \gamma_k/\gamma_0$, with $\rho_0 = 1$.</li>
+                <li><b class="t">White noise:</b> uncorrelated errors with zero mean and constant variance. It's the "random kick" $\varepsilon_t$.</li>
+            </ul>
+
+            <h3>Autoregressive models</h3>
+            <ul>
+                <li><b class="t">AR(p):</b> $X_t = c + \phi_1 X_{t-1} + \cdots + \phi_p X_{t-p} + \varepsilon_t$. Today depends linearly on the last $p$ values. The lecture writes $Y_t = \beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p} + \varepsilon_t$, with $\varepsilon_t$ Gaussian white noise and $\beta_0$ often taken as 0. So $c \leftrightarrow \beta_0$ and $\phi_i \leftrightarrow \beta_i$.</li>
+                <li><b class="t">Uses:</b> forecasting, and estimating dynamic causal effects.</li>
+            </ul>
+            <div class="box thm"><div class="box-title">AR(1): $X_t = c + \phi X_{t-1} + \varepsilon_t$ <span class="opt">beyond lectures</span></div>
+                Stationary <b>if and only if</b> $|\phi| \lt 1$. With $\phi = 1$ it's a random walk, which is non-stationary.<br>
+                $\mu = \dfrac{c}{1-\phi}$, &nbsp; $\gamma_0 = \dfrac{\sigma_\varepsilon^2}{1-\phi^2}$, &nbsp; $\rho_k = \phi^k$ (decays exponentially, and alternates in sign if $\phi \lt 0$).
+            </div>
+            <ul>
+                <li><b class="t">Yule–Walker equations</b> (named in the lecture, details left for self-study) link the AR coefficients to the autocorrelations: $\rho_k = \sum_i \phi_i \rho_{k-i}$. For AR(1), $\hat\phi = r_1$, the lag-1 sample autocorrelation.</li>
+                <li><b class="t">Forecasting:</b> $\hat{X}_{t+h} = \mu + \phi^h (X_t - \mu)$. Forecasts drift back toward the mean as $h$ grows, and the forecast-error variance grows with $h$.</li>
+                <li><b class="t">Remaining useful life (RUL)</b> <span class="opt">beyond lectures</span>: the time until a forecast degradation path first crosses a failure threshold. That needs a <b>trending</b> (non-stationary) model, e.g. an AR model on differenced data or with drift. A stationary AR forecast reverts to its mean and can't predict a threshold crossing.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>Stationarity needs $|\phi| \lt 1$, not $\phi \lt 1$. A value like $\phi = -1.2$ is also explosive.</li>
+                <li>The mean of a stationary AR(1) is $c/(1-\phi)$, not $c$.</li>
+                <li>Long-horizon forecasts are less certain, not more.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 11 ============ -->
+        <section class="mod" id="m11">
+            <div class="mod-head"><span class="mod-num">Module 11</span><span class="mod-lec">Lectures 45–48</span></div>
+            <h2>Logistic Regression &amp; Binary Classification</h2>
+
+            <h3>Why not linear regression for a 0/1 outcome?</h3>
+            <ul>
+                <li>Predictions can fall outside $[0, 1]$.</li>
+                <li>The errors can't be normal, since each takes only two values for a given $x$.</li>
+                <li>The variance $p(1-p)$ changes with $x$, so the constant-variance assumption is violated.</li>
+            </ul>
+
+            <h3>The logistic model</h3>
+            <ul>
+                <li><b class="t">Odds</b> $= \frac{p}{1-p} \in [0, \infty)$. <b class="t">Logit</b> $= \ln\frac{p}{1-p} \in (-\infty, \infty)$, which can safely be modelled as a function of $x$. The lecture also writes $p = \dfrac{1}{1+e^{-(x-\mu)/s}}$ (location $\mu$, scale $s$), so $\beta_0 = -\mu/s$, $\beta_1 = 1/s$ and $p(\mu) = 0.5$.</li>
+                <li>$\text{logit}(p) = \beta_0 + \beta_1 x_1 + \cdots + \beta_k x_k$, which gives $p = \dfrac{1}{1 + e^{-(\beta_0 + \boldsymbol\beta^T\mathbf{x})}}$ (the sigmoid).</li>
+                <li><b class="t">Reading the coefficients:</b> $\beta_j$ is the change in <b>log-odds</b> per unit increase in $x_j$, with the other predictors held fixed. $e^{\beta_j}$ is the <b>odds ratio</b>, the multiplier on the odds. If the logit uses log base $b$ (the lecture also uses base 10), the multiplier is $b^{\beta_j}$. If $\beta_j \gt 0$, $p$ rises with $x_j$.</li>
+                <li>The effect on $p$ itself is <b>not constant</b>. It's biggest near $p = 0.5$.</li>
+                <li><b class="t">Decision boundary:</b> with threshold 0.5, predict class 1 when $\beta_0 + \boldsymbol\beta^T\mathbf{x} \gt 0$. That boundary is linear only when the logit is linear in $\mathbf{x}$. The logit can include terms like $x^2$ (Lec 48: "the logit is always linear in x" is <b>false</b>).</li>
+                <li><b class="t">Types:</b> <b>binary</b> (one or many predictors), <b>multinomial</b> (pick a reference/pivot class 0 and fit $n-1$ logits $\ln\frac{p_j}{p_0} = \boldsymbol\beta_j^T\mathbf{x}$), and <b>ordinal</b> (ordered classes, separated by thresholds).</li>
+                <li><b class="t">Grouped data:</b> the empirical logit is $\ln\frac{\text{successes}}{\text{failures}}$ per group. If a count is 0, add 1 to both the numerator and the denominator.</li>
+            </ul>
+
+            <h3>Estimation and model assessment</h3>
+            <ul>
+                <li><b class="t">MLE</b> with a Bernoulli likelihood $\prod p_i^{y_i}(1-p_i)^{1-y_i}$. There's no closed form, so it's solved iteratively (Newton–Raphson / IRLS). The log-likelihood is concave, so any optimum is global. It's unique when the predictors aren't collinear and the classes aren't perfectly separated; with perfect separation the MLE doesn't exist. OLS is not used.</li>
+                <li><b class="t">Wald test</b> (Lec 46): $z = \hat\beta_j / SE(\hat\beta_j)$ tests one coefficient and gives a p-value and a CI $\hat\beta_j \pm z_{\alpha/2}SE$.</li>
+                <li><b class="t">Deviance</b> <span class="opt">beyond lectures</span> $D = -2\ln L$, which plays the role of SSE.</li>
+                <li><b class="t">Likelihood-ratio test</b> <span class="opt">beyond lectures</span>: $G = D_{null} - D_{model} \sim \chi^2$ with df equal to the number of predictors. It tests the whole model.</li>
+                <li><b class="t">Pseudo-$R^2$</b> <span class="opt">beyond lectures</span> (e.g. McFadden: $1 - \ln L_{model}/\ln L_{null}$) is not the same as OLS $R^2$ and is typically smaller.</li>
+            </ul>
+
+            <h3>Classification metrics <span class="opt">beyond lectures</span></h3>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Metric</th><th>Formula</th><th>Question it answers</th></tr></thead>
+                <tbody>
+                    <tr><td>Accuracy</td><td>$\frac{TP+TN}{TP+TN+FP+FN}$</td><td>What fraction of predictions were right overall?</td></tr>
+                    <tr><td>Precision</td><td>$\frac{TP}{TP+FP}$</td><td>Of the units flagged as failing, how many really failed?</td></tr>
+                    <tr><td>Recall / sensitivity / TPR</td><td>$\frac{TP}{TP+FN}$</td><td>Of the real failures, how many were caught?</td></tr>
+                    <tr><td>Specificity / TNR</td><td>$\frac{TN}{TN+FP}$</td><td>Of the healthy units, how many were correctly cleared?</td></tr>
+                    <tr><td>FPR</td><td>$\frac{FP}{FP+TN} = 1 - \text{specificity}$</td><td>False-alarm rate</td></tr>
+                    <tr><td>$F_1$</td><td>$\frac{2PR}{P+R}$</td><td>Harmonic mean of precision and recall</td></tr>
+                </tbody>
+            </table></div>
+            <ul>
+                <li><b class="t">ROC curve:</b> TPR against FPR as the threshold sweeps from 1 to 0. <b class="t">AUC</b> is the probability that a randomly chosen positive gets a higher score than a randomly chosen negative. 0.5 means random guessing and 1 means perfect separation.</li>
+                <li>Raising the threshold never increases recall and usually increases precision. Lowering it does the opposite.</li>
+            </ul>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>With imbalanced classes (e.g. 1% failures), a model that always predicts "no failure" is 99% accurate and useless. Use recall, precision, F1 or AUC instead.</li>
+                <li>$e^{\beta}$ multiplies the <b>odds</b>, not the probability.</li>
+                <li>Logistic regression is "strictly not a classifier" (Lec 45). It models the <b>probability</b> of a class, and becomes a classifier only once you pick a cut-off such as 0.5.</li>
+                <li>In safety-critical reliability work, missing a real failure (FN) usually costs more than a false alarm, so prioritise recall.</li>
+            </ul></div>
+        </section>
+
+        <!-- ============ MODULE 12 ============ -->
+        <section class="mod" id="m12">
+            <div class="mod-head"><span class="mod-num">Module 12</span><span class="mod-lec">Lectures 49–60</span></div>
+            <h2>Classifiers: Naive Bayes, k-NN &amp; Support Vector Machines</h2>
+
+            <h3>Supervised classification</h3>
+            <ul>
+                <li>Learn a mapping from features $\mathbf{x}$ to a class label using <b>labelled</b> training data, then judge it on <b>unseen</b> test data (generalisation).</li>
+                <li><b class="t">Supervised vs unsupervised:</b> supervised learning uses labelled data. Unsupervised learning (e.g. clustering) has no labels and is not covered. Classes must be mutually exclusive and exhaustive.</li>
+                <li><b class="t">Course taxonomy (Lec 49):</b> statistical (Bayes), distance-based (k-NN), decision tree (named only), and "error-based" (SVM).</li>
+                <li><b class="t">Overfitting:</b> the model fits noise in the training data and does poorly on new data. <b class="t">Underfitting:</b> the model is too simple to capture the pattern. This is the bias–variance trade-off.</li>
+            </ul>
+
+            <h3>Bayes and Naive Bayes</h3>
+            <ul>
+                <li><b class="t">MAP rule:</b> $\hat{y} = \arg\max_c P(c)\,P(\mathbf{x} \mid c)$. The evidence $P(\mathbf{x})$ is the same for every class, so it can be dropped. The <b class="t">Bayes optimal classifier</b> <span class="opt">beyond lectures</span> has the lowest possible error rate <em>if</em> the true probabilities are known.</li>
+                <li><b class="t">Course terminology:</b> the lecture calls $P(c)$ the <b>prior</b> and $P(x_j \mid c)$ the <b>"posterior"</b> probability. Most textbooks call $P(x_j \mid c)$ the <em>likelihood</em>. Expect the lecture's wording in MCQs.</li>
+                <li><b class="t">Naive assumption:</b> features are conditionally independent <b>given the class</b>, so $P(\mathbf{x} \mid c) = \prod_j P(x_j \mid c)$. This cuts the number of probabilities to estimate enormously. The second assumption is that all attributes <b>contribute equally</b> to the outcome. Training time is $O(n \times k)$ for $n$ records and $k$ attributes.</li>
+                <li><b class="t">Zero-frequency problem:</b> a single zero count wipes out the whole product. The course fixes it with the <b class="t">m-estimate</b>: $P(x_j = v \mid c) = \dfrac{n_c + m\,p}{n + m}$, where $n$ = records in class $c$, $n_c$ = those with $x_j = v$, $m$ = "equivalent sample size", and $p$ = prior estimate (often $1/k$ for $k$ possible values). <b>Laplace smoothing</b>, $\frac{n_c + 1}{n + k}$, is the special case $m = k$, $p = 1/k$.</li>
+                <li><b class="t">Continuous attributes:</b> either discretise them into bins, or use a pdf such as $N(\mu_{jc}, \sigma^2_{jc})$ within each class (Gaussian NB).</li>
+                <li><b class="t">Strengths:</b> fast, works with little data and many features. <b class="t">Weakness:</b> the independence assumption is usually false, so the probabilities are poorly calibrated, though the class rankings are often still good.</li>
+            </ul>
+
+            <h3>k-Nearest Neighbours</h3>
+            <ul>
+                <li><b class="t">Instance-based ("lazy"), non-parametric:</b> no training step. It stores all the data and classifies a new point by a majority vote of its $k$ nearest neighbours. This makes prediction slow.</li>
+                <li><b class="t">Distances:</b> Euclidean $\sqrt{\sum (x_i - z_i)^2}$ and Manhattan $\sum |x_i - z_i|$ (Minkowski generalises both). <b>Feature scaling is essential.</b></li>
+                <li><b class="t">Choosing k:</b> small $k$ gives low bias, high variance and overfitting. Large $k$ gives high bias and over-smooths. Choose $k$ using held-out labelled data. Course heuristics: an <b>odd</b> $k$ for two classes, $k$ <b>not a multiple</b> of the number of classes, and $k \approx \sqrt{N}$.</li>
+                <li><b class="t">Curse of dimensionality:</b> with many features, distance computations get expensive and all points end up roughly equally far apart. The lecture's remedy is dimensionality reduction (PCA) or feature selection.</li>
+            </ul>
+
+            <h3>Hard-margin SVM (linearly separable data)</h3>
+            <ul>
+                <li><b class="t">Hyperplane:</b> $\mathbf{w}^T\mathbf{x} + b = 0$, where $\mathbf{w}$ is perpendicular to it. The distance from a point to it is $\frac{|\mathbf{w}^T\mathbf{x} + b|}{\lVert\mathbf{w}\rVert}$.</li>
+                <li><b class="t">Canonical form:</b> $y_i(\mathbf{w}^T\mathbf{x}_i + b) \ge 1$ for every $i$, which gives a margin of $\frac{2}{\lVert\mathbf{w}\rVert}$.</li>
+                <li><b class="t">Primal problem:</b> minimise $\frac12\lVert\mathbf{w}\rVert^2$ subject to those constraints. It's a convex quadratic program, so there's a <b>unique global optimum</b> and no local minima.</li>
+            </ul>
+            <div class="box thm"><div class="box-title">KKT conditions &amp; the dual</div>
+                <p style="margin-bottom:0.4rem;">The lecture writes the Lagrange multipliers as $\lambda_i$ (here $\alpha_i$) and the primal and dual Lagrangians as $L_P$ and $L_D$. $\mathbf{w} = \sum \lambda_i y_i \mathbf{x}_i$ is called the representer theorem.</p><ul>
+                <li><b>Stationarity:</b> $\mathbf{w} = \sum_i \alpha_i y_i \mathbf{x}_i$ and $\sum_i \alpha_i y_i = 0$</li>
+                <li><b>Primal feasibility:</b> $y_i(\mathbf{w}^T\mathbf{x}_i + b) - 1 \ge 0$. <b>Dual feasibility:</b> $\alpha_i \ge 0$</li>
+                <li><b>Complementary slackness:</b> $\alpha_i\left[y_i(\mathbf{w}^T\mathbf{x}_i + b) - 1\right] = 0$, so $\alpha_i \gt 0$ <b>only for points on the margin</b>. Those points are the <b>support vectors</b>.</li>
+                <li><b>Dual:</b> maximise $\sum_i \alpha_i - \frac12\sum_i\sum_j \alpha_i\alpha_j y_i y_j\,\mathbf{x}_i^T\mathbf{x}_j$. The data appear <b>only through dot products</b>, which is what makes kernels possible.</li>
+                <li>Recover $b = y_s - \mathbf{w}^T\mathbf{x}_s$ from each support vector and <b>average</b> the results (that's the lecture's method). Classify with $\text{sign}\left(\sum_i \alpha_i y_i\,\mathbf{x}_i^T\mathbf{x} + b\right)$.</li>
+            </ul></div>
+
+            <h3>Soft-margin SVM <span class="opt">named only, not taught</span></h3>
+            <ul>
+                <li>Slack variables $\xi_i \ge 0$ allow violations: $y_i(\mathbf{w}^T\mathbf{x}_i + b) \ge 1 - \xi_i$. The objective becomes minimise $\frac12\lVert\mathbf{w}\rVert^2 + C\sum\xi_i$.</li>
+                <li><b class="t">C</b> is the penalty for violations. Large $C$ gives a narrow margin and few violations, so it risks overfitting. Small $C$ gives a wide margin and tolerates violations, so it risks underfitting. As $C \to \infty$ it becomes the hard margin.</li>
+                <li><b class="t">Box constraint</b> $0 \le \alpha_i \le C$:
+                    <ul>
+                        <li>$\alpha_i = 0$: correctly classified, beyond the margin (not a support vector).</li>
+                        <li>$0 \lt \alpha_i \lt C$: exactly on the margin ($\xi_i = 0$).</li>
+                        <li>$\alpha_i = C$: inside the margin ($0 \lt \xi_i \le 1$) or misclassified ($\xi_i \gt 1$).</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h3>Kernels and extensions</h3>
+            <ul>
+                <li><b class="t">Explicit φ-mapping and its problems (Lec 57):</b> e.g. quadratic monomials take 3-D data to 6-D. The difficulties are choosing the mapping, the computational cost, and the explosion in dimensionality. This motivates the dual form and the kernel trick.</li>
+                <li><b class="t">Kernel trick:</b> map $\mathbf{x} \to \phi(\mathbf{x})$ into a higher-dimensional space where the classes become linearly separable. Since the dual needs only dot products, you compute $K(\mathbf{x}, \mathbf{z}) = \phi(\mathbf{x})^T\phi(\mathbf{z})$ directly and never compute $\phi$.</li>
+                <li><b class="t">Mercer's theorem:</b> $K$ is a valid kernel if it's symmetric and every Gram matrix it produces is positive semi-definite. Kernels can be combined: $aK_1 + bK_2$ ($a, b \gt 0$) and $K_1 K_2$ are also kernels.</li>
+                <li><b class="t">Common kernels:</b> linear $\mathbf{x}^T\mathbf{z}$; polynomial $(\mathbf{x}^T\mathbf{z} + c)^d$; sigmoid $\tanh(\kappa\,\mathbf{x}^T\mathbf{z} + c)$; RBF $\exp(-\gamma\lVert\mathbf{x} - \mathbf{z}\rVert^2)$, whose feature space is infinite-dimensional. A large $\gamma$ gives a very wiggly boundary and overfits.</li>
+                <li><b class="t">Cost:</b> the problem is convex (global optimum). Training costs about $O(n^3)$ in the number of samples, and prediction depends on the number of support vectors, not on the dimension.</li>
+                <li><b class="t">Multi-class (Lec 56):</b> <b>OVA</b> (one-vs-all) trains $k$ classifiers and picks the one with the largest $|\delta|$. <b>OVO</b> (one-vs-one) trains $\binom{k}{2}$ classifiers and assigns class $i$ only if every $\delta_{ij}$ agrees. A linear multi-class SVM fails if the classes aren't linearly separable.</li>
+                <li><b class="t">SVR</b> <span class="opt">named only, not taught</span>: fits an $\varepsilon$-insensitive tube. Errors smaller than $\varepsilon$ cost nothing, and the support vectors lie on or outside the tube.</li>
+            </ul>
+
+            <div class="box key"><div class="box-title">Comparing the three classifiers</div>
+                <div class="table-wrap"><table>
+                    <thead><tr><th></th><th>Naive Bayes</th><th>k-NN</th><th>SVM</th></tr></thead>
+                    <tbody>
+                        <tr><td>Type</td><td>Probabilistic, generative</td><td>Instance-based, non-parametric</td><td>Margin-based, discriminative</td></tr>
+                        <tr><td>Training</td><td>Count / estimate (fast)</td><td>None (lazy)</td><td>Solve a QP (slower)</td></tr>
+                        <tr><td>Prediction</td><td>Fast</td><td>Slow (compares to all training points)</td><td>Fast (support vectors only)</td></tr>
+                        <tr><td>Key setting</td><td>m-estimate (zero counts)</td><td>$k$, distance metric</td><td>$C$, kernel, $\gamma$</td></tr>
+                        <tr><td>Main weakness</td><td>Independence assumption</td><td>Scaling, high dimensions</td><td>Choosing the kernel and $C$</td></tr>
+                    </tbody>
+                </table></div>
+            </div>
+            <div class="box trap"><div class="box-title">⚠️ Traps</div><ul>
+                <li>Removing a <b>non-support vector</b> doesn't change the SVM solution at all.</li>
+                <li>Maximising the margin $\frac{2}{\lVert\mathbf{w}\rVert}$ is the same as <b>minimising</b> $\lVert\mathbf{w}\rVert^2$.</li>
+                <li>"Naive" refers to conditional independence <b>given the class</b>, not independence overall.</li>
+                <li>Without feature scaling, k-NN and RBF-SVM are dominated by whichever feature has the largest units.</li>
+                <li>A kernel doesn't actually compute the high-dimensional mapping. That's the point of the trick.</li>
+            </ul></div>
+        </section>
+    </main>
+
+    <footer>
+        Theory companion to the <a href="index.html">full study guide</a> · <a href="eli5.html">ELI5 version</a> · Statistical Learning for Reliability Analysis · Prof. Monalisa Sarma, IIT Kharagpur (NPTEL)
+    </footer>
+
+    <script>
+    (function () {
+        var root = document.documentElement;
+        var themeBtn = document.getElementById('theme-toggle-btn');
+        function applyTheme(t) {
+            root.setAttribute('data-theme', t);
+            try { localStorage.setItem('theme', t); } catch (e) {}
+            themeBtn.firstElementChild.textContent = t === 'dark' ? '☀️' : '🌙';
+        }
+        applyTheme(root.getAttribute('data-theme') || 'dark');
+        themeBtn.addEventListener('click', function () {
+            applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+
+        // Traps-only revision mode
+        var trapsBtn = document.getElementById('traps-btn');
+        trapsBtn.addEventListener('click', function () {
+            var on = document.body.classList.toggle('traps-only');
+            trapsBtn.classList.toggle('on', on);
+        });
+
+        // Module filter: matches against each module's raw text
+        var sections = Array.prototype.slice.call(document.querySelectorAll('section.mod'));
+        var texts = sections.map(function (s) { return s.textContent.toLowerCase(); });
+        var noResults = document.getElementById('no-results');
+        document.getElementById('filter').addEventListener('input', function (e) {
+            var q = e.target.value.trim().toLowerCase();
+            var shown = 0;
+            sections.forEach(function (s, i) {
+                var hit = !q || texts[i].indexOf(q) !== -1;
+                s.style.display = hit ? '' : 'none';
+                if (hit) shown++;
+            });
+            noResults.style.display = shown ? 'none' : 'block';
+        });
+    })();
+    </script>
+    <nav class="tabbar" aria-label="Pages">
+        <a href="index.html"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html" aria-current="page"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html"><span class="ic">🧸</span>ELI5</a>
+        <a href="index.html#formulas"><span class="ic">⚡</span>Formulas</a>
+        <a href="index.html#test"><span class="ic">📝</span>Test</a>
+    </nav>
+
+    <script src="mathfit.js"></script>
+    <script src="mobile.js"></script>
+</body>
+</html>

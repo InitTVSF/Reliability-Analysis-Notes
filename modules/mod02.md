@@ -120,7 +120,7 @@ $$R_s = \prod_{i=1}^n R_i = R_1 \times R_2 \times \dots \times R_n$$
 For $n$ identical components with reliability $R$:
 $$R_s = R^n$$
 
-*Key Implication:* System reliability is strictly lower than the reliability of its least reliable component ($R_s < \min_i R_i$).
+*Key Implication:* System reliability is never higher than the reliability of its least reliable component ($R_s \le \min_i R_i$). It is strictly lower whenever any other component has $R_i < 1$.
 
 ```
 [In] ---> [ Component 1 ] ---> [ Component 2 ] ---> [ Component n ] ---> [Out]
@@ -209,7 +209,7 @@ A microprocessor is selected at random from the assembly line and found to be **
 - **Trigger Keywords:** *"Series configuration"*, *"weakest link"*, *"no redundancy"*, *"all components must function"*.
 - **Core Formula:**
   $$R_{\text{series}} = \prod_{i=1}^n R_i = R_1 \times R_2 \times \dots \times R_n$$
-- **Key Insight:** $R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$. The system is always less reliable than its least reliable component.
+- **Key Insight:** $R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$. The system is never more reliable than its least reliable component.
 
 ---
 

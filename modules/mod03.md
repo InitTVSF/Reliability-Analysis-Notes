@@ -63,7 +63,7 @@ Models the count of rare, independent events occurring within a fixed interval o
 #### Poisson Approximation to the Binomial Distribution
 When the number of trials $n$ is very large ($n \to \infty$) and the event probability $p$ is very small ($p \to 0$) such that $np = \lambda$ remains constant:
 $$\lim_{n \to \infty} \binom{n}{k} p^k (1-p)^{n-k} = \frac{e^{-\lambda} \lambda^k}{k!}$$
-*Rule of Thumb:* Valid when $n \ge 20$ and $p \le 0.05$, or $n \ge 100$ and $np \le 10$.
+*Rule of Thumb (as taught in Lec 11):* use it when $n > 10$ **and** $p < 0.1$; both conditions must hold. (Stricter textbook rules such as $n \ge 20,\ p \le 0.05$ also appear.)
 
 ---
 
@@ -170,7 +170,7 @@ Models sampling **without replacement** from a finite population of size $N$ con
 
 ### Problem Type 3.2: Rare Event Failures & Flaw Density (Poisson Distribution)
 - **Engineering / Exam Scenario:** Modeling the number of particle defects per square meter of silicon wafer, solder bridge flaws per printed circuit board, or cosmic-ray soft errors per hour in memory chips, where events occur randomly and independently in continuous space/time at an average rate $\lambda$.
-- **Trigger Keywords:** *"Rare defects"*, *"Poisson process"*, *"average rate per unit area/time"*, *"Poisson approximation to Binomial ($n \ge 100, p \le 0.05, \lambda = np$)"*.
+- **Trigger Keywords:** *"Rare defects"*, *"Poisson process"*, *"average rate per unit area/time"*, *"Poisson approximation to Binomial ($n > 10$ and $p < 0.1$, $\lambda = np$)"*.
 - **Core Formula:**
   $$P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, \dots$$
 - **Zero-Failure Probability:** $P(X = 0) = e^{-\lambda}$.

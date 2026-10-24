@@ -1,6 +1,9 @@
-# MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)
+# MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)
 
 ## 6.1 Principles of Point Estimation
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** estimator properties (unbiasedness, consistency, MVUE, CRLB, sufficiency) and the methods of moments / maximum likelihood (6.1–6.2) are **not taught** in the lectures. MLE appears only later, for logistic regression (Lec 45–46). Confidence intervals (6.3) are taught in Lec 26–28. Hypothesis testing is in Lec 22–25 and 29–31 (Module 7).
 
 ### 6.1.1 Estimators vs. Estimates
 - **Point Estimator ($\hat{\Theta}$):** A sample statistic / mathematical formula used to estimate an unknown population parameter $\theta$ (e.g., $\hat{\Theta} = \bar{X} = \frac{1}{n}\sum X_i$).

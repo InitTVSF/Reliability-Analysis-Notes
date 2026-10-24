@@ -62,6 +62,9 @@ $$\text{MTTF} = \int_0^\infty R(t) \, dt$$
 ---
 
 ### 4.2.2 Exponential Distribution ($T \sim \text{Exp}(\lambda)$)
+
+> [!NOTE]
+> **Lecture notation:** the course also writes $f(t) = \frac{1}{\beta}e^{-t/\beta}$ with $\beta = MTTF = 1/\lambda$ (mean = SD = $\beta$). If a question gives a mean life, that is $\beta$. If it gives a failure rate, that is $\lambda$.
 The cornerstone distribution for components operating in their useful life (Phase II of the Bathtub Curve).
 - **PDF:** $f(t) = \lambda e^{-\lambda t}, \quad t \ge 0, \; \lambda > 0$
 - **CDF:** $F(t) = 1 - e^{-\lambda t}$
@@ -93,7 +96,7 @@ $$P(T > s + t \mid T > s) = \frac{P(T > s + t)}{P(T > s)} = \frac{e^{-\lambda(s+
 
 ### 4.2.4 Lognormal Distribution
 If $Y = \ln X \sim N(\mu, \sigma^2)$, then $X = e^Y$ follows a Lognormal distribution ($X > 0$).
-- Extensively used in reliability for modeling **fatigue life**, crack propagation, and repair times ($MTTR$).
+- **In this course (Lec 13), lognormal is used to model repair times ($MTTR$), not failure times;** for failure times the course uses normal or exponential. In wider reliability practice it is also used for fatigue life and crack propagation.
 - **PDF:** $f(x) = \frac{1}{x \sigma \sqrt{2\pi}} \exp\left( -\frac{(\ln x - \mu)^2}{2\sigma^2} \right), \quad x > 0$
 - **Mean:** $E[X] = e^{\mu + \sigma^2/2}$
 - **Variance:** $\text{Var}(X) = e^{2\mu + \sigma^2}(e^{\sigma^2} - 1)$
@@ -101,6 +104,9 @@ If $Y = \ln X \sim N(\mu, \sigma^2)$, then $X = e^Y$ follows a Lognormal distrib
 ---
 
 ### 4.2.5 Weibull Distribution ($T \sim \text{Weibull}(\beta, \theta, \gamma)$)
+
+> [!WARNING]
+> **Not examined:** Lec 13 and Lec 15 state that the Weibull distribution is not included in the course and no exam question will come from it. Kept here as background.
 The most versatile life-distribution in reliability engineering, capable of modeling all three phases of the Bathtub Curve.
 - **Two-Parameter Weibull:** Shape parameter $\beta > 0$, Scale parameter (Characteristic Life) $\theta > 0$ ($\gamma = 0$):
   - **PDF:** $f(t) = \frac{\beta}{\theta} \left( \frac{t}{\theta} \right)^{\beta - 1} \exp\left[ -\left( \frac{t}{\theta} \right)^\beta \right], \quad t \ge 0$
@@ -220,6 +226,7 @@ Find the mean $\mu$ and standard deviation $\sigma$ of the cable tensile strengt
 ---
 
 ### Problem Type 4.4: Aging & Wear-Out Modeling via Weibull Distribution
+- **⚠️ Not examined:** Weibull is outside the exam syllabus (Lec 13, Lec 15).
 - **Engineering / Exam Scenario:** Given Weibull parameters $\beta$ (shape), $\theta$ (scale/characteristic life), and $\gamma$ (location/guarantee time), compute component reliability at age $t$, evaluate the hazard rate trend, or linearize empirical failure data on Weibull probability paper to estimate $\beta$ and $\theta$.
 - **Trigger Keywords:** *"Weibull distribution"*, *"shape parameter $\beta$"*, *"characteristic life $\theta$"*, *"infant vs wear-out aging"*.
 - **Core Formulas:**

@@ -37,6 +37,9 @@ where:
 ---
 
 ### 10.2.2 The First-Order Autoregressive Model: $\text{AR}(1)$
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 44 introduces AR($p$) as $Y_t = \beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p} + \varepsilon_t$ and requires the data to be **stationary** and **uniform** (evenly spaced, no gaps). The AR(1) moment formulas below, Yule–Walker details and RUL forecasting (10.3) are **not taught**.
 $$X_t = c + \phi_1 X_{t-1} + \epsilon_t$$
 
 #### 1. Stationarity Condition
@@ -81,6 +84,9 @@ $$\hat{X}_{T+h \mid T} = E[X_{T+h} \mid X_T, X_{T-1}, \dots] = \mu + \phi_1^h (X
 As forecast horizon $h \to \infty$, the forecast smoothly reverts to the long-term mean $\mu$.
 
 ### 10.3.2 Determining Remaining Useful Life (RUL)
+
+> [!CAUTION]
+> A **stationary** AR forecast reverts to its mean, so it cannot predict a threshold crossing. RUL needs a trending (non-stationary) degradation model, for example an AR model on differenced data or with drift.
 Let $D_{\text{crit}}$ denote the critical degradation threshold at which failure occurs (e.g., maximum permissible vibration amplitude of $10\text{ mm/s}$).
 The **Remaining Useful Life (RUL)** is the time index $h^*$ when the predicted degradation crosses the threshold:
 $$\text{RUL} = \min \left\{ h > 0 \mid \hat{X}_{T+h \mid T} \ge D_{\text{crit}} \right\}$$

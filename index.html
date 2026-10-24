@@ -5,7 +5,7 @@
     <script>
     (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
     </script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Statistical Learning for Reliability Analysis — Course Study Guide &amp; Interactive Master Handbook</title>
     
     <!-- Meta SEO -->
@@ -1006,8 +1006,31 @@
         .test-bar .fill { height: 100%; background: var(--accent-terracotta); }
         .test-review-item { border-top: 1px solid var(--border-soft); padding: 0.9rem 0; font-size: 0.92rem; }
         #theme-toggle-btn { min-width: 2.4rem; justify-content: center; }
-        @media (max-width: 700px) { #open-test-btn .lbl { display: none; } }
+        /* ---------- Mobile / narrow screens ---------- */
+        @media (max-width: 1100px) {
+            #open-cheat-sheet-btn .lbl, #open-eli5-btn .lbl, #open-theory-btn .lbl, #open-test-btn .lbl { display: none; }
+        }
+        @media (max-width: 900px) {
+            :root { --header-height: 108px; }
+            header.sticky-header { flex-wrap: wrap; align-content: center; row-gap: 0.45rem; padding: 0.4rem 0.9rem; }
+            header.sticky-header > div:first-child { flex: 1 1 100%; justify-content: space-between; }
+            .header-brand { font-size: 1rem; gap: 0.5rem; }
+            .header-actions { flex: 1 1 100%; gap: 0.4rem; }
+            .header-actions .nav-btn { padding: 0.45rem 0.6rem; }
+            .search-box { flex: 1 1 auto; min-width: 0; }
+            .search-box input, .search-box input:focus { width: 100%; min-width: 0; }
+            #toggle-drawer-btn .lbl { display: none; }
+            .math-inline { white-space: normal; }
+            .hero-banner { padding: 2rem 1.1rem; }
+            .meta-pill { white-space: normal; }
+            #nav-drawer { width: min(320px, 88vw); }
+            h2.module-title { font-size: 1.45rem; line-height: 1.3; }
+        }
+        @media (max-width: 380px) {
+            .brand-badge { display: none; }
+        }
     </style>
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -1018,7 +1041,7 @@
     <header class="sticky-header">
         <div style="display: flex; align-items: center; gap: 1rem;">
             <button id="toggle-drawer-btn" class="nav-btn" title="Toggle Navigation Drawer">
-                <span style="font-size: 1.1rem;">☰</span> <span>Modules</span>
+                <span style="font-size: 1.1rem;">☰</span> <span class="lbl">Modules</span>
             </button>
             <a href="#" class="header-brand">
                 <span>Reliability &amp; Stats</span>
@@ -1031,12 +1054,18 @@
                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                 <input type="text" id="live-search" placeholder="Search formulas, theorems, problem types...">
             </div>
-            <button id="open-test-btn" class="nav-btn" title="Take an MCQ test on all or selected modules">
+            <a href="theory.html" id="open-theory-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Necessary theory, definitions and exam traps for every module">
+                <span>📖 <span class="lbl">Theory</span></span>
+            </a>
+            <a href="eli5.html" id="open-eli5-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Simple, explain-like-I'm-five walkthrough of every module">
+                <span>🧸 <span class="lbl">ELI5</span></span>
+            </a>
+            <button id="open-test-btn" class="nav-btn tab-dup" title="Take an MCQ test on all or selected modules">
                 <span>📝 <span class="lbl">Test</span></span>
             </button>
             <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
-            <button id="open-cheat-sheet-btn" class="nav-btn" title="Open Master Formula Reference & Problem Types">
-                <span>⚡ Cheat Sheet &amp; Formulas</span>
+            <button id="open-cheat-sheet-btn" class="nav-btn tab-dup" title="Open Master Formula Reference & Problem Types">
+                <span>⚡ <span class="lbl">Cheat Sheet &amp; Formulas</span></span>
             </button>
         </div>
     </header>
@@ -1053,8 +1082,8 @@
 <a href="#module-3-discrete-probability-distributions-reliability-applications-lectures-07-11">Module 3: Discrete Probability Distributions & Reliability Applications (Lectures 07–11)</a>
 <a href="#module-4-continuous-probability-distributions-hazard-rate-modeling-lectures-12-15">Module 4: Continuous Probability Distributions & Hazard Rate Modeling (Lectures 12–15)</a>
 <a href="#module-5-sampling-distributions-the-central-limit-theorem-lectures-16-21">Module 5: Sampling Distributions & The Central Limit Theorem (Lectures 16–21)</a>
-<a href="#module-6-statistical-inference-point-estimation-confidence-intervals-lectures-22-25-28">Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)</a>
-<a href="#module-7-statistical-inference-hypothesis-testing-goodness-of-fit-lectures-26-27-29-31">Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)</a>
+<a href="#module-6-statistical-inference-point-estimation-confidence-intervals-lectures-26-28">Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)</a>
+<a href="#module-7-statistical-inference-hypothesis-testing-goodness-of-fit-lectures-22-25-29-31">Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)</a>
 <a href="#module-8-analysis-of-variance-anova-lectures-32-37">Module 8: Analysis of Variance (ANOVA) (Lectures 32–37)</a>
 <a href="#module-9-correlation-linear-regression-analysis-lectures-38-43">Module 9: Correlation & Linear Regression Analysis (Lectures 38–43)</a>
 <a href="#module-10-auto-regression-time-series-modeling-for-reliability-lecture-44">Module 10: Auto-Regression & Time-Series Modeling for Reliability (Lecture 44)</a>
@@ -1591,7 +1620,7 @@ $$</div></p>
 R_s = R^n
 $$</div></p>
 
-<p class="body-p"><em>Key Implication:</em> System reliability is strictly lower than the reliability of its least reliable component (<span class="math-inline">$R_s &lt; \min_i R_i$</span>).</p>
+<p class="body-p"><em>Key Implication:</em> System reliability is never higher than the reliability of its least reliable component (<span class="math-inline">$R_s \le \min_i R_i$</span>). It is strictly lower whenever any other component has <span class="math-inline">$R_i &lt; 1$</span>.</p>
 
 <div class="code-container"><pre><code class="language-text">
 [In] ---&gt; [ Component 1 ] ---&gt; [ Component 2 ] ---&gt; [ Component n ] ---&gt; [Out]
@@ -1747,7 +1776,7 @@ $$</div><br>• <em>Pedagogical Insight:</em> Although Factory <span class="math
                     - <strong>Engineering / Exam Scenario:</strong> A mission-critical device consists of <span class="math-inline">$n$</span> sub-assemblies connected such that the failure of any single part halts the entire system (weakest-link model). Given individual component reliabilities <span class="math-inline">$R_1, R_2, \dots, R_n$</span>, find overall system reliability <span class="math-inline">$R_{\text{series}}$</span>.<br>• <strong>Trigger Keywords:</strong> <em>"Series configuration"</em>, <em>"weakest link"</em>, <em>"no redundancy"</em>, <em>"all components must function"</em>.<br>• <strong>Core Formula:</strong>
   <div class="math-display-wrap">$$
 R_{\text{series}} = \prod_{i=1}^n R_i = R_1 \times R_2 \times \dots \times R_n
-$$</div><br>• <strong>Key Insight:</strong> <span class="math-inline">$R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$</span>. The system is always less reliable than its least reliable component.
+$$</div><br>• <strong>Key Insight:</strong> <span class="math-inline">$R_{\text{series}} \le \min(R_1, R_2, \dots, R_n)$</span>. The system is never more reliable than its least reliable component.
 
                 </div>
                 <details class="solution-details">
@@ -1987,7 +2016,7 @@ $$</div></p>
 \lim_{n \to \infty} \binom{n}{k} p^k (1-p)^{n-k} = \frac{e^{-\lambda} \lambda^k}{k!}
 $$</div></p>
 
-<p class="body-p"><em>Rule of Thumb:</em> Valid when <span class="math-inline">$n \ge 20$</span> and <span class="math-inline">$p \le 0.05$</span>, or <span class="math-inline">$n \ge 100$</span> and <span class="math-inline">$np \le 10$</span>.</p>
+<p class="body-p"><em>Rule of Thumb (as taught in Lec 11):</em> use it when <span class="math-inline">$n &gt; 10$</span> <strong>and</strong> <span class="math-inline">$p &lt; 0.1$</span>; both conditions must hold. (Stricter textbook rules such as <span class="math-inline">$n \ge 20,\ p \le 0.05$</span> also appear.)</p>
 
 <hr class="section-divider">
 
@@ -2220,7 +2249,7 @@ $$</div><br>• <strong>Solution Strategy:</strong>
                     <h4 class="problem-title">Problem Type 3.2: Rare Event Failures & Flaw Density (Poisson Distribution)</h4>
                 </div>
                 <div class="problem-statement">
-                    - <strong>Engineering / Exam Scenario:</strong> Modeling the number of particle defects per square meter of silicon wafer, solder bridge flaws per printed circuit board, or cosmic-ray soft errors per hour in memory chips, where events occur randomly and independently in continuous space/time at an average rate <span class="math-inline">$\lambda$</span>.<br>• <strong>Trigger Keywords:</strong> <em>"Rare defects"</em>, <em>"Poisson process"</em>, <em>"average rate per unit area/time"</em>, <em>"Poisson approximation to Binomial (<span class="math-inline">$n \ge 100, p \le 0.05, \lambda = np$</span>)"</em>.<br>• <strong>Core Formula:</strong>
+                    - <strong>Engineering / Exam Scenario:</strong> Modeling the number of particle defects per square meter of silicon wafer, solder bridge flaws per printed circuit board, or cosmic-ray soft errors per hour in memory chips, where events occur randomly and independently in continuous space/time at an average rate <span class="math-inline">$\lambda$</span>.<br>• <strong>Trigger Keywords:</strong> <em>"Rare defects"</em>, <em>"Poisson process"</em>, <em>"average rate per unit area/time"</em>, <em>"Poisson approximation to Binomial (<span class="math-inline">$n &gt; 10$</span> and <span class="math-inline">$p &lt; 0.1$</span>, <span class="math-inline">$\lambda = np$</span>)"</em>.<br>• <strong>Core Formula:</strong>
   <div class="math-display-wrap">$$
 P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, \dots
 $$</div><br>• <strong>Zero-Failure Probability:</strong> <span class="math-inline">$P(X = 0) = e^{-\lambda}$</span>.
@@ -2430,6 +2459,9 @@ $$</div></p>
 
 <h4 class="section-h3">4.2.2 Exponential Distribution (<span class="math-inline">$T \sim \text{Exp}(\lambda)$</span>)</h4>
 
+<div class="callout-card callout-note"><div class="callout-header"><span class="callout-icon">📌</span> <strong>FORMULA & CONCEPT REFERENCE</strong></div><div class="callout-body"><strong>Lecture notation:</strong> the course also writes <span class="math-inline">$f(t) = \frac{1}{\beta}e^{-t/\beta}$</span> with <span class="math-inline">$\beta = MTTF = 1/\lambda$</span> (mean = SD = <span class="math-inline">$\beta$</span>). If a question gives a mean life, that is <span class="math-inline">$\beta$</span>. If it gives a failure rate, that is <span class="math-inline">$\lambda$</span>.</div></div>
+
+
 <p class="body-p">The cornerstone distribution for components operating in their useful life (Phase II of the Bathtub Curve).</p>
 <ul class="custom-list">
 
@@ -2493,7 +2525,7 @@ $$</div></p>
 <p class="body-p">If <span class="math-inline">$Y = \ln X \sim N(\mu, \sigma^2)$</span>, then <span class="math-inline">$X = e^Y$</span> follows a Lognormal distribution (<span class="math-inline">$X &gt; 0$</span>).</p>
 <ul class="custom-list">
 
-<li class="list-item">Extensively used in reliability for modeling <strong>fatigue life</strong>, crack propagation, and repair times (<span class="math-inline">$MTTR$</span>).</li>
+<li class="list-item"><strong>In this course (Lec 13), lognormal is used to model repair times (<span class="math-inline">$MTTR$</span>), not failure times;</strong> for failure times the course uses normal or exponential. In wider reliability practice it is also used for fatigue life and crack propagation.</li>
 <li class="list-item"><strong>PDF:</strong> <span class="math-inline">$f(x) = \frac{1}{x \sigma \sqrt{2\pi}} \exp\left( -\frac{(\ln x - \mu)^2}{2\sigma^2} \right), \quad x &gt; 0$</span></li>
 <li class="list-item"><strong>Mean:</strong> <span class="math-inline">$E[X] = e^{\mu + \sigma^2/2}$</span></li>
 <li class="list-item"><strong>Variance:</strong> <span class="math-inline">$\text{Var}(X) = e^{2\mu + \sigma^2}(e^{\sigma^2} - 1)$</span></li>
@@ -2502,6 +2534,9 @@ $$</div></p>
 <hr class="section-divider">
 
 <h4 class="section-h3">4.2.5 Weibull Distribution (<span class="math-inline">$T \sim \text{Weibull}(\beta, \theta, \gamma)$</span>)</h4>
+
+<div class="callout-card callout-warning"><div class="callout-header"><span class="callout-icon">⚠️</span> <strong>COMMON PITFALL & DISTINCTION</strong></div><div class="callout-body"><strong>Not examined:</strong> Lec 13 and Lec 15 state that the Weibull distribution is not included in the course and no exam question will come from it. Kept here as background.</div></div>
+
 
 <p class="body-p">The most versatile life-distribution in reliability engineering, capable of modeling all three phases of the Bathtub Curve.</p>
 <ul class="custom-list">
@@ -2764,7 +2799,7 @@ $$</div>
                     <h4 class="problem-title">Problem Type 4.4: Aging & Wear-Out Modeling via Weibull Distribution</h4>
                 </div>
                 <div class="problem-statement">
-                    - <strong>Engineering / Exam Scenario:</strong> Given Weibull parameters <span class="math-inline">$\beta$</span> (shape), <span class="math-inline">$\theta$</span> (scale/characteristic life), and <span class="math-inline">$\gamma$</span> (location/guarantee time), compute component reliability at age <span class="math-inline">$t$</span>, evaluate the hazard rate trend, or linearize empirical failure data on Weibull probability paper to estimate <span class="math-inline">$\beta$</span> and <span class="math-inline">$\theta$</span>.<br>• <strong>Trigger Keywords:</strong> <em>"Weibull distribution"</em>, <em>"shape parameter <span class="math-inline">$\beta$</span>"</em>, <em>"characteristic life <span class="math-inline">$\theta$</span>"</em>, <em>"infant vs wear-out aging"</em>.<br>• <strong>Core Formulas:</strong>
+                    - <strong>⚠️ Not examined:</strong> Weibull is outside the exam syllabus (Lec 13, Lec 15).<br>• <strong>Engineering / Exam Scenario:</strong> Given Weibull parameters <span class="math-inline">$\beta$</span> (shape), <span class="math-inline">$\theta$</span> (scale/characteristic life), and <span class="math-inline">$\gamma$</span> (location/guarantee time), compute component reliability at age <span class="math-inline">$t$</span>, evaluate the hazard rate trend, or linearize empirical failure data on Weibull probability paper to estimate <span class="math-inline">$\beta$</span> and <span class="math-inline">$\theta$</span>.<br>• <strong>Trigger Keywords:</strong> <em>"Weibull distribution"</em>, <em>"shape parameter <span class="math-inline">$\beta$</span>"</em>, <em>"characteristic life <span class="math-inline">$\theta$</span>"</em>, <em>"infant vs wear-out aging"</em>.<br>• <strong>Core Formulas:</strong>
   <div class="math-display-wrap">$$
 R(t) = \exp\left[ -\left(\frac{t - \gamma}{\theta}\right)^\beta \right], \quad h(t) = \frac{\beta}{\theta} \left(\frac{t - \gamma}{\theta}\right)^{\beta - 1}
 $$</div>
@@ -3155,10 +3190,13 @@ $$</div>
 
 </section>
 
-<section id="module-6-statistical-inference-point-estimation-confidence-intervals-lectures-22-25-28" class="module-section card">
-<h2 class="module-title">MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)</h2>
+<section id="module-6-statistical-inference-point-estimation-confidence-intervals-lectures-26-28" class="module-section card">
+<h2 class="module-title">MODULE 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)</h2>
 
 <h3 id="6-1-principles-of-point-estimation" class="section-h2">6.1 Principles of Point Estimation</h3>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> estimator properties (unbiasedness, consistency, MVUE, CRLB, sufficiency) and the methods of moments / maximum likelihood (6.1–6.2) are <strong>not taught</strong> in the lectures. MLE appears only later, for logistic regression (Lec 45–46). Confidence intervals (6.3) are taught in Lec 26–28. Hypothesis testing is in Lec 22–25 and 29–31 (Module 7).</div></div>
+
 
 <h4 class="section-h3">6.1.1 Estimators vs. Estimates</h4>
 <ul class="custom-list">
@@ -3551,8 +3589,8 @@ $$</div>
 
 </section>
 
-<section id="module-7-statistical-inference-hypothesis-testing-goodness-of-fit-lectures-26-27-29-31" class="module-section card">
-<h2 class="module-title">MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)</h2>
+<section id="module-7-statistical-inference-hypothesis-testing-goodness-of-fit-lectures-22-25-29-31" class="module-section card">
+<h2 class="module-title">MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)</h2>
 
 <h3 id="7-1-fundamentals-of-hypothesis-testing" class="section-h2">7.1 Fundamentals of Hypothesis Testing</h3>
 
@@ -3697,6 +3735,9 @@ $$</div></p>
 <hr class="section-divider">
 
 <h3 id="7-3-chi-square-goodness-of-fit-independence-tests" class="section-h2">7.3 Chi-Square Goodness-of-Fit & Independence Tests</h3>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> the goodness-of-fit test is <strong>not taught</strong> in the lectures. The test of independence is taught in <strong>Lec 39</strong>, as the chi-square test of association for nominal data, alongside correlation (Module 9).</div></div>
+
 
 <h4 class="section-h3">7.3.1 Pearson's Chi-Square Goodness-of-Fit Test</h4>
 
@@ -3969,6 +4010,9 @@ $$</div></p>
 
 <h4 class="section-h3">8.2.2 Partitioning the Total Sum of Squares (<span class="math-inline">$SST$</span>)</h4>
 
+<div class="callout-card callout-note"><div class="callout-header"><span class="callout-icon">📌</span> <strong>FORMULA & CONCEPT REFERENCE</strong></div><div class="callout-body"><strong>Lecture notation:</strong> the course writes <span class="math-inline">$SS_T = SS_{Treatments} + SS_E$</span>, <span class="math-inline">$F_0 = MS_{Treatments}/MS_E \sim F_{a-1,\,N-a}$</span>, with <span class="math-inline">$a$</span> treatments, <span class="math-inline">$n$</span> replicates and <span class="math-inline">$N = an$</span>. "Between" = treatments and "within" = error.</div></div>
+
+
 <p class="body-p">Total variation in the dataset is partitioned into between-treatment variation and within-treatment error:</p>
 
 <p class="body-p"><div class="math-display-wrap">$$
@@ -4048,6 +4092,9 @@ $$</div></p>
 
 <h3 id="8-3-post-hoc-multiple-comparisons" class="section-h2">8.3 Post-Hoc Multiple Comparisons</h3>
 
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Lec 33 only <strong>names</strong> the Bonferroni, Fisher LSD and Tukey HSD approaches and says finding which mean differs is beyond the scope of the lectures.</div></div>
+
+
 <p class="body-p">When the omnibus ANOVA <span class="math-inline">$F$</span>-test rejects <span class="math-inline">$H_0$</span>, post-hoc tests identify <em>which specific pairs</em> of means differ significantly.</p>
 
 <h4 class="section-h3">8.3.1 Tukey's Honestly Significant Difference (HSD) Test</h4>
@@ -4071,6 +4118,9 @@ $$</div></p>
 <hr class="section-divider">
 
 <h3 id="8-4-two-way-anova-factorial-design-with-replications" class="section-h2">8.4 Two-Way ANOVA (Factorial Design with Replications)</h3>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Lec 36 states that two-way and multi-way ANOVA are not discussed. Only one-way ANOVA is taught.</div></div>
+
 
 <h4 class="section-h3">8.4.1 Model with Interaction</h4>
 
@@ -4385,6 +4435,9 @@ $$</div></p>
 
 <h4 class="section-h3">9.2.4 ANOVA Approach to Regression & Slope Hypothesis Testing</h4>
 
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Gauss–Markov/BLUE, the standard error of estimate, slope tests, regression ANOVA, CI vs. PI (9.2.4–9.2.5) and adjusted <span class="math-inline">$R^2$</span>/multicollinearity (9.3.2) are <strong>not taught</strong> in Lec 38–43. The lectures instead cover the chi-square test of association for nominal data (Lec 39) and polynomial regression (Lec 42); see the Theory page. The lecture writes the model as <span class="math-inline">$y = \alpha + \beta x + \varepsilon$</span> and defines <span class="math-inline">$R^2 = 1 - SSE/SST$</span>.</div></div>
+
+
 <p class="body-p">To test <span class="math-inline">$H_0: \beta_1 = 0$</span> (no linear relationship) vs. <span class="math-inline">$H_1: \beta_1 \neq 0$</span>:</p>
 
 <p class="body-p"><div class="math-display-wrap">$$
@@ -4666,6 +4719,9 @@ $$</div></p>
 
 <h4 class="section-h3">10.2.2 The First-Order Autoregressive Model: <span class="math-inline">$\text{AR}(1)$</span></h4>
 
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Lec 44 introduces AR(<span class="math-inline">$p$</span>) as <span class="math-inline">$Y_t = \beta_0 + \beta_1 Y_{t-1} + \cdots + \beta_p Y_{t-p} + \varepsilon_t$</span> and requires the data to be <strong>stationary</strong> and <strong>uniform</strong> (evenly spaced, no gaps). The AR(1) moment formulas below, Yule–Walker details and RUL forecasting (10.3) are <strong>not taught</strong>.</div></div>
+
+
 <p class="body-p"><div class="math-display-wrap">$$
 X_t = c + \phi_1 X_{t-1} + \epsilon_t
 $$</div></p>
@@ -4757,6 +4813,9 @@ $$</div></p>
 <p class="body-p">As forecast horizon <span class="math-inline">$h \to \infty$</span>, the forecast smoothly reverts to the long-term mean <span class="math-inline">$\mu$</span>.</p>
 
 <h4 class="section-h3">10.3.2 Determining Remaining Useful Life (RUL)</h4>
+
+<div class="callout-card callout-caution"><div class="callout-header"><span class="callout-icon">🛑</span> <strong>CAUTION & GOTCHA</strong></div><div class="callout-body">A <strong>stationary</strong> AR forecast reverts to its mean, so it cannot predict a threshold crossing. RUL needs a trending (non-stationary) degradation model, for example an AR model on differenced data or with drift.</div></div>
+
 
 <p class="body-p">Let <span class="math-inline">$D_{\text{crit}}$</span> denote the critical degradation threshold at which failure occurs (e.g., maximum permissible vibration amplitude of <span class="math-inline">$10\text{ mm/s}$</span>).</p>
 
@@ -4993,6 +5052,9 @@ $$</div></p>
 <h3 id="11-4-goodness-of-fit-model-significance" class="section-h2">11.4 Goodness-of-Fit & Model Significance</h3>
 
 <h4 class="section-h3">11.4.1 Deviance & Likelihood Ratio Test</h4>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> deviance, the likelihood-ratio test and pseudo-<span class="math-inline">$R^2$</span> are <strong>not taught</strong>. Of 11.4, only the Wald test (Lec 46) is covered. The lectures also cover multinomial (pivot class) and ordinal logistic regression, and stress that logistic regression is "strictly not a classifier" until a cut-off is chosen.</div></div>
+
 <ul class="custom-list">
 
 <li class="list-item"><strong>Deviance (<span class="math-inline">$D$</span>):</strong> <span class="math-inline">$D = -2 \ln L(\hat{\boldsymbol{\beta}})$</span> (Analogous to <span class="math-inline">$SSE$</span> in linear regression).</li>
@@ -5028,6 +5090,9 @@ $$</div></p>
 <hr class="section-divider">
 
 <h3 id="11-5-binary-classification-performance-metrics" class="section-h2">11.5 Binary Classification Performance Metrics</h3>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> the confusion matrix, precision/recall/F1 and ROC/AUC are <strong>not taught</strong> in Lec 45–48.</div></div>
+
 
 <h4 class="section-h3">11.5.1 The Confusion Matrix</h4>
 
@@ -5185,6 +5250,9 @@ $$</div>
 
 <h4 class="section-h3">12.1.2 Bayes Optimal Classifier & Naive Bayes Classifier</h4>
 
+<div class="callout-card callout-note"><div class="callout-header"><span class="callout-icon">📌</span> <strong>FORMULA & CONCEPT REFERENCE</strong></div><div class="callout-body"><strong>Lecture convention:</strong> the course handles zero counts with the <strong>m-estimate</strong> <span class="math-inline">$\frac{n_c + m p}{n + m}$</span> (Lec 53). Laplace smoothing is the special case <span class="math-inline">$m = k$</span>, <span class="math-inline">$p = 1/k$</span>. The lecture calls <span class="math-inline">$P(x_j \mid c)$</span> the "posterior" probability, and adds a second Naive Bayes assumption: all attributes contribute equally.</div></div>
+
+
 <h5 class="section-h4">1. Maximum A Posteriori (MAP) Decision Rule</h5>
 
 <p class="body-p">By Bayes\' Theorem, the posterior probability of class <span class="math-inline">$C_k$</span> given feature vector <span class="math-inline">$\mathbf{x}$</span> is:</p>
@@ -5247,7 +5315,7 @@ $$</div></p>
 
 <hr class="section-divider">
 
-<h3 id="12-2-math_inline_25--nearest-neighbors-math_inline_26--nn-classification" class="section-h2">12.2 <span class="math-inline">$k$</span>-Nearest Neighbors (<span class="math-inline">$k$</span>-NN) Classification</h3>
+<h3 id="12-2-math_inline_29--nearest-neighbors-math_inline_30--nn-classification" class="section-h2">12.2 <span class="math-inline">$k$</span>-Nearest Neighbors (<span class="math-inline">$k$</span>-NN) Classification</h3>
 
 <h4 class="section-h3">12.2.1 Principles of Instance-Based Learning</h4>
 
@@ -5362,6 +5430,9 @@ $$</div></p>
 
 <h4 class="section-h3">12.3.3 Lagrange Multipliers & Karush-Kuhn-Tucker (KKT) Conditions</h4>
 
+<div class="callout-card callout-note"><div class="callout-header"><span class="callout-icon">📌</span> <strong>FORMULA & CONCEPT REFERENCE</strong></div><div class="callout-body"><strong>Lecture notation:</strong> the multipliers are written <span class="math-inline">$\lambda_i$</span> (here <span class="math-inline">$\alpha_i$</span>) and the Lagrangians <span class="math-inline">$L_P$</span> / <span class="math-inline">$L_D$</span>. <span class="math-inline">$b$</span> is computed from each support vector and averaged.</div></div>
+
+
 <p class="body-p">Introducing Lagrange multipliers <span class="math-inline">$\alpha_i \ge 0$</span> for each inequality constraint, the <strong>Primal Lagrangian</strong> is:</p>
 
 <p class="body-p"><div class="math-display-wrap">$$
@@ -5442,6 +5513,9 @@ $$</div></p>
 <hr class="section-divider">
 
 <h3 id="12-4-soft-margin-svm-non-separable-data" class="section-h2">12.4 Soft-Margin SVM (Non-Separable Data)</h3>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Lec 57 only mentions the soft margin ("I will not go into the details"). Slack variables, <span class="math-inline">$C$</span> and the box constraint are not taught.</div></div>
+
 
 <p class="body-p">When data is linearly non-separable or contains noise/outliers, <strong>Slack Variables <span class="math-inline">$\xi_i \ge 0$</span></strong> are introduced to allow controlled margin violations:</p>
 
@@ -5570,6 +5644,9 @@ $$</div></p>
 </ul>
 
 <h4 class="section-h3">12.6.2 Support Vector Regression (SVR)</h4>
+
+<div class="callout-card callout-important"><div class="callout-header"><span class="callout-icon">⭐</span> <strong>CRITICAL THEOREM & INSIGHT</strong></div><div class="callout-body"><strong>Scope (checked against the lecture transcripts):</strong> Lec 60 says SVM regression and ranking were not covered and are left for self-study.</div></div>
+
 
 <p class="body-p">Uses Vapnik\'s <strong><span class="math-inline">$\epsilon$</span>-Insensitive Loss Function</strong>:</p>
 
@@ -6008,6 +6085,15 @@ $$</div>
         </div>
     </aside>
 
+    <!-- Bottom tab bar (phones only, see mobile.css) -->
+    <nav class="tabbar" aria-label="Pages">
+        <a href="#" aria-current="page"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html"><span class="ic">🧸</span>ELI5</a>
+        <button type="button" id="tab-formulas"><span class="ic">⚡</span>Formulas</button>
+        <button type="button" id="tab-test"><span class="ic">📝</span>Test</button>
+    </nav>
+
     <!-- Back to Top Floating Button -->
     <button id="back-to-top" title="Back to top">↑</button>
 
@@ -6104,6 +6190,11 @@ $$</div>
         openCheatBtn.addEventListener('click', openCheatSheet);
         closeCheatBtn.addEventListener('click', closeCheatSheet);
         backdrop.addEventListener('click', closeCheatSheet);
+        document.getElementById('tab-formulas').addEventListener('click', openCheatSheet);
+        if (location.hash === '#formulas') {
+            history.replaceState(null, '', location.pathname + location.search);
+            openCheatSheet();
+        }
 
         // Cheat Sheet Category Filtering & Search
         const tabBtns = document.querySelectorAll('.cheat-tab-btn');
@@ -6199,5 +6290,6 @@ $$</div>
     </div>
     <script src="quiz_bank.js"></script>
     <script src="quiz.js"></script>
+    <script src="mathfit.js"></script>
 </body>
 </html>

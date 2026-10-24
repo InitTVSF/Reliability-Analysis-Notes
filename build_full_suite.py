@@ -37,8 +37,8 @@ def build_study_guide():
 3. [Module 3: Discrete Probability Distributions & Reliability Applications (Lectures 07–11)](#module-3-discrete-probability-distributions--reliability-applications-lectures-0711)
 4. [Module 4: Continuous Probability Distributions & Hazard Rate Modeling (Lectures 12–15)](#module-4-continuous-probability-distributions--hazard-rate-modeling-lectures-1215)
 5. [Module 5: Sampling Distributions & The Central Limit Theorem (Lectures 16–21)](#module-5-sampling-distributions--the-central-limit-theorem-lectures-1621)
-6. [Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 22–25, 28)](#module-6-statistical-inference--point-estimation--confidence-intervals-lectures-2225-28)
-7. [Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)](#module-7-statistical-inference--hypothesis-testing--goodness-of-fit-lectures-2627-2931)
+6. [Module 6: Statistical Inference — Point Estimation & Confidence Intervals (Lectures 26–28)](#module-6-statistical-inference--point-estimation--confidence-intervals-lectures-2628)
+7. [Module 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)](#module-7-statistical-inference--hypothesis-testing--goodness-of-fit-lectures-2225-2931)
 8. [Module 8: Analysis of Variance (ANOVA) (Lectures 32–37)](#module-8-analysis-of-variance-anova-lectures-3237)
 9. [Module 9: Correlation & Linear Regression Analysis (Lectures 38–43)](#module-9-correlation--linear-regression-analysis-lectures-3843)
 10. [Module 10: Auto-Regression & Time-Series Modeling for Reliability (Lecture 44)](#module-10-auto-regression--time-series-modeling-for-reliability-lecture-44)
@@ -573,7 +573,10 @@ def build_interactive_html():
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Statistical Learning for Reliability Analysis — Course Study Guide &amp; Interactive Master Handbook</title>
     
     <!-- Meta SEO -->
@@ -1470,7 +1473,135 @@ def build_interactive_html():
                 width: 100vw;
             }
         }
+
+        /* ==========================================================================
+           DARK THEME (default) — token overrides + hard-coded light surfaces
+           ========================================================================== */
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg-body: #14100E;
+            --surface-card: #1E1815;
+            --surface-alt: #261E1A;
+            --accent-peach-light: #4A2E24;
+            --accent-peach: #FFAB91;
+            --accent-peach-vivid: #FF8A65;
+            --accent-terracotta: #FF7043;
+            --primary-dark: #E65A2B;
+            --text-heading: #FFE0D6;
+            --text-body: #D7CCC8;
+            --text-muted: #A1887F;
+            --border-soft: #3A2B25;
+            --border-medium: #5A3F33;
+            --callout-bg: #2A1F18;
+            --shadow-card: 0 4px 16px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.55), 0 3px 8px rgba(0,0,0,0.3);
+        }
+        [data-theme="dark"] header.sticky-header { background: rgba(20,16,14,0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+        [data-theme="dark"] #progress-container { background: rgba(255,171,145,0.12); }
+        [data-theme="dark"] .hero-banner { background: linear-gradient(135deg, #2A1A14 0%, #3A2118 50%, #4A2A1E 100%); border-color: rgba(255,171,145,0.18); }
+        [data-theme="dark"] .hero-banner::before { background: radial-gradient(circle, rgba(255,138,101,0.15) 0%, transparent 70%); }
+        [data-theme="dark"] .hero-subtitle { color: #E0CFC8; }
+        [data-theme="dark"] .hero-meta { color: #C9B5AC; }
+        [data-theme="dark"] .meta-pill { background: rgba(255,255,255,0.06); border-color: rgba(255,171,145,0.25); }
+        [data-theme="dark"] .callout-body { color: #D7CCC8; }
+        [data-theme="dark"] .callout-note { background-color: #2A1F18; }
+        [data-theme="dark"] .callout-warning { background-color: #2C2512; }
+        [data-theme="dark"] .callout-important { background-color: #2E1C16; }
+        [data-theme="dark"] .callout-caution { background-color: #2E1A1C; }
+        [data-theme="dark"] table.custom-table td { border-bottom-color: #3A2B25; }
+        [data-theme="dark"] table.custom-table tr:hover td { background-color: #261E1A; }
+        [data-theme="dark"] code { background: #3A2620; color: #FFCCBC; }
+        [data-theme="dark"] .code-container code { background: transparent; }
+        [data-theme="dark"] .problem-card { background: #1E1815; }
+        [data-theme="dark"] .problem-statement { background: rgba(255,112,67,0.07); }
+        [data-theme="dark"] .solution-details, [data-theme="dark"] .solution-content { background: #1E1815; }
+        [data-theme="dark"] .solution-toggle:hover { background: #3A2620; }
+        [data-theme="dark"] #cheat-sheet-drawer { background: #14100E; box-shadow: -6px 0 30px rgba(0,0,0,0.6); }
+        [data-theme="dark"] .cheat-header { background: linear-gradient(135deg, #3A2118, #4A2A1E); }
+        [data-theme="dark"] .cheat-close-btn:hover { background: rgba(255,255,255,0.12); }
+        [data-theme="dark"] .cheat-tab-btn, [data-theme="dark"] .cheat-card { background: #1E1815; }
+        [data-theme="dark"] .cheat-cat-badge { background: #3A2620; }
+        [data-theme="dark"] .cheat-formula { background: #14100E; }
+        [data-theme="dark"] .cheat-solved { color: #E0CFC8; background: #2C2512; border-color: #6B5A1F; }
+        [data-theme="dark"] .quiz-section { background: linear-gradient(135deg, #261A14, #33201A); }
+        [data-theme="dark"] .quiz-section p { color: #C9B5AC !important; }
+        [data-theme="dark"] .quiz-question { background: #1E1815; }
+        [data-theme="dark"] .quiz-opt:hover { background: #3A2620; }
+        [data-theme="dark"] .quiz-opt.correct { background: #14301A !important; border-color: #4CAF50 !important; color: #A5D6A7 !important; }
+        [data-theme="dark"] .quiz-opt.incorrect { background: #3A1618 !important; border-color: #E53935 !important; color: #EF9A9A !important; }
+        [data-theme="dark"] .quiz-explanation { background: #2C2512; }
+        [data-theme="dark"] .search-box input { background: #1E1815; color: var(--text-heading); }
+        [data-theme="dark"] .drawer-backdrop { background: rgba(0,0,0,0.65); }
+        [data-theme="dark"] footer.site-footer { background: #0D0A09; }
+
+        /* ==========================================================================
+           TEST MODE (MCQ quiz overlay)
+           ========================================================================== */
+        #test-overlay { position: fixed; inset: 0; z-index: 2000; background: var(--bg-body); display: none; overflow-y: auto; }
+        #test-overlay.open { display: block; }
+        .test-wrap { max-width: 820px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+        .test-topbar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+        .test-topbar h2 { font-family: var(--font-heading); color: var(--text-heading); font-size: 1.5rem; }
+        .test-card { background: var(--surface-card); border: 1px solid var(--border-soft); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-card); margin-bottom: 1.25rem; }
+        .test-card h3 { font-family: var(--font-heading); color: var(--text-heading); margin-bottom: 0.75rem; font-size: 1.1rem; }
+        .test-row { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+        .test-chip { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.45rem 0.9rem; border: 1px solid var(--border-medium); border-radius: 30px; cursor: pointer; font-size: 0.88rem; background: var(--surface-alt); color: var(--text-body); user-select: none; }
+        .test-chip.on { background: var(--accent-terracotta); border-color: var(--accent-terracotta); color: #fff; }
+        .test-chip input { accent-color: var(--primary-dark); }
+        .test-mods { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.5rem; margin-top: 0.75rem; }
+        .test-mods.disabled { opacity: 0.45; pointer-events: none; }
+        .test-mods .test-chip { border-radius: var(--radius-md); font-size: 0.82rem; }
+        .test-btn { background: var(--accent-terracotta); color: #fff; border: none; border-radius: 30px; padding: 0.65rem 1.5rem; font-weight: 700; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+        .test-btn:hover { background: var(--primary-dark); }
+        .test-btn.ghost { background: transparent; color: var(--text-body); border: 1px solid var(--border-medium); }
+        .test-btn.ghost:hover { background: var(--surface-alt); }
+        .test-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .test-select { background: var(--surface-alt); color: var(--text-body); border: 1px solid var(--border-medium); border-radius: 8px; padding: 0.4rem 0.6rem; font-family: inherit; }
+        .test-progress { height: 6px; background: var(--border-soft); border-radius: 6px; overflow: hidden; margin-bottom: 1rem; }
+        .test-progress > div { height: 100%; background: linear-gradient(90deg, var(--accent-peach), var(--accent-terracotta)); transition: width .25s; }
+        .test-meta { display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.6rem; flex-wrap: wrap; gap: .5rem; }
+        .test-tag { background: var(--accent-peach-light); color: var(--text-heading); border-radius: 20px; padding: 0.1rem 0.7rem; font-size: 0.75rem; font-weight: 600; }
+        .test-q { color: var(--text-heading); font-size: 1.05rem; line-height: 1.65; margin-bottom: 1rem; }
+        .test-opt { display: flex; gap: 0.7rem; padding: 0.75rem 1rem; border: 1px solid var(--border-medium); border-radius: var(--radius-md); margin-bottom: 0.55rem; cursor: pointer; background: var(--surface-alt); color: var(--text-body); }
+        .test-opt:hover { border-color: var(--accent-terracotta); }
+        .test-opt .k { font-weight: 700; color: var(--accent-terracotta); min-width: 1.2rem; }
+        .test-opt.locked { pointer-events: none; }
+        .test-opt.correct { background: #E8F5E9; border-color: #4CAF50; color: #2E7D32; }
+        .test-opt.wrong { background: #FFEBEE; border-color: #E53935; color: #C62828; }
+        [data-theme="dark"] .test-opt.correct { background: #14301A; color: #A5D6A7; }
+        [data-theme="dark"] .test-opt.wrong { background: #3A1618; color: #EF9A9A; }
+        .test-exp { display: none; margin-top: 0.9rem; padding: 0.85rem 1rem; border-left: 4px solid var(--accent-terracotta); background: var(--callout-bg); border-radius: 8px; font-size: 0.92rem; }
+        .test-score { font-family: var(--font-heading); font-size: 3rem; color: var(--accent-terracotta); font-weight: 800; }
+        .test-bar { display: grid; grid-template-columns: 1fr 70px; gap: .6rem; align-items: center; font-size: .85rem; margin: .35rem 0; }
+        .test-bar .track { height: 8px; background: var(--border-soft); border-radius: 6px; overflow: hidden; }
+        .test-bar .fill { height: 100%; background: var(--accent-terracotta); }
+        .test-review-item { border-top: 1px solid var(--border-soft); padding: 0.9rem 0; font-size: 0.92rem; }
+        #theme-toggle-btn { min-width: 2.4rem; justify-content: center; }
+        /* ---------- Mobile / narrow screens ---------- */
+        @media (max-width: 1100px) {
+            #open-cheat-sheet-btn .lbl, #open-eli5-btn .lbl, #open-theory-btn .lbl, #open-test-btn .lbl { display: none; }
+        }
+        @media (max-width: 900px) {
+            :root { --header-height: 108px; }
+            header.sticky-header { flex-wrap: wrap; align-content: center; row-gap: 0.45rem; padding: 0.4rem 0.9rem; }
+            header.sticky-header > div:first-child { flex: 1 1 100%; justify-content: space-between; }
+            .header-brand { font-size: 1rem; gap: 0.5rem; }
+            .header-actions { flex: 1 1 100%; gap: 0.4rem; }
+            .header-actions .nav-btn { padding: 0.45rem 0.6rem; }
+            .search-box { flex: 1 1 auto; min-width: 0; }
+            .search-box input, .search-box input:focus { width: 100%; min-width: 0; }
+            #toggle-drawer-btn .lbl { display: none; }
+            .math-inline { white-space: normal; }
+            .hero-banner { padding: 2rem 1.1rem; }
+            .meta-pill { white-space: normal; }
+            #nav-drawer { width: min(320px, 88vw); }
+            h2.module-title { font-size: 1.45rem; line-height: 1.3; }
+        }
+        @media (max-width: 380px) {
+            .brand-badge { display: none; }
+        }
     </style>
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
 
@@ -1481,7 +1612,7 @@ def build_interactive_html():
     <header class="sticky-header">
         <div style="display: flex; align-items: center; gap: 1rem;">
             <button id="toggle-drawer-btn" class="nav-btn" title="Toggle Navigation Drawer">
-                <span style="font-size: 1.1rem;">☰</span> <span>Modules</span>
+                <span style="font-size: 1.1rem;">☰</span> <span class="lbl">Modules</span>
             </button>
             <a href="#" class="header-brand">
                 <span>Reliability &amp; Stats</span>
@@ -1494,8 +1625,18 @@ def build_interactive_html():
                 <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                 <input type="text" id="live-search" placeholder="Search formulas, theorems, problem types...">
             </div>
-            <button id="open-cheat-sheet-btn" class="nav-btn" title="Open Master Formula Reference & Problem Types">
-                <span>⚡ Cheat Sheet &amp; Formulas</span>
+            <a href="theory.html" id="open-theory-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Necessary theory, definitions and exam traps for every module">
+                <span>📖 <span class="lbl">Theory</span></span>
+            </a>
+            <a href="eli5.html" id="open-eli5-btn" class="nav-btn tab-dup" style="text-decoration:none;" title="Simple, explain-like-I'm-five walkthrough of every module">
+                <span>🧸 <span class="lbl">ELI5</span></span>
+            </a>
+            <button id="open-test-btn" class="nav-btn tab-dup" title="Take an MCQ test on all or selected modules">
+                <span>📝 <span class="lbl">Test</span></span>
+            </button>
+            <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
+            <button id="open-cheat-sheet-btn" class="nav-btn tab-dup" title="Open Master Formula Reference & Problem Types">
+                <span>⚡ <span class="lbl">Cheat Sheet &amp; Formulas</span></span>
             </button>
         </div>
     </header>
@@ -1621,6 +1762,15 @@ def build_interactive_html():
         </div>
     </aside>
 
+    <!-- Bottom tab bar (phones only, see mobile.css) -->
+    <nav class="tabbar" aria-label="Pages">
+        <a href="#" aria-current="page"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html"><span class="ic">🧸</span>ELI5</a>
+        <button type="button" id="tab-formulas"><span class="ic">⚡</span>Formulas</button>
+        <button type="button" id="tab-test"><span class="ic">📝</span>Test</button>
+    </nav>
+
     <!-- Back to Top Floating Button -->
     <button id="back-to-top" title="Back to top">↑</button>
 
@@ -1717,6 +1867,11 @@ def build_interactive_html():
         openCheatBtn.addEventListener('click', openCheatSheet);
         closeCheatBtn.addEventListener('click', closeCheatSheet);
         backdrop.addEventListener('click', closeCheatSheet);
+        document.getElementById('tab-formulas').addEventListener('click', openCheatSheet);
+        if (location.hash === '#formulas') {
+            history.replaceState(null, '', location.pathname + location.search);
+            openCheatSheet();
+        }
 
         // Cheat Sheet Category Filtering & Search
         const tabBtns = document.querySelectorAll('.cheat-tab-btn');
@@ -1805,6 +1960,14 @@ def build_interactive_html():
             });
         });
     </script>
+
+    <!-- MCQ Test Overlay -->
+    <div id="test-overlay" role="dialog" aria-modal="true" aria-label="MCQ Test">
+        <div class="test-wrap" id="test-root"></div>
+    </div>
+    <script src="quiz_bank.js"></script>
+    <script src="quiz.js"></script>
+    <script src="mathfit.js"></script>
 </body>
 </html>
 ''')

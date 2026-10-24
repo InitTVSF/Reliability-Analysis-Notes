@@ -21,7 +21,18 @@ A comprehensive, mathematically rigorous study guide, reference handbook, and in
 - **Interactive Self-Assessment Quizzes:** Multiple-choice knowledge checks with instant feedback, scoring, and pedagogical explanations.
 - **Sticky Navigation & Active Scrollspy:** Navigation drawer with real-time reading progress bar and floating back-to-top button.
 
-### 2. Comprehensive Master Study Guide (`study_guide.md`)
+### 2. Companion Pages (`theory.html`, `eli5.html`)
+- **Theory Essentials (`theory.html`):** definitions, theorems, assumptions, key distinctions and exam traps for all 12 modules, checked against the 60 lecture transcripts. Scope tags mark material that is *not examined* (e.g. Weibull), *beyond lectures*, or *named only*. Includes a "Traps only" revision mode and a module filter.
+- **Explain Like I'm Five (`eli5.html`):** an analogy-first walkthrough of every module and sub-topic, told through one toy-car factory, with a short self-check quiz.
+- Both are linked from the header of `index.html` and share its light/dark theme.
+
+### 3. Mobile Friendly
+- All pages work down to 320 px phone widths. Phone rules live in one shared stylesheet, `mobile.css`.
+- On phones, a bottom tab bar (Guide · Theory · ELI5 · Formulas · Test) replaces the icon-only header buttons. `index.html#formulas` and `index.html#test` open the formula sheet and the MCQ test directly.
+- The main guide's header is one row (menu, search, theme). On Theory and ELI5 the module links become a sticky strip that scrolls sideways and highlights the module you're reading (`mobile.js`).
+- Long formulas scroll inside their own box (`mathfit.js`) instead of widening the page.
+
+### 4. Comprehensive Master Study Guide (`study_guide.md`)
 - **2,400+ Lines / 153,000+ Characters** of exhaustive pedagogical notes.
 - **Formal Mathematical Rigor:** Kolmogorov axioms, hazard rate transformations ($h(t) = -\frac{d}{dt}\ln R(t)$), sampling distributions ($\chi^2, t, F$), Maximum Likelihood Estimations (MLE), ANOVA variance decompositions, OLS Gauss-Markov derivations, AR(1) time-series forecasting, Logistic link functions, and full Support Vector Machine (SVM) Primal/Dual Lagrangian optimizations with KKT conditions.
 - **35 Examination & Engineering Problem Archetypes:** Detailed breakdowns for every topic including physical scenarios, trigger keywords, governing equations, and step-by-step solution algorithms.
@@ -79,6 +90,11 @@ This automatically updates `study_guide.md` and generates the self-contained `in
 ```
 .
 ├── index.html                 # Complete, self-contained interactive web application
+├── theory.html                # Theory essentials & exam traps (verified against transcripts)
+├── eli5.html                  # Simple, analogy-first explanation of every module
+├── mathfit.js                 # Keeps long MathJax formulas inside narrow screens
+├── mobile.css                 # Phone layout shared by all three pages
+├── mobile.js                  # Highlights the current module in the jump-link strip
 ├── study_guide.md             # Master textbook & study guide (all 12 modules)
 ├── build_full_suite.py        # Compiler & math-protection build script
 ├── validate_output.py         # HTML5 validator & LaTeX token integrity checker

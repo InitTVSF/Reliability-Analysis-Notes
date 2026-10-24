@@ -70,6 +70,9 @@ Since the score equations are non-linear in $\boldsymbol{\beta}$, they have no c
 ## 11.4 Goodness-of-Fit & Model Significance
 
 ### 11.4.1 Deviance & Likelihood Ratio Test
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** deviance, the likelihood-ratio test and pseudo-$R^2$ are **not taught**. Of 11.4, only the Wald test (Lec 46) is covered. The lectures also cover multinomial (pivot class) and ordinal logistic regression, and stress that logistic regression is "strictly not a classifier" until a cut-off is chosen.
 - **Deviance ($D$):** $D = -2 \ln L(\hat{\boldsymbol{\beta}})$ (Analogous to $SSE$ in linear regression).
 - **Likelihood Ratio Test ($G$):** Compares the fitted model with $k$ predictors against the intercept-only (null) model:
   $$G = -2 \left[ \ln L(\text{Null}) - \ln L(\text{Fitted}) \right] = D_{\text{null}} - D_{\text{fitted}} \sim \chi^2(k)$$
@@ -87,6 +90,9 @@ $$W = \left( \frac{\hat{\beta}_j}{SE(\hat{\beta}_j)} \right)^2 \sim \chi^2(1) \q
 ---
 
 ## 11.5 Binary Classification Performance Metrics
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** the confusion matrix, precision/recall/F1 and ROC/AUC are **not taught** in Lec 45–48.
 
 ### 11.5.1 The Confusion Matrix
 Given a decision threshold $p_{\text{thresh}} = 0.50$:

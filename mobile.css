@@ -1,0 +1,142 @@
+/* Phone layout shared by index.html, theory.html and eli5.html.
+   Linked after each page's own <style>, so these rules win on small screens.
+   Desktop is untouched: everything except the hidden tab bar sits inside the
+   media query. */
+
+.tabbar { display: none; }
+
+@media (max-width: 640px) {
+    :root { --header-height: 56px; --tabbar-height: 58px; }
+    html { scroll-padding-top: calc(var(--header-height) + 64px); }
+    body {
+        /* Safety net: a stray wide element must never make the whole page
+           pan sideways. clip (unlike hidden) keeps position: sticky working. */
+        overflow-x: clip;
+        line-height: 1.65;
+        padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+    }
+
+    /* ---------- Bottom tab bar (replaces the icon-only header buttons) ---------- */
+    .tabbar {
+        display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1500;
+        height: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+        padding-bottom: env(safe-area-inset-bottom);
+        background: rgba(255, 253, 249, 0.97); backdrop-filter: blur(12px);
+        border-top: 1px solid var(--border-soft);
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.06);
+    }
+    [data-theme="dark"] .tabbar { background: rgba(20, 16, 14, 0.97); }
+    .tabbar a, .tabbar button {
+        flex: 1 1 0; min-width: 0; display: flex; flex-direction: column;
+        align-items: center; justify-content: center; gap: 3px;
+        background: none; border: 0; font: inherit; font-size: 0.68rem; font-weight: 600;
+        color: var(--text-muted); text-decoration: none; cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+    }
+    .tabbar .ic { font-size: 1.2rem; line-height: 1; }
+    .tabbar [aria-current="page"] { color: var(--primary-dark); }
+    .tabbar [aria-current="page"]::after {
+        content: ''; width: 18px; height: 3px; border-radius: 3px; background: currentColor; margin-top: 1px;
+    }
+    .tab-dup { display: none !important; }
+
+    /* ---------- Header: one 56px row ---------- */
+    header.sticky-header {
+        flex-wrap: nowrap; gap: 0.5rem; padding: 0 0.75rem;
+        height: var(--header-height);
+    }
+    .header-actions { gap: 0.4rem; }
+    .nav-btn { min-height: 38px; }
+    #theme-toggle-btn { min-width: 40px; }
+    .header-brand { font-size: 1.05rem; }
+    .brand-badge { display: none; }
+    /* iOS zooms the page into any input whose text is below 16px */
+    input[type="text"], input[type="search"] { font-size: 16px !important; }
+
+    /* ---------- index.html ---------- */
+    /* Header row: [menu] [search ......] [theme] */
+    header.sticky-header > div:first-child { flex: 0 0 auto; }
+    header.sticky-header > div:first-child .header-brand { display: none; }
+    #toggle-drawer-btn { min-width: 40px; justify-content: center; }
+    header.sticky-header > div:first-child + .header-actions { flex: 1 1 auto; min-width: 0; }
+    .search-box input, .search-box input:focus { padding-top: 0.45rem; padding-bottom: 0.45rem; }
+    #nav-drawer { top: calc(var(--header-height) + 4px); padding-bottom: calc(var(--tabbar-height) + 1rem); }
+    .drawer-nav a { padding: 0.7rem 0.8rem; }
+
+    .hero-banner { margin: 0.75rem 0.5rem 1rem; padding: 1.4rem 1rem 1.2rem; border-radius: 14px; }
+    .hero-tag { font-size: 0.62rem; letter-spacing: 0.5px; padding: 0.25rem 0.7rem; margin-bottom: 0.8rem; }
+    .hero-title { font-size: 1.45rem; margin-bottom: 0.6rem; }
+    .hero-subtitle { font-size: 0.95rem; line-height: 1.55; margin-bottom: 1rem; }
+    .hero-meta { gap: 0.4rem; font-size: 0.75rem; }
+    .meta-pill { padding: 0.2rem 0.65rem; }
+
+    main.main-container { padding: 0 0.5rem 2rem; }
+    section.module-section { padding: 1.3rem 0.95rem; margin-bottom: 1.25rem; border-radius: 14px; }
+    h2.module-title { font-size: 1.3rem; margin-bottom: 1.2rem; padding-bottom: 0.6rem; }
+    /* Flex made each formula in a heading its own item, so headings with
+       math could not wrap and pushed the page sideways */
+    h3.section-h2 { display: block; font-size: 1.15rem; margin-top: 1.6rem; margin-bottom: 0.7rem; }
+    h3.section-h2::before { margin-right: 0.4rem; }
+    h4.section-h3 { font-size: 1.02rem; margin-top: 1.3rem; }
+    p.body-p { line-height: 1.7; margin-bottom: 1rem; }
+    ul.custom-list, ol.custom-ol { margin: 0.8rem 0 1.1rem 1.15rem; }
+    hr.section-divider { margin: 1.6rem 0; }
+    .callout-card { padding: 0.95rem 0.9rem; margin: 1.2rem 0; }
+    .table-responsive { margin: 1.2rem 0; }
+    table.custom-table { font-size: 0.85rem; }
+    table.custom-table th, table.custom-table td { padding: 0.55rem 0.7rem; }
+    .code-container { padding: 0.9rem; margin: 1.2rem 0; }
+    .problem-card { padding: 1rem 0.85rem; margin: 1.4rem 0; }
+    .problem-title { font-size: 1.05rem; }
+    .problem-statement { padding: 0.8rem 0.9rem; }
+    .solution-toggle { padding: 0.75rem 0.9rem; }
+    .solution-content { padding: 1rem 0.85rem; }
+
+    #cheat-sheet-drawer { max-width: 100vw; border-left: 0; }
+    .cheat-header { padding: 0.9rem 1rem; }
+    #back-to-top {
+        right: 0.75rem; width: 42px; height: 42px;
+        bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 0.75rem);
+    }
+    footer.site-footer { padding: 1.6rem 1rem; margin-top: 2rem; }
+    .test-wrap { padding: 1rem 0.75rem 3rem; }
+    .test-card { padding: 1rem 0.9rem; }
+    .test-mods { grid-template-columns: 1fr; }
+    .test-opt { padding: 0.7rem 0.8rem; }
+
+    /* ---------- theory.html / eli5.html ---------- */
+    main { padding: 0.75rem 0.75rem 2rem; }
+    .hero { padding: 1.25rem 1rem; margin-bottom: 0.75rem; border-radius: 14px; }
+    .hero h1 { font-size: 1.5rem; }
+    .hero p, .hero .note { font-size: 0.93rem; }
+    .hero .note { padding: 0.6rem 0.8rem; }
+    #traps-btn .lbl { display: inline; }
+
+    /* Module jump links become one sticky, sideways-scrolling strip */
+    .toolbar, nav.chips {
+        position: sticky; top: var(--header-height); z-index: 50;
+        flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+        margin: 0 -0.75rem 1rem; padding: 0.55rem 0.75rem;
+        background: var(--bg-body); border-bottom: 1px solid var(--border-soft);
+    }
+    .toolbar::-webkit-scrollbar, nav.chips::-webkit-scrollbar { display: none; }
+    .toolbar a, nav.chips a {
+        flex: 0 0 auto; display: inline-flex; align-items: center;
+        min-height: 34px; padding: 0.3rem 0.8rem; white-space: nowrap; font-size: 0.82rem;
+    }
+    .toolbar a.current, nav.chips a.current {
+        background: var(--accent-terracotta); border-color: var(--accent-terracotta); color: #fff;
+    }
+    .toolbar input { order: -1; flex: 0 0 9.5rem; min-width: 0; margin-left: 0; padding: 0.3rem 0.7rem; }
+
+    section.mod { padding: 1.15rem 0.9rem; margin-bottom: 1.1rem; border-radius: 14px; }
+    section.mod h2 { font-size: 1.25rem; margin-bottom: 0.7rem; }
+    section.mod h3 { font-size: 1.05rem; margin-top: 1.15rem; }
+    section.mod ul, .part-body ul { padding-left: 1.1rem; }
+    .box { padding: 0.75rem 0.85rem; }
+    .big-idea { padding: 0.7rem 0.85rem; }
+    details.part > summary { padding: 0.75rem 0.85rem; font-size: 1rem; min-height: 48px; }
+    .part-body { padding: 0 0.85rem 0.9rem; }
+    table { font-size: 0.84rem; }
+    th, td { padding: 0.45rem 0.6rem; }
+}

@@ -1,4 +1,4 @@
-# MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 26–27, 29–31)
+# MODULE 7: Statistical Inference — Hypothesis Testing & Goodness-of-Fit (Lectures 22–25, 29–31)
 
 ## 7.1 Fundamentals of Hypothesis Testing
 
@@ -91,6 +91,9 @@ $$F_{\text{calc}} = \frac{s_1^2}{s_2^2} \sim F(n_1 - 1, n_2 - 1)$$
 ---
 
 ## 7.3 Chi-Square Goodness-of-Fit & Independence Tests
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** the goodness-of-fit test is **not taught** in the lectures. The test of independence is taught in **Lec 39**, as the chi-square test of association for nominal data, alongside correlation (Module 9).
 
 ### 7.3.1 Pearson's Chi-Square Goodness-of-Fit Test
 Tests whether observed sample counts $O_i$ conform to a theoretical probability distribution $E_i = n \cdot p_i$:

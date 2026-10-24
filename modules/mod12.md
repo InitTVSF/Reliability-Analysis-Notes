@@ -10,6 +10,9 @@ Given a training dataset $\mathcal{D} = \{(\mathbf{x}_1, y_1), (\mathbf{x}_2, y_
 
 ### 12.1.2 Bayes Optimal Classifier & Naive Bayes Classifier
 
+> [!NOTE]
+> **Lecture convention:** the course handles zero counts with the **m-estimate** $\frac{n_c + m p}{n + m}$ (Lec 53). Laplace smoothing is the special case $m = k$, $p = 1/k$. The lecture calls $P(x_j \mid c)$ the "posterior" probability, and adds a second Naive Bayes assumption: all attributes contribute equally.
+
 #### 1. Maximum A Posteriori (MAP) Decision Rule
 By Bayes\' Theorem, the posterior probability of class $C_k$ given feature vector $\mathbf{x}$ is:
 $$P(C_k \mid \mathbf{x}) = \frac{P(\mathbf{x} \mid C_k) P(C_k)}{P(\mathbf{x})} = \frac{P(\mathbf{x} \mid C_k) P(C_k)}{\sum_{j=1}^K P(\mathbf{x} \mid C_j) P(C_j)}$$
@@ -117,6 +120,9 @@ $$\min_{\mathbf{w}, b} \frac{1}{2} \|\mathbf{w}\|^2 = \frac{1}{2} \mathbf{w}^T \
 ---
 
 ### 12.3.3 Lagrange Multipliers & Karush-Kuhn-Tucker (KKT) Conditions
+
+> [!NOTE]
+> **Lecture notation:** the multipliers are written $\lambda_i$ (here $\alpha_i$) and the Lagrangians $L_P$ / $L_D$. $b$ is computed from each support vector and averaged.
 Introducing Lagrange multipliers $\alpha_i \ge 0$ for each inequality constraint, the **Primal Lagrangian** is:
 $$L(\mathbf{w}, b, \boldsymbol{\alpha}) = \frac{1}{2} \mathbf{w}^T \mathbf{w} - \sum_{i=1}^N \alpha_i \left[ y_i (\mathbf{w}^T \mathbf{x}_i + b) - 1 \right]$$
 
@@ -155,6 +161,9 @@ $$b = y_k - \mathbf{w}^T \mathbf{x}_k = y_k - \sum_{i \in \text{SV}} \alpha_i y_
 ---
 
 ## 12.4 Soft-Margin SVM (Non-Separable Data)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 57 only mentions the soft margin ("I will not go into the details"). Slack variables, $C$ and the box constraint are not taught.
 
 When data is linearly non-separable or contains noise/outliers, **Slack Variables $\xi_i \ge 0$** are introduced to allow controlled margin violations:
 $$y_i (\mathbf{w}^T \mathbf{x}_i + b) \ge 1 - \xi_i, \quad \xi_i \ge 0, \quad \forall i = 1, \dots, N$$
@@ -230,6 +239,9 @@ $$\mathbf{c}^T \mathbf{K} \mathbf{c} = \sum_{i=1}^N \sum_{j=1}^N c_i c_j K(\math
 - **One-vs-One (OvO):** Trains $\binom{K}{2} = \frac{K(K-1)}{2}$ binary classifiers for every pair of classes $(C_i, C_j)$. Final class assigned via majority voting.
 
 ### 12.6.2 Support Vector Regression (SVR)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 60 says SVM regression and ranking were not covered and are left for self-study.
 Uses Vapnik\'s **$\epsilon$-Insensitive Loss Function**:
 $$L_\epsilon(y, f(\mathbf{x})) = \max(0, |y - f(\mathbf{x})| - \epsilon)$$
 Errors smaller than $\epsilon$ inside the \"tube\" around the regression curve are ignored with zero penalty.

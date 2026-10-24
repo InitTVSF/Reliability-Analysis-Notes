@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+    (function(){var t='dark';try{t=localStorage.getItem('theme')||'dark';}catch(e){}document.documentElement.setAttribute('data-theme',t);})();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Explain Like I'm Five — Statistical Learning for Reliability Analysis</title>
+    <meta name="description" content="A simple, analogy-first walkthrough of all 12 modules of Statistical Learning for Reliability Analysis (NPTEL, IIT Kharagpur), told through one toy-car factory.">
+
+    <link rel="stylesheet" href="vendor/fonts.css">
+
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']],
+            processEscapes: true
+        },
+        options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+    </script>
+    <script id="MathJax-script" async src="vendor/mathjax/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* Same Bright Peach tokens as index.html so both pages feel like one site */
+        :root {
+            --bg-body: #FFFDF9;
+            --surface-card: #FFFFFF;
+            --surface-alt: #FFF8F2;
+            --accent-peach-light: #FFE0D6;
+            --accent-peach: #FFAB91;
+            --accent-peach-vivid: #FF8A65;
+            --accent-terracotta: #FF7043;
+            --primary-dark: #D84315;
+            --text-heading: #3E2723;
+            --text-body: #37474F;
+            --text-muted: #607D8B;
+            --border-soft: #FFE5D9;
+            --border-medium: #FFCCBC;
+            --callout-bg: #FFF3E0;
+            --ok: #2E7D32;
+            --shadow-card: 0 4px 16px rgba(183, 28, 28, 0.04), 0 2px 6px rgba(0, 0, 0, 0.03);
+            --font-main: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            --font-heading: 'Outfit', 'Inter', sans-serif;
+            --container-width: 920px;
+            --header-height: 64px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+        }
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg-body: #14100E;
+            --surface-card: #1E1815;
+            --surface-alt: #261E1A;
+            --accent-peach-light: #4A2E24;
+            --primary-dark: #E65A2B;
+            --text-heading: #FFE0D6;
+            --text-body: #D7CCC8;
+            --text-muted: #A1887F;
+            --border-soft: #3A2B25;
+            --border-medium: #5A3F33;
+            --callout-bg: #2A1F18;
+            --ok: #81C784;
+            --shadow-card: 0 4px 16px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 16px; scroll-padding-top: calc(var(--header-height) + 16px); }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            font-family: var(--font-main);
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            padding-top: var(--header-height);
+        }
+
+        header.sticky-header {
+            position: fixed; top: 0; left: 0; right: 0;
+            height: var(--header-height);
+            background: rgba(255, 253, 249, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-soft);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 2rem; z-index: 999; gap: 0.75rem;
+        }
+        [data-theme="dark"] header.sticky-header { background: rgba(20,16,14,0.95); }
+        .header-brand {
+            display: flex; align-items: center; gap: 0.6rem;
+            text-decoration: none; color: var(--text-heading);
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem;
+            white-space: nowrap;
+        }
+        .brand-badge {
+            background: linear-gradient(135deg, var(--accent-peach-vivid), var(--primary-dark));
+            color: #fff; font-size: 0.7rem; padding: 0.15rem 0.55rem; border-radius: 6px; letter-spacing: 0.04em;
+        }
+        .header-actions { display: flex; gap: 0.5rem; }
+        .nav-btn {
+            background: var(--surface-alt); border: 1px solid var(--border-medium); color: var(--text-heading);
+            padding: 0.45rem 0.9rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;
+            text-decoration: none; transition: all 0.2s ease; font-family: inherit;
+        }
+        .nav-btn:hover { background: var(--accent-peach); color: #fff; border-color: var(--accent-peach-vivid); }
+
+        main { max-width: var(--container-width); margin: 0 auto; padding: 2rem 1rem 4rem; }
+
+        .hero {
+            background: linear-gradient(135deg, #FFF3E0 0%, #FFE0D6 60%, #FFCCBC 100%);
+            border: 1px solid var(--border-medium); border-radius: var(--radius-lg);
+            padding: 2.2rem 2rem; margin-bottom: 1.5rem;
+        }
+        [data-theme="dark"] .hero { background: linear-gradient(135deg, #2A1A14 0%, #3A2118 50%, #4A2A1E 100%); border-color: rgba(255,171,145,0.18); }
+        .hero h1 { font-family: var(--font-heading); color: var(--text-heading); font-size: 2.1rem; line-height: 1.2; margin-bottom: 0.6rem; }
+        .hero p { max-width: 640px; }
+        .hero .note {
+            margin-top: 1rem; font-size: 0.9rem; padding: 0.7rem 1rem; border-radius: 10px;
+            background: var(--surface-card); border-left: 4px solid var(--accent-terracotta);
+        }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 2rem; }
+        .chips a {
+            font-size: 0.82rem; font-weight: 600; text-decoration: none; color: var(--text-heading);
+            background: var(--surface-alt); border: 1px solid var(--border-medium);
+            padding: 0.3rem 0.75rem; border-radius: 999px;
+        }
+        .chips a:hover { background: var(--accent-peach); color: #fff; }
+
+        section.mod {
+            background: var(--surface-card); border: 1px solid var(--border-soft);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+            padding: 1.8rem 2rem; margin-bottom: 1.6rem;
+        }
+        .mod-head { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.25rem; }
+        .mod-num {
+            font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.08em;
+            color: var(--primary-dark); text-transform: uppercase;
+        }
+        .mod-lec { font-size: 0.8rem; color: var(--text-muted); }
+        section.mod h2 { font-family: var(--font-heading); color: var(--text-heading); font-size: 1.55rem; line-height: 1.3; margin-bottom: 0.8rem; }
+        .big-idea {
+            background: var(--callout-bg); border-left: 4px solid var(--accent-terracotta);
+            border-radius: 10px; padding: 0.8rem 1rem; margin-bottom: 1.2rem;
+        }
+        .big-idea b { color: var(--primary-dark); }
+
+        details.part { border: 1px solid var(--border-soft); border-radius: var(--radius-md); margin-bottom: 0.7rem; background: var(--surface-alt); }
+        details.part > summary {
+            cursor: pointer; list-style: none; padding: 0.75rem 1rem;
+            font-family: var(--font-heading); font-weight: 600; color: var(--text-heading); font-size: 1.05rem;
+            display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+        }
+        details.part > summary::-webkit-details-marker { display: none; }
+        details.part > summary::after { content: '+'; font-size: 1.3rem; color: var(--accent-terracotta); line-height: 1; }
+        details.part[open] > summary::after { content: '–'; }
+        .part-body { padding: 0 1.1rem 1rem; }
+        .part-body ul { padding-left: 1.2rem; }
+        .part-body li { margin-bottom: 0.4rem; }
+        .part-body li ul { margin-top: 0.3rem; }
+        b.t { color: var(--text-heading); }
+        .opt { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.03em; padding: 0.05rem 0.45rem; border-radius: 5px; background: var(--surface-alt); border: 1px solid var(--border-medium); color: var(--text-muted); vertical-align: middle; line-height: 1.5; }
+
+        .table-wrap { overflow-x: auto; margin: 0.6rem 0; }
+        table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+        th, td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+        th { color: var(--text-heading); background: var(--surface-card); font-weight: 600; }
+
+        .warn { color: var(--primary-dark); font-weight: 600; }
+
+        .flow {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.5rem;
+        }
+        .flow span.step {
+            background: var(--surface-alt); border: 1px solid var(--border-medium);
+            padding: 0.35rem 0.7rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-heading);
+        }
+        .flow span.arrow { color: var(--accent-terracotta); font-weight: 700; }
+
+        .quiz ol { padding-left: 1.3rem; }
+        .quiz li { margin-bottom: 0.9rem; }
+        .quiz details summary { cursor: pointer; color: var(--primary-dark); font-weight: 600; font-size: 0.88rem; margin-top: 0.25rem; }
+        .quiz details p { margin-top: 0.35rem; padding: 0.6rem 0.9rem; border-radius: 8px; background: var(--surface-alt); border-left: 3px solid var(--ok); }
+
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 1rem; }
+        footer a { color: var(--primary-dark); }
+
+        #theme-toggle-btn { min-width: 2.4rem; justify-content: center; }
+
+        @media (max-width: 700px) {
+            header.sticky-header { padding: 0 1rem; }
+            .brand-badge, .nav-btn .lbl { display: none; }
+            .hero { padding: 1.6rem 1.2rem; }
+            .hero h1 { font-size: 1.6rem; }
+            section.mod { padding: 1.4rem 1rem; }
+            section.mod h2 { font-size: 1.3rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <header class="sticky-header">
+        <a href="index.html" class="header-brand">
+            <span>🧸 ELI5</span>
+            <span class="brand-badge">NPTEL IIT KGP</span>
+        </a>
+        <div class="header-actions">
+            <a href="theory.html" class="nav-btn tab-dup" title="Necessary theory for every module"><span>📖 <span class="lbl">Theory</span></span></a>
+            <a href="index.html" class="nav-btn tab-dup" title="Back to the full study guide"><span>📘 <span class="lbl">Full Guide</span></span></a>
+            <button id="theme-toggle-btn" class="nav-btn" title="Toggle light / dark mode" aria-label="Toggle theme"><span>☀️</span></button>
+        </div>
+    </header>
+
+    <main>
+        <div class="hero">
+            <h1>Explain Like I'm Five</h1>
+            <p>All 12 modules of <em>Statistical Learning for Reliability Analysis</em>, told through one pretend <b>toy-car factory</b>. Every module has a <b>big idea</b>, then each part and sub-topic in plain words. Click a part to open it.</p>
+            <div class="note">⚠️ The simple version helps you remember the idea, but it isn't enough for the exam. After each module, go back to its formulas in the <a href="index.html">full study guide</a>.<br>Tags: <span class="opt">beyond lectures</span> means it isn't taught in the lectures (lower exam priority). <span class="opt">not in the exam</span> means the lecturer said no questions will come from it.</div>
+        </div>
+
+        <nav class="chips" aria-label="Jump to module">
+            <a href="#m1">1 · Reliability</a><a href="#m2">2 · Probability</a><a href="#m3">3 · Discrete</a>
+            <a href="#m4">4 · Continuous</a><a href="#m5">5 · Sampling</a><a href="#m6">6 · Estimation</a>
+            <a href="#m7">7 · Testing</a><a href="#m8">8 · ANOVA</a><a href="#m9">9 · Regression</a>
+            <a href="#m10">10 · Time series</a><a href="#m11">11 · Logistic</a><a href="#m12">12 · ML classifiers</a>
+            <a href="#map">🗺️ Map</a><a href="#quiz">✅ Quiz</a>
+        </nav>
+
+        <!-- MODULE 1 -->
+        <section class="mod" id="m1">
+            <div class="mod-head"><span class="mod-num">Module 1</span><span class="mod-lec">Lectures 01–02</span></div>
+            <h2>🧸 What is "reliability"?</h2>
+            <div class="big-idea"><b>Big idea:</b> reliability means the toy keeps working for as long as it's supposed to, in the conditions it's supposed to work in.</div>
+
+            <details class="part" open>
+                <summary>1.1 Reliability engineering</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Why failures matter:</b> a broken toy makes a kid sad. A broken plane or bridge can kill people, so engineers have to care.</li>
+                    <li><b class="t">Three reasons to care:</b> safety, money (repairs cost a lot), and keeping customers happy.</li>
+                    <li><b class="t">Definition:</b> the chance the toy works <b>(1) without breaking, (2) for a set amount of time, (3) under the conditions it was designed to be used in</b>. Those are the three pillars. Reliability is a probability, so it's always between 0 and 1.</li>
+                    <li><b class="t">Related words:</b>
+                        <ul>
+                            <li><b>MTTF</b> (mean time to failure): how long a toy lasts, on average, before it breaks.</li>
+                            <li><b>MTTR</b> (mean time to repair): how long a fix takes, on average.</li>
+                            <li><b>Availability</b> $A = \frac{MTTF}{MTTF + MTTR}$: the share of time the toy is actually playable.</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">Bathtub curve:</b> a toy's chance of breaking changes over its life, and the graph is shaped like a bathtub:
+                        <ul>
+                            <li><b>Baby phase (DFR, decreasing failure rate):</b> badly made toys break early. The rate starts high and goes down.</li>
+                            <li><b>Grown-up phase (CFR, constant failure rate):</b> breaks happen only by random accident. The rate stays flat.</li>
+                            <li><b>Old phase (IFR, increasing failure rate):</b> the toy wears out. The rate goes up.</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>1.2 Statistics basics</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Statistical thinking:</b> lots of countries collected factory data. Japan's mid-20th-century success came from managers actually <em>analysing</em> that data with statistics, not just collecting it.</li>
+                    <li><b class="t">Population vs. sample:</b> the population is every toy ever made. A sample is the 20 toys you actually check.</li>
+                    <li><b class="t">Types of variables:</b> numbers you count (scratches), numbers you measure (weight), and categories (color).</li>
+                    <li><b class="t">Pictures of data:</b> histograms (bar towers), stem-and-leaf plots, and boxplots.</li>
+                    <li><b class="t">Center:</b> mean (the average), median (the middle toy when you line them up), mode (the most common value).</li>
+                    <li><b class="t">Spread:</b> range, variance, and standard deviation tell you how scattered the toys are.</li>
+                    <li><b class="t">5-number summary:</b> min, Q1, median, Q3, max. These numbers draw a boxplot. In the lecture the whiskers just reach the smallest and biggest values. Many books also call a point beyond $Q_3 + 1.5\,IQR$ or below $Q_1 - 1.5\,IQR$ an <b>outlier</b>, a weird toy.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 2 -->
+        <section class="mod" id="m2">
+            <div class="mod-head"><span class="mod-num">Module 2</span><span class="mod-lec">Lectures 03–06</span></div>
+            <h2>🎲 Probability and how systems are connected</h2>
+            <div class="big-idea"><b>Big idea:</b> probability measures how likely something is. Then we use it to find out whether a machine built from many parts will work.</div>
+
+            <details class="part" open>
+                <summary>2.1 Sets and sample spaces</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Experiment:</b> something with an uncertain result, like rolling a die.</li>
+                    <li><b class="t">Sample space:</b> every possible result, {1, 2, 3, 4, 5, 6}.</li>
+                    <li><b class="t">Event:</b> a group of results you care about, like "an even number".</li>
+                    <li><b class="t">Set operations:</b> union (A <em>or</em> B), intersection (A <em>and</em> B), complement (<em>not</em> A).</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>2.2 Probability rules (Kolmogorov's axioms)</summary>
+                <div class="part-body"><ul>
+                    <li>A probability is never negative.</li>
+                    <li><em>Something</em> in the sample space has to happen, so P(everything) = 1.</li>
+                    <li>If two events can't happen together, you add their probabilities.</li>
+                    <li><b class="t">Addition rule:</b> $P(A \cup B) = P(A) + P(B) - P(A \cap B)$. You subtract the overlap so it isn't counted twice.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>2.3 Conditional probability and independence</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Conditional probability:</b> "given that it's raining, how likely is a traffic jam?" Knowing one thing changes the odds of another.</li>
+                    <li><b class="t">Independent events:</b> one doesn't affect the other at all, like two separate coin flips. Then $P(A \cap B) = P(A)\,P(B)$.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>2.4 Total probability and Bayes' theorem</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Total probability:</b> toys come from 3 factories. To get the overall chance a toy is broken, add up each factory's share of the breakage.</li>
+                    <li><b class="t">Bayes' theorem works backwards:</b> you found a broken toy, so which factory probably made it?</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>2.5 How the parts are connected</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Series:</b> a chain of holiday lights where one bad bulb makes everything go dark. $R = R_1 R_2 \cdots R_n$. The system is never stronger than its weakest part.</li>
+                    <li><b class="t">Parallel (active redundancy):</b> you carry 2 flashlights, and you only lose light if <em>both</em> fail. $R = 1 - \prod (1 - R_i)$.</li>
+                    <li><b class="t">Series-parallel:</b> a mix of the two. Simplify it one block at a time.</li>
+                    <li><b class="t">k-out-of-n:</b> a plane with 3 engines that flies fine as long as any 2 work. You solve it with the binomial (Module 3).</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 3 -->
+        <section class="mod" id="m3">
+            <div class="mod-head"><span class="mod-num">Module 3</span><span class="mod-lec">Lectures 07–11</span></div>
+            <h2>🔢 Counting-type random outcomes</h2>
+            <div class="big-idea"><b>Big idea:</b> a <b>random variable</b> is a number that comes from chance, such as "how many broken toys are in this box".</div>
+
+            <details class="part" open>
+                <summary>3.1 Random variables</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Discrete:</b> you can count it (0, 1, 2, …).</li>
+                    <li><b class="t">PMF</b> (probability mass function): the chance of each exact value.</li>
+                    <li><b class="t">CDF</b> (cumulative distribution function): the chance of getting that value <em>or less</em>.</li>
+                    <li><b class="t">Expectation $E[X]$:</b> the average you'd get if you repeated the experiment forever. <b class="t">Variance:</b> how much results jump around that average.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>3.2 Common distributions (pick the one that matches the story)</summary>
+                <div class="part-body">
+                    <div class="table-wrap"><table>
+                        <thead><tr><th>Distribution</th><th>The story</th><th>Factory example</th></tr></thead>
+                        <tbody>
+                            <tr><td><b>Bernoulli</b></td><td>One try, yes or no</td><td>Is this one toy broken?</td></tr>
+                            <tr><td><b>Binomial</b></td><td>n tries, count the yeses</td><td>3 broken out of 20 checked</td></tr>
+                            <tr><td><b>Poisson</b></td><td>Rare events in a stretch of time or space</td><td>Scratches per m² of paint</td></tr>
+                            <tr><td><b>Geometric</b></td><td>Tries until the first success</td><td>Test cycles until the first failure</td></tr>
+                            <tr><td><b>Negative Binomial</b></td><td>Tries until the r-th success</td><td>Cycles until the 3rd failure</td></tr>
+                            <tr><td><b>Hypergeometric</b></td><td>Draw from a small box <em>without putting back</em></td><td>Pick 5 from a box of 50 with 4 bad</td></tr>
+                        </tbody>
+                    </table></div>
+                    <ul>
+                        <li><b class="t">Poisson approximation:</b> when n is huge and p is tiny, the binomial looks like a Poisson with $\lambda = np$. The course's rule: use it when n &gt; 10 <b>and</b> p &lt; 0.1.</li>
+                        <li><b class="t">Memoryless (geometric):</b> the toy doesn't "remember" how many tests it already survived. The chance it fails on the next test is the same as on the first.</li>
+                    </ul>
+                </div>
+            </details>
+        </section>
+
+        <!-- MODULE 4 -->
+        <section class="mod" id="m4">
+            <div class="mod-head"><span class="mod-num">Module 4</span><span class="mod-lec">Lectures 12–15</span></div>
+            <h2>🌊 Smooth random outcomes and the failure rate</h2>
+            <div class="big-idea"><b>Big idea:</b> some things, like time, are measured instead of counted, so you can get any value, such as 3.71 hours.</div>
+
+            <details class="part" open>
+                <summary>4.1 The four key reliability functions</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">PDF $f(t)$:</b> how bunched up the failures are around time t.</li>
+                    <li><b class="t">CDF $F(t)$:</b> the chance the toy has died by time t.</li>
+                    <li><b class="t">Reliability $R(t) = 1 - F(t)$:</b> the chance the toy is still alive at time t.</li>
+                    <li><b class="t">Hazard rate $h(t) = f(t)/R(t)$:</b> "this toy is still working right now, so how likely is it to break in the very next moment?" This is the line drawn on the bathtub curve.</li>
+                    <li><b class="t">MTTF $= \int_0^\infty R(t)\,dt$:</b> average lifetime, which is the total area under the survival curve.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>4.2 Distributions</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Uniform:</b> every value between a and b is equally likely, like a fair spinner.</li>
+                    <li><b class="t">Exponential:</b> the failure rate λ never changes, so it describes the flat middle of the bathtub. $R(t) = e^{-\lambda t}$, MTTF $= \beta = 1/\lambda$. (If a question gives a mean life, that's β. If it gives a failure rate, that's λ.) It's <b>memoryless</b>: a used bulb is as good as a new one.</li>
+                    <li><b class="t">Normal:</b> the bell curve. Most toys are close to average size and a few are far off.
+                        <ul>
+                            <li><b>Clearance problem:</b> does the ball fit in the tube? Clearance = tube's inside width − ball's width. If that's below 0, the parts won't fit.</li>
+                            <li><b>μ and σ from two percentiles:</b> you know two "x% of toys are below this value" facts. Each one gives an equation, so you get two equations in two unknowns.</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">Gamma:</b> how long until the k-th breakdown. The exponential is the special case "until the first breakdown".</li>
+                    <li><b class="t">Lognormal:</b> the logarithm of the data is normal. In this course it's used for how long <em>repairs</em> take.</li>
+                    <li><b class="t">Weibull</b> <span class="opt">not in the exam</span>: the shape-shifter. Its shape parameter β tells you where you are on the bathtub:
+                        <ul>
+                            <li>$\beta \lt 1$: early "baby" failures</li>
+                            <li>$\beta = 1$: random failures (this is the exponential)</li>
+                            <li>$\beta \gt 1$: wear-out</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 5 -->
+        <section class="mod" id="m5">
+            <div class="mod-head"><span class="mod-num">Module 5</span><span class="mod-lec">Lectures 16–21</span></div>
+            <h2>🥄 Sampling and the Central Limit Theorem</h2>
+            <div class="big-idea"><b>Big idea:</b> you can't test every toy, so you test a few. How much can those few tell you about all of them?</div>
+
+            <details class="part" open>
+                <summary>5.1 The sample mean and the CLT</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Parameter vs. statistic:</b> μ is the true average of <em>all</em> toys, and nobody knows it. $\bar{x}$ is the average of <em>your sample</em>, which you can calculate.</li>
+                    <li><b class="t">Distribution of $\bar{x}$:</b> if you took many samples, their averages would cluster around μ, with spread $\sigma/\sqrt{n}$. Bigger samples give tighter clusters.</li>
+                    <li><b class="t">Finite population correction (FPC)</b> <span class="opt">beyond lectures</span>: a small fix when your sample is a big chunk of a small population.</li>
+                    <li><b class="t">Central Limit Theorem:</b> take a big enough sample (roughly n ≥ 30) and the <em>average</em> behaves like a bell curve, <b>even if the individual toys don't</b>.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>5.2 Chi-square (χ²) and the sample variance</summary>
+                <div class="part-body"><ul>
+                    <li>χ² comes from adding up squared bell-curve values. You use it to ask how spread out the toys really are: $\frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>5.3 The t-distribution and the F-distribution</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">t:</b> like the bell curve but with fatter tails. Use it when the sample is small and you don't know σ. With more data it turns into the normal.</li>
+                    <li><b class="t">F:</b> one variance divided by another. Use it to ask whether machine A is messier than machine B. Reciprocal property: $F_{1-\alpha}(a,b) = 1/F_{\alpha}(b,a)$.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>5.4 Two samples</summary>
+                <div class="part-body"><ul>
+                    <li>The distribution of the <b>difference</b> between two averages, or between two proportions. Use it to compare factory A with factory B.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 6 -->
+        <section class="mod" id="m6">
+            <div class="mod-head"><span class="mod-num">Module 6</span><span class="mod-lec">Confidence intervals: Lectures 26–28</span></div>
+            <h2>🎯 Making smart guesses (estimation)</h2>
+            <div class="big-idea"><b>Big idea:</b> use your sample to guess the true number, then say how sure you are.</div>
+
+            <details class="part" open>
+                <summary>6.1 Point estimation (one best guess) <span class="opt">beyond lectures</span></summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Estimator vs. estimate:</b> an estimator is the recipe ("take the average"). An estimate is the number it gives you ("42").</li>
+                    <li><b class="t">What makes a good estimator:</b>
+                        <ul>
+                            <li><b>Unbiased:</b> on average it hits the true value. This is why the sample variance divides by n−1 instead of n.</li>
+                            <li><b>Consistent:</b> more data brings it closer to the truth.</li>
+                            <li><b>Efficient (MVUE):</b> among unbiased estimators, its guesses jump around the least. The CRLB is the smallest wobble any unbiased estimator can have.</li>
+                            <li><b>Sufficient:</b> it uses all the useful information in the data.</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>6.2 How to build an estimator <span class="opt">beyond lectures</span></summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Method of moments:</b> make the sample average equal the theoretical average, and solve for the unknown.</li>
+                    <li><b class="t">MLE (maximum likelihood):</b> "which parameter value makes the data I actually saw the <em>most likely</em>?" For the exponential this gives $\hat{\lambda} = n / \sum t_i$.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>6.3 Confidence intervals (a net, not a single spear)</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">What a CI is:</b> "I'm 95% confident μ is between 40 and 44." If you repeated this recipe 100 times, about 95 of the nets would catch the true value.</li>
+                    <li><b class="t">CI for μ:</b> use <b>Z</b> when σ is known or n is large, and <b>t</b> when σ is unknown and n is small.</li>
+                    <li><b class="t">Two means:</b> pooled t (independent groups) or paired t (the same toys before and after).</li>
+                    <li><b class="t">Proportion p:</b> $\hat{p} \pm Z\sqrt{\hat{p}(1-\hat{p})/n}$.</li>
+                    <li><b class="t">Variance σ²:</b> uses χ², so the interval is <b>lopsided</b>, not symmetric around the estimate.</li>
+                    <li><b class="t">Sample size:</b> $n = (Z\sigma/E)^2$ answers "how many toys do I need for my error to stay below E?"</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 7 -->
+        <section class="mod" id="m7">
+            <div class="mod-head"><span class="mod-num">Module 7</span><span class="mod-lec">Lectures 22–25, 29–31</span></div>
+            <h2>⚖️ Hypothesis testing, or "prove it!"</h2>
+            <div class="big-idea"><b>Big idea:</b> it works like a courtroom. You start by assuming nothing special is going on ($H_0$, "innocent") and only reject that if the evidence is very strong.</div>
+
+            <details class="part" open>
+                <summary>7.1 Basics</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">$H_0$ vs. $H_1$:</b> $H_0$ says "the battery lasts 100 hours as claimed." $H_1$ says "no, it lasts less."</li>
+                    <li><b class="t">Test statistic:</b> one number that measures how far the data are from what $H_0$ predicts.</li>
+                    <li><b class="t">Rejection region / p-value:</b> if the result would be very unlikely when $H_0$ is true, you reject $H_0$.</li>
+                    <li><b class="t">The two kinds of mistake:</b>
+                        <ul>
+                            <li><b>Type I (α):</b> convicting an innocent person, i.e. saying there's an effect when there isn't.</li>
+                            <li><b>Type II (β):</b> letting a guilty person go, i.e. missing a real effect.</li>
+                            <li><b>Power = 1 − β:</b> how good the test is at catching a real effect.</li>
+                            <li>Making α smaller makes β bigger unless you collect more data.</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>7.2 Which test do you use?</summary>
+                <div class="part-body"><div class="table-wrap"><table>
+                    <thead><tr><th>You want to test…</th><th>Use</th></tr></thead>
+                    <tbody>
+                        <tr><td>One mean, σ known or big n</td><td>Z-test</td></tr>
+                        <tr><td>One mean, small n, σ unknown</td><td>t-test</td></tr>
+                        <tr><td>Two independent group means (unknown but equal spreads)</td><td>Pooled t-test</td></tr>
+                        <tr><td>Before and after on the same toys</td><td>Paired t-test</td></tr>
+                        <tr><td>Proportions</td><td>Z-test for proportions</td></tr>
+                        <tr><td>One variance</td><td>χ² test</td></tr>
+                        <tr><td>Two variances</td><td>F-test</td></tr>
+                    </tbody>
+                </table></div></div>
+            </details>
+
+            <details class="part">
+                <summary>7.3 Chi-square tests</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Goodness-of-fit</b> <span class="opt">beyond lectures</span>: "is this die fair?" Compare observed with expected counts: $\sum \frac{(O-E)^2}{E}$.</li>
+                    <li><b class="t">Independence (r×c table):</b> "does the failure type depend on which shift made the toy?" Expected count = (row total × column total) / grand total. The course teaches this one in Lecture 39, alongside correlation.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 8 -->
+        <section class="mod" id="m8">
+            <div class="mod-head"><span class="mod-num">Module 8</span><span class="mod-lec">Lectures 32–37</span></div>
+            <h2>🍎🍊🍌 ANOVA, comparing many groups at once</h2>
+            <div class="big-idea"><b>Big idea:</b> if you have 4 machines and want to know whether they make toys of the same average weight, you could run lots of t-tests, but that's a trap.</div>
+
+            <details class="part" open>
+                <summary>8.1 Why not run lots of t-tests?</summary>
+                <div class="part-body"><ul>
+                    <li>Each test has a small chance of a false alarm, and those chances stack up: $\alpha_{FW} = 1 - (1-\alpha)^m$. With 6 tests at α = 0.05, the chance of at least one false alarm is about 26%.</li>
+                    <li><b class="t">ANOVA assumptions:</b> each group is normal, the groups have equal variances, and observations are independent.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>8.2 One-way ANOVA</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Splitting the variation:</b> $SST = SSB + SSW$. The lecture writes this as $SS_T = SS_{Treatments} + SS_E$.
+                        <ul>
+                            <li><b>SSB (between groups):</b> how far apart the group averages are.</li>
+                            <li><b>SSW (within groups):</b> how much toys from the same machine wobble.</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">$F = MSB / MSW$.</b> If groups differ much more than toys wobble inside a group, F is large, which is strong evidence that at least one machine is different. (The lecture writes F = MS<sub>Treatments</sub> / MS<sub>E</sub>.)</li>
+                    <li>The <b class="t">ANOVA table</b> columns are Source | SS | df | MS | F. You'll need to fill one in.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>8.3 Post-hoc tests: which ones differ? <span class="opt">named only</span></summary>
+                <div class="part-body"><ul>
+                    <li>ANOVA only tells you that <em>some</em> group is different. <b class="t">Tukey's HSD</b> and <b class="t">Fisher's LSD</b> compare pairs to find out <em>which</em> groups differ.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>8.4 Two-way ANOVA <span class="opt">named only</span></summary>
+                <div class="part-body"><ul>
+                    <li>Two factors, like machine and operator, plus an <b class="t">interaction</b>: maybe operator Bob only struggles on machine 3.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 9 -->
+        <section class="mod" id="m9">
+            <div class="mod-head"><span class="mod-num">Module 9</span><span class="mod-lec">Lectures 38–43</span></div>
+            <h2>📈 Correlation and regression</h2>
+            <div class="big-idea"><b>Big idea:</b> do two things move together, and can you draw a line that predicts one from the other?</div>
+
+            <details class="part" open>
+                <summary>9.1 Correlation</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Pearson's r</b> runs from −1 to +1:
+                        <ul>
+                            <li>+1: both go up together, in a perfect straight line</li>
+                            <li>0: no <em>straight-line</em> relationship</li>
+                            <li>−1: one goes up while the other goes down</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">Testing r:</b> checks whether the correlation is real or just luck in the sample.</li>
+                    <li><b class="t">Spearman's ρ:</b> the same idea on <em>ranks</em>. Use it for ranked data like S/M/L sizes, or when the relationship is curved but always goes one direction.</li>
+                    <li><b class="t">Chi-square test:</b> for plain categories (colour, shift, vaccinated or not). Compare the counts you got with the counts you'd expect if the two things had nothing to do with each other.</li>
+                    <li class="warn">⚠️ Correlation doesn't prove that one thing causes the other.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>9.2 Simple linear regression</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Model:</b> $y = \beta_0 + \beta_1 x + \varepsilon$. For example, toy lifetime = start + slope × temperature.</li>
+                    <li><b class="t">OLS (ordinary least squares):</b> choose the line that makes the <b>sum of squared vertical misses</b> as small as possible.</li>
+                    <li><b class="t">Gauss-Markov</b> <span class="opt">beyond lectures</span>: under the standard assumptions, OLS is <b>BLUE</b>, the best linear unbiased estimator.</li>
+                    <li><b class="t">$R^2 = 1 - SSE/SST$:</b> the share of the up-and-down variation in y that the line explains (0 to 1 for a least-squares line).</li>
+                    <li><b class="t">Standard error $s_e$</b> <span class="opt">beyond lectures</span>: the typical size of a miss.</li>
+                    <li><b class="t">Regression ANOVA and the slope test</b> <span class="opt">beyond lectures</span>: checks whether the slope is really different from 0.</li>
+                    <li><b class="t">CI vs. PI</b> <span class="opt">beyond lectures</span>:
+                        <ul>
+                            <li>A <b>confidence interval</b> is for the <em>average</em> toy at x, so it's narrower.</li>
+                            <li>A <b>prediction interval</b> is for <em>one new</em> toy at x, so it's wider.</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>9.3 Multiple and polynomial regression</summary>
+                <div class="part-body"><ul>
+                    <li>Several x's at once. Least squares gives one equation per coefficient (the "normal equations"), and you solve them together.</li>
+                    <li><b class="t">Polynomial regression:</b> to fit a curve, use $x$, $x^2$, $x^3$, … as if they were separate x's, then solve it like multiple regression.</li>
+                    <li><b class="t">Bigger isn't always better:</b> adding x's or powers never lowers $R^2$, so picking the model with the highest $R^2$ always favours the biggest one.</li>
+                    <li><b class="t">Adjusted $R^2$</b> <span class="opt">beyond lectures</span> penalizes you for piling on useless x's.</li>
+                    <li><b class="t">Multicollinearity</b> <span class="opt">beyond lectures</span>: two x's that are near-twins confuse the model.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 10 -->
+        <section class="mod" id="m10">
+            <div class="mod-head"><span class="mod-num">Module 10</span><span class="mod-lec">Lecture 44</span></div>
+            <h2>⏳ Time series and the AR(1) model</h2>
+            <div class="big-idea"><b>Big idea:</b> how much a machine is down this week tends to look like last week. Today's value depends on yesterday's. (The data have to be "steady" over time, called stationary, and evenly spaced with no gaps.)</div>
+
+            <details class="part" open>
+                <summary>10.1 Time-series basics</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Examples:</b> daily downtime of a system, number of failures per month, vibration readings.</li>
+                    <li><b class="t">Stationarity:</b> the series looks "the same" statistically over time, with a steady mean and spread.</li>
+                    <li><b class="t">Autocovariance and ACF:</b> how much today resembles yesterday, the day before that, and so on.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>10.2 The AR(1) model</summary>
+                <div class="part-body"><ul>
+                    <li>$X_t = c + \phi X_{t-1} + \varepsilon_t$, meaning today = some of yesterday + a random kick.</li>
+                    <li>It's stationary only when $|\phi| \lt 1$. Otherwise it either explodes ($|\phi| \gt 1$) or wanders off without settling ($|\phi| = 1$).</li>
+                    <li>Mean $\mu = \frac{c}{1-\phi}$, variance $\gamma_0 = \frac{\sigma^2}{1-\phi^2}$.</li>
+                    <li>Autocorrelation at lag k: $\rho_k = \phi^k$, so the "memory" fades over time.</li>
+                    <li><b class="t">Yule-Walker:</b> estimate φ from the data. For AR(1), $\hat\phi$ is just the lag-1 autocorrelation.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>10.3 Forecasting and remaining useful life <span class="opt">beyond lectures</span></summary>
+                <div class="part-body"><ul>
+                    <li>Project the curve forward, find when it crosses the "broken" threshold, and that time is the <b class="t">remaining useful life (RUL)</b>.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 11 -->
+        <section class="mod" id="m11">
+            <div class="mod-head"><span class="mod-num">Module 11</span><span class="mod-lec">Lectures 45–48</span></div>
+            <h2>🚦 Logistic regression, predicting yes or no</h2>
+            <div class="big-idea"><b>Big idea:</b> you want to predict whether the toy fails (1) or survives (0). A straight line can predict silly values like −0.3 or 1.4, so you need something else.</div>
+
+            <details class="part" open>
+                <summary>11.1–11.2 Odds, logit, and the sigmoid</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Odds:</b> $p/(1-p)$. "3 to 1 odds" means p = 0.75.</li>
+                    <li><b class="t">Logit:</b> $\ln\frac{p}{1-p} = \beta_0 + \beta_1 x$. You fit a straight line on the log-odds scale.</li>
+                    <li><b class="t">Sigmoid:</b> $p = \frac{1}{1+e^{-(\beta_0+\beta_1 x)}}$, an S-curve that always stays between 0 and 1.</li>
+                    <li><b class="t">Odds ratio $e^{\beta}$:</b> each 1-unit increase in x <em>multiplies</em> the odds by $e^{\beta}$.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>11.3–11.4 Fitting and checking the model</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">MLE:</b> there's no closed-form answer, so the computer climbs toward the best β step by step.</li>
+                    <li>Deviance and the likelihood-ratio test check the whole model. <span class="opt">beyond lectures</span></li>
+                    <li>The Wald test checks one predictor.</li>
+                    <li>Pseudo-$R^2$ measures fit. <span class="opt">beyond lectures</span></li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>11.5 How good are the predictions? <span class="opt">beyond lectures</span></summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Confusion matrix:</b> a table of TP, FP, TN, FN.
+                        <ul>
+                            <li><b>Accuracy:</b> how many predictions were right overall.</li>
+                            <li><b>Precision:</b> when it said "fail", how often was it right?</li>
+                            <li><b>Recall (sensitivity):</b> of all real failures, how many did it catch?</li>
+                            <li><b>F₁:</b> a balance of precision and recall.</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">ROC curve and AUC:</b> test every possible cut-off and plot the results. AUC = 1 is perfect and 0.5 is a coin flip.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MODULE 12 -->
+        <section class="mod" id="m12">
+            <div class="mod-head"><span class="mod-num">Module 12</span><span class="mod-lec">Lectures 49–60</span></div>
+            <h2>🤖 Machine-learning classifiers</h2>
+            <div class="big-idea"><b>Big idea:</b> teach the computer to sort toys into "good" and "faulty" by showing it labeled examples. That's <b>supervised learning</b>.</div>
+
+            <details class="part" open>
+                <summary>12.1 Naive Bayes</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">MAP rule:</b> pick the class that's most likely given the clues.</li>
+                    <li><b class="t">The "naive" assumption:</b> pretend every clue is independent of the others given the class. Usually false, but it still works surprisingly well.</li>
+                    <li><b class="t">m-estimate (the course's fix):</b> blend each count with a small made-up "prior" count so a clue you've never seen doesn't zero out the whole product. <b>Laplace smoothing</b> (add 1 to every count) is the simplest version.</li>
+                    <li><b class="t">Gaussian NB:</b> for measured features, model each one with a bell curve.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>12.2 k-Nearest Neighbors</summary>
+                <div class="part-body"><ul>
+                    <li>"Tell me who your neighbors are." To classify a new toy, find the k most similar toys and take a majority vote.</li>
+                    <li><b class="t">Distance:</b> Euclidean (straight line), Manhattan (city blocks). <b>Scale your features first</b> so one big-number feature doesn't dominate.</li>
+                    <li><b class="t">Choosing k:</b>
+                        <ul>
+                            <li>Small k is jumpy and overfits (high variance).</li>
+                            <li>Large k blurs everything and underfits (high bias).</li>
+                        </ul>
+                    </li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>12.3 Hard-margin SVM</summary>
+                <div class="part-body"><ul>
+                    <li>Draw a line between red toys and blue toys that leaves the <b>widest possible empty street</b> between them. The margin is $\frac{2}{\lVert \mathbf{w} \rVert}$.</li>
+                    <li><b class="t">Support vectors:</b> the toys standing right on the edge of the street. They're the only ones that decide where the line goes.</li>
+                    <li><b class="t">Primal problem:</b> minimize $\tfrac12\lVert \mathbf{w}\rVert^2$ while keeping every toy on the correct side.</li>
+                    <li><b class="t">Lagrange multipliers, KKT, and the dual:</b> a math trick that rewrites the problem in terms of $\alpha_i$, one per toy. Only support vectors get $\alpha_i \gt 0$. You get b back from any support vector.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>12.4 Soft-margin SVM <span class="opt">named only</span></summary>
+                <div class="part-body"><ul>
+                    <li>Real data is messy, so a few toys are allowed on the wrong side, with "slack" $\xi_i$.</li>
+                    <li><b class="t">C controls the trade-off:</b>
+                        <ul>
+                            <li>Large C is strict and tolerates few mistakes.</li>
+                            <li>Small C is relaxed and gives a wider street.</li>
+                        </ul>
+                    </li>
+                    <li><b class="t">Box constraint:</b> $0 \le \alpha_i \le C$. That gives three cases: off the margin, on the margin, or inside it / misclassified.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>12.5 Kernels</summary>
+                <div class="part-body"><ul>
+                    <li>When classes can't be split by a straight line, lift the toys into a higher dimension where a flat cut works. Picture flicking a tablecloth upward so red toys fly higher than blue ones.</li>
+                    <li><b class="t">Kernel trick:</b> you never compute that lift. You only compute $K(\mathbf{x}, \mathbf{z})$, which works like a similarity score.</li>
+                    <li><b class="t">Mercer's theorem:</b> the condition a function must meet to be a valid kernel.</li>
+                    <li><b class="t">Common kernels:</b> linear, polynomial, and <b>RBF (Gaussian)</b>.</li>
+                </ul></div>
+            </details>
+
+            <details class="part">
+                <summary>12.6 Beyond two classes</summary>
+                <div class="part-body"><ul>
+                    <li><b class="t">Multi-class:</b> one-vs-all (OVA) or one-vs-one (OVO).</li>
+                    <li><b class="t">SVR</b> <span class="opt">named only</span>: an SVM for predicting numbers. It fits a tube and ignores errors smaller than ε.</li>
+                </ul></div>
+            </details>
+        </section>
+
+        <!-- MAP -->
+        <section class="mod" id="map">
+            <h2>🗺️ How it all connects</h2>
+            <div class="flow">
+                <span class="step">Describe data · M1</span><span class="arrow">→</span>
+                <span class="step">Probability · M2</span><span class="arrow">→</span>
+                <span class="step">Distributions · M3–4</span><span class="arrow">→</span>
+                <span class="step">Sampling / CLT · M5</span><span class="arrow">→</span>
+                <span class="step">Estimate · M6</span><span class="arrow">→</span>
+                <span class="step">Test · M7</span><span class="arrow">→</span>
+                <span class="step">Compare groups · M8</span><span class="arrow">→</span>
+                <span class="step">Relate variables · M9</span><span class="arrow">→</span>
+                <span class="step">Over time · M10</span><span class="arrow">→</span>
+                <span class="step">Yes / No outcomes · M11</span><span class="arrow">→</span>
+                <span class="step">Learn to classify · M12</span>
+            </div>
+        </section>
+
+        <!-- QUIZ -->
+        <section class="mod quiz" id="quiz">
+            <h2>✅ Check yourself</h2>
+            <p style="margin-bottom:1rem;">Answer in your head first, then open the answer.</p>
+            <ol>
+                <li>A system has 3 parts in <b>series</b>, each with R = 0.9. Is the system more or less reliable than 0.9, and why?
+                    <details><summary>Show answer</summary><p>Less: $0.9^3 = 0.729$. In series, every part has to work, so each extra part is one more way for the system to fail.</p></details>
+                </li>
+                <li>A bulb has a constant failure rate and has already run for 1,000 hours. Is it more likely to fail in the next hour than a brand-new bulb?
+                    <details><summary>Show answer</summary><p>No. A constant failure rate means the exponential distribution, which is memoryless: $P(T \gt s+t \mid T \gt s) = P(T \gt t)$. The used bulb is "as good as new".</p></details>
+                </li>
+                <li>You have 8 samples and σ is unknown. Z or t?
+                    <details><summary>Show answer</summary><p>t, with $n-1 = 7$ degrees of freedom. The sample is small and σ has to be estimated by s.</p></details>
+                </li>
+                <li>Why can't you just run 6 t-tests instead of one ANOVA?
+                    <details><summary>Show answer</summary><p>The false-alarm chance stacks up: $1 - 0.95^6 \approx 0.26$. ANOVA tests all the means together at a single α.</p></details>
+                </li>
+                <li>In an SVM, if you delete a toy that is <b>not</b> a support vector, does the line move?
+                    <details><summary>Show answer</summary><p>No. Only support vectors have a nonzero Lagrange multiplier ($\lambda_i \gt 0$ in the lecture's notation, $\alpha_i$ in many books), so they're the only points that set $\mathbf{w}$ and b.</p></details>
+                </li>
+            </ol>
+        </section>
+    </main>
+
+    <footer>
+        Simplified companion to the <a href="index.html">full study guide</a> · Statistical Learning for Reliability Analysis · Prof. Monalisa Sarma, IIT Kharagpur (NPTEL)
+    </footer>
+
+    <script>
+    (function () {
+        var root = document.documentElement;
+        var btn = document.getElementById('theme-toggle-btn');
+        function applyTheme(t) {
+            root.setAttribute('data-theme', t);
+            try { localStorage.setItem('theme', t); } catch (e) {}
+            btn.firstElementChild.textContent = t === 'dark' ? '☀️' : '🌙';
+        }
+        applyTheme(root.getAttribute('data-theme') || 'dark');
+        btn.addEventListener('click', function () {
+            applyTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+        });
+    })();
+    </script>
+    <nav class="tabbar" aria-label="Pages">
+        <a href="index.html"><span class="ic">📘</span>Guide</a>
+        <a href="theory.html"><span class="ic">📖</span>Theory</a>
+        <a href="eli5.html" aria-current="page"><span class="ic">🧸</span>ELI5</a>
+        <a href="index.html#formulas"><span class="ic">⚡</span>Formulas</a>
+        <a href="index.html#test"><span class="ic">📝</span>Test</a>
+    </nav>
+
+    <script src="mathfit.js"></script>
+    <script src="mobile.js"></script>
+</body>
+</html>

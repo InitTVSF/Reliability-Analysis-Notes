@@ -39,6 +39,9 @@ $$H_1: \text{At least one } \tau_i \neq 0 \quad (\text{at least two group means 
 ---
 
 ### 8.2.2 Partitioning the Total Sum of Squares ($SST$)
+
+> [!NOTE]
+> **Lecture notation:** the course writes $SS_T = SS_{Treatments} + SS_E$, $F_0 = MS_{Treatments}/MS_E \sim F_{a-1,\,N-a}$, with $a$ treatments, $n$ replicates and $N = an$. "Between" = treatments and "within" = error.
 Total variation in the dataset is partitioned into between-treatment variation and within-treatment error:
 $$SST = SSB + SSW \quad (\text{or } SST = SSTr + SSE)$$
 
@@ -75,6 +78,9 @@ Let $N = \sum_{i=1}^k n_i$, $\bar{y}_{i\cdot} = \frac{1}{n_i}\sum_{j=1}^{n_i} y_
 
 ## 8.3 Post-Hoc Multiple Comparisons
 
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 33 only **names** the Bonferroni, Fisher LSD and Tukey HSD approaches and says finding which mean differs is beyond the scope of the lectures.
+
 When the omnibus ANOVA $F$-test rejects $H_0$, post-hoc tests identify *which specific pairs* of means differ significantly.
 
 ### 8.3.1 Tukey's Honestly Significant Difference (HSD) Test
@@ -90,6 +96,9 @@ $$\text{LSD} = t_{\alpha/2, N-k} \sqrt{MSE \left( \frac{1}{n_i} + \frac{1}{n_j} 
 ---
 
 ## 8.4 Two-Way ANOVA (Factorial Design with Replications)
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Lec 36 states that two-way and multi-way ANOVA are not discussed. Only one-way ANOVA is taught.
 
 ### 8.4.1 Model with Interaction
 Evaluates the simultaneous effects of Factor A ($a$ levels), Factor B ($b$ levels), and their interaction ($AB$) with $n$ replications per cell ($N = abn$):

@@ -83,6 +83,9 @@ $$s_e = \sqrt{MSE} = \sqrt{\frac{SSE}{n - 2}}$$
 ---
 
 ### 9.2.4 ANOVA Approach to Regression & Slope Hypothesis Testing
+
+> [!IMPORTANT]
+> **Scope (checked against the lecture transcripts):** Gauss–Markov/BLUE, the standard error of estimate, slope tests, regression ANOVA, CI vs. PI (9.2.4–9.2.5) and adjusted $R^2$/multicollinearity (9.3.2) are **not taught** in Lec 38–43. The lectures instead cover the chi-square test of association for nominal data (Lec 39) and polynomial regression (Lec 42); see the Theory page. The lecture writes the model as $y = \alpha + \beta x + \varepsilon$ and defines $R^2 = 1 - SSE/SST$.
 To test $H_0: \beta_1 = 0$ (no linear relationship) vs. $H_1: \beta_1 \neq 0$:
 $$F_{\text{calc}} = \frac{MSR}{MSE} = \frac{SSR / 1}{SSE / (n - 2)} \sim F(1, n - 2)$$
 Equivalently, using the $t$-test on slope:
